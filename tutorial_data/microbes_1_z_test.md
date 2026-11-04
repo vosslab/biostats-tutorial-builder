@@ -38,6 +38,10 @@
 | "Wildlife Refuge" | 3.521 |  |  |
 | "Woodland Meadow" | 4.982 |  |  |
 
+### Reflection Questions
+
+1. Discuss how both **changing the dataset size** and modifying individual Shannon Index values impacts the hypothesis test results.
+
 ## Tutorial
 
 ### Part: Scenario:
@@ -229,7 +233,7 @@ Save a separate practice copy after recording the original result. Add hypotheti
 
 * **Add more diversity index values** to Column B. Observe how the **Z-statistic** and **p-value** adjust as you increase the sample size. Notice how adding more data points, especially extreme values, can affect the outcome of the hypothesis test. This will help you understand the sensitivity of the test to the number of samples.
 * **Modify some existing values** in Column B by increasing or decreasing the Shannon Index values. Watch how the **Z-statistic** and **p-value** change as a result. This will show how changes to individual values can impact the test results. Try adding values that are either much higher or much lower than the current ones to see the extent of the changes.
-* **Think about** how both **changing the dataset size** and modifying individual Shannon Index values impacts the hypothesis test results. Think about how a larger representative independent sample can reduce the standard error, while extreme individual values might skew the results; more data do not guarantee a smaller p-value or repair biased sampling. This exercise will reinforce the importance of both sample size and data consistency in hypothesis testing.
+* Answer reflection question 1 in the reflection tab. Think about how a larger representative independent sample can reduce the standard error, while extreme individual values might skew the results; more data do not guarantee a smaller p-value or repair biased sampling. This exercise will reinforce the importance of both sample size and data consistency in hypothesis testing.
 
 #### Key Takeaways:
 

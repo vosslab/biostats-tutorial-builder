@@ -16,8 +16,8 @@ run `source .venv/bin/activate` after `source source_me.sh` and before any Pytho
 
 Run subsequent commands in this same Bash shell.
 
-Choose a lesson from [TUTORIAL_CATALOG.md](TUTORIAL_CATALOG.md), which indexes all 12 migrated
-sources, including the explicitly synthetic PETase calibration example.
+Choose a lesson from [TUTORIAL_CATALOG.md](TUTORIAL_CATALOG.md), including the explicitly
+synthetic PETase calibration example.
 
 ## Validate and build
 
@@ -47,6 +47,19 @@ The bundle contains the requested deliverables and `validation.json`. The report
 checks and does not claim Google import, link navigation, or formula calculation. Warnings are
 reported while a build may still complete; validation errors stop publication. Existing generated
 files are protected by the bundle manifest, and edited outputs must be preserved before rebuilding.
+
+Pass several sources to build their DOCX/PDF files beside one compatible shared workbook. The source
+order controls the workbook tab order:
+
+```bash
+python3 make_tutorial.py build tutorial_data/caffeine_1_descriptive_statistics.md \
+  tutorial_data/caffeine_2_linear_regression.md \
+  tutorial_data/caffeine_3_quadratic_regression.md \
+  --output-dir tutorial_output/caffeine_release
+```
+
+Each source also gets its own generated reflection tab, kept in source order. The tab name and
+question identifiers follow the resolved Part identity; see [TUTORIAL_SPEC.md](TUTORIAL_SPEC.md).
 
 For real local formula execution, generate independent expectations and run the final workbook
 states through LibreOffice Calc:
@@ -86,7 +99,7 @@ The command prints a preview and leaves the source unchanged by default:
 
 ```bash
 python3 make_tutorial.py worksheet-edit tutorial_data/caffeine_3_quadratic_regression.md \
-  --sheet "Sleep and scores" insert-columns --at A --count 1
+  --sheet "Quadratic Regression" insert-columns --at A --count 1
 ```
 
 Review the entire diff. If every change is intended, rerun the same command with `--write` to

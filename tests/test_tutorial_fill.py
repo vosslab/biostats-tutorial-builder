@@ -15,7 +15,9 @@ import tutorial_lib.docx_renderer
 def compile_fill(instructions: str) -> object:
 	source = "# Fill example\n\n## Workbook\n\n### Sheet: Data\n\n"
 	source += "| A | B |\n| --- | --- |\n| 1 | 2 |\n| 3 | 4 |\n| 5 | 6 |\n\n"
-	source += "## Tutorial\n\n### Part: Calculate\n\n#### Step: Fill formulas\n\n"
+	source += ("### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n### Part: Calculate\n\n#### Step: Fill formulas\n\n")
 	document = tutorial_lib.compiler.compile_source(source + instructions)
 	return document
 

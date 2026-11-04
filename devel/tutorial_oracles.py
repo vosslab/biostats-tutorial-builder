@@ -1,16 +1,25 @@
-"""Independent statistical models for the twelve migrated teaching datasets.
+"""Independent statistical models for the migrated teaching datasets.
 
 Cell locations are explicit teaching contracts, never inferred from formula text.
 Only seed numbers and numeric parameter assignments enter the calculations.
 """
 
 import math
+import dataclasses
+import pathlib
 
 import numpy
 import scipy.stats
 
 import tutorial_lib.model
 import tutorial_lib.references
+
+
+#============================================
+def analysis_sheet(document: tutorial_lib.model.Document) -> tutorial_lib.model.Worksheet:
+	"""Select the last analysis worksheet, excluding generated response sheets."""
+	sheet = next(sheet for sheet in reversed(document.worksheets) if not sheet.is_reflection)
+	return sheet
 
 
 #============================================
@@ -55,7 +64,7 @@ def one_sample(document: tutorial_lib.model.Document) -> dict:
 	is_z = "z_test" in document.path.name
 	alpha_cell = ("E14" if is_z else "E15") if is_baby else "D14"
 	alpha = parameter(document, alpha_cell)
-	sheet = document.worksheets[-1]
+	sheet = analysis_sheet(document)
 	x = observations(sheet, 2, end=40 if is_baby and is_z else 101)
 	n, mean, sd = len(x), float(numpy.mean(x)), float(numpy.std(x, ddof=1))
 	mu = parameter(document, "E2" if is_baby else "D2")
@@ -85,7 +94,7 @@ def one_sample(document: tutorial_lib.model.Document) -> dict:
 
 #============================================
 def two_sample(document: tutorial_lib.model.Document) -> tuple[dict, dict]:
-	sheet = document.worksheets[-1]
+	sheet = analysis_sheet(document)
 	x, y = observations(sheet, 2), observations(sheet, 3)
 	if document.path.name.startswith("babies"):
 		alpha = parameter(document, "G6")
@@ -115,7 +124,7 @@ def two_sample(document: tutorial_lib.model.Document) -> tuple[dict, dict]:
 #============================================
 def variance_test(document: tutorial_lib.model.Document) -> dict:
 	alpha = parameter(document, "E20")
-	x, y = [observations(document.worksheets[-1], col) for col in (2, 3)]
+	x, y = [observations(analysis_sheet(document), col) for col in (2, 3)]
 	ratio = float(y.var(ddof=1) / x.var(ddof=1))
 	distribution = scipy.stats.f(len(y) - 1, len(x) - 1)
 	lower, higher = float(distribution.cdf(ratio)), float(distribution.sf(ratio))
@@ -131,7 +140,7 @@ def variance_test(document: tutorial_lib.model.Document) -> dict:
 #============================================
 def anova(document: tutorial_lib.model.Document) -> dict:
 	alpha = parameter(document, "I13")
-	groups = [observations(document.worksheets[-1], col) for col in range(2, 7)]
+	groups = [observations(analysis_sheet(document), col) for col in range(2, 7)]
 	all_values = numpy.concatenate(groups)
 	grand = float(all_values.mean())
 	# Center raw observations, independently of the sheet's summary-table SUMPRODUCT.
@@ -169,7 +178,50 @@ def regression(x: numpy.ndarray, y: numpy.ndarray, degree: int) -> dict:
 
 #============================================
 def caffeine(document: tutorial_lib.model.Document) -> dict:
-	x, y = [observations(document.worksheets[-1], col, end=26) for col in (1, 2)]
+	shared_sheets = {sheet.name for sheet in document.worksheets}
+	if {"Data", "Sample Mean", "Linear Regression", "Quadratic Regression"} <= shared_sheets:
+		data = next(sheet for sheet in document.worksheets if sheet.name == "Data")
+		x, y = [observations(data, col, end=26) for col in (1, 2)]
+		linear = regression(x, y, 1)
+		intercept, slope = map(float, linear["beta"])
+		linear_se = float(linear["se"][1])
+		linear_statistic = slope / linear_se
+		quadratic = regression(x, y, 2)
+		b0, b1, b2 = map(float, quadratic["beta"])
+		quadratic_se = float(quadratic["se"][2])
+		quadratic_statistic = b2 / quadratic_se
+		if "descriptive" in document.path.name:
+			return {
+			"Sample Mean!E2": float(x.mean()), "Sample Mean!F2": float(y.mean()),
+			"Sample Mean!E3": float(numpy.median(x)), "Sample Mean!F3": float(numpy.median(y)),
+			"Sample Mean!E4": float(x.std(ddof=1)), "Sample Mean!F4": float(y.std(ddof=1)),
+			}
+		if "2_linear" in document.path.name:
+			return {
+			"Linear Regression!E2": slope, "Linear Regression!E6": intercept,
+			"Linear Regression!E10": linear["r_squared"],
+			"Linear Regression!E14": intercept + slope * 7,
+			"Linear Regression!H2": slope, "Linear Regression!H3": linear_se,
+			"Linear Regression!H5": linear["df"],
+			"Linear Regression!K2": linear_statistic, "Linear Regression!K6": linear["df"],
+			"Linear Regression!K10": tails(linear_statistic, linear["df"])[0],
+			}
+		result = {
+			"Quadratic Regression!N2": slope, "Quadratic Regression!N3": intercept,
+			"Quadratic Regression!N4": linear["r_squared"],
+			"Quadratic Regression!I2": b2, "Quadratic Regression!I3": b1,
+			"Quadratic Regression!I4": b0, "Quadratic Regression!I5": quadratic["r_squared"],
+			"Quadratic Regression!I6": quadratic_se, "Quadratic Regression!I7": quadratic["df"],
+			"Quadratic Regression!I8": b0 + b1 * 7 + b2 * 49,
+			"Quadratic Regression!I10": quadratic_statistic,
+			"Quadratic Regression!I11": tails(quadratic_statistic, quadratic["df"])[0],
+		}
+		for row, value in enumerate(x, 2):
+			result.update({f"Quadratic Regression!C{row}": float(value ** 2),
+				f"Quadratic Regression!E{row}": float(value),
+				f"Quadratic Regression!F{row}": float(value ** 2)})
+		return result
+	x, y = [observations(analysis_sheet(document), col, end=26) for col in (1, 2)]
 	if "descriptive" in document.path.name:
 		result = {"E2": float(x.mean()), "F2": float(y.mean()),
 			"E3": float(numpy.median(x)), "F3": float(numpy.median(y)),
@@ -200,8 +252,19 @@ def caffeine(document: tutorial_lib.model.Document) -> dict:
 
 
 #============================================
+def caffeine_release(document: tutorial_lib.model.Document) -> dict:
+	"""Return every Caffeine Part oracle for one merged shared workbook."""
+	result = {}
+	for name in ("caffeine_1_descriptive_statistics.md", "caffeine_2_linear_regression.md",
+		"caffeine_3_quadratic_regression.md"):
+		part = dataclasses.replace(document, path=pathlib.Path(name))
+		result.update(caffeine(part))
+	return result
+
+
+#============================================
 def petase(document: tutorial_lib.model.Document) -> dict:
-	sheet = document.worksheets[-1]
+	sheet = analysis_sheet(document)
 	x, raw = [observations(sheet, col, end=8) for col in (1, 2)]
 	y = raw - raw[0]
 	fit = regression(x, y, 1)

@@ -38,6 +38,11 @@
 | "Wildlife Refuge" | 4.079 | 3.521 |  |  |
 | "Woodland Meadow" | 6.565 | 4.982 |  |  |
 
+### Reflection Questions
+
+1. Discuss how the t reference distribution approaches the normal distribution as degrees of freedom increase; this does not make the population variances known or guarantee a smaller p-value.
+2. Discuss how the flexibility in **sample size** affects the results of the **two-sample T-test** and compare this to your earlier **z-test** results. Focus on how a larger sample size reduces uncertainty and impacts the p-value, degrees of freedom, and overall results.
+
 ## Tutorial
 
 ### Part: Scenario
@@ -298,8 +303,8 @@ By completing this interpretation, you can clearly state whether the data provid
 Save a separate practice copy after recording the original result. Add hypothetical numeric observations only within rows 2:101; leave unobserved cells blank.
 
 * Change some of the **Shannon Index** values for microbial diversity in **Column B** (2014 data) and **Column C** (2024 data). Observe how the **sample standard deviations**, **t-statistic**, and **p-value** adjust automatically.
-* Add more sample locations to both columns (e.g., increasing the sample size beyond 30\) and note how the **p-value** changes. Discuss how the t reference distribution approaches the normal distribution as degrees of freedom increase; this does not make the population variances known or guarantee a smaller p-value.
-* Discuss how the flexibility in **sample size** affects the results of the **two-sample T-test** and compare this to your earlier **z-test** results. Focus on how a larger sample size reduces uncertainty and impacts the p-value, degrees of freedom, and overall results.
+* Add more sample locations to both columns (e.g., increasing the sample size beyond 30\) and note how the **p-value** changes. Answer reflection question 1 in the reflection tab.
+* Answer reflection question 2 in the reflection tab.
 
 #### Key Takeaways:
 

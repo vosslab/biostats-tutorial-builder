@@ -11,7 +11,9 @@ import tutorial_lib.docx_renderer
 def compile_bindings(instructions: str, metadata: str = "") -> object:
 	source = "# Original lesson\n\n## Workbook\n\n### Sheet: Data\n\n"
 	source += metadata + "\n| Sleep | Score |\n| --- | --- |\n| 6 | 90 |\n| 7 | 95 |\n\n"
-	source += "## Tutorial\n\n### **PART: Quadratic Regression**\n\n"
+	source += ("### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n### **PART: Quadratic Regression**\n\n")
 	source += "#### **Step: Create a SQUARED Sleep-Hours Column**\n\n"
 	return tutorial_lib.compiler.compile_source(source + instructions)
 

@@ -17,6 +17,10 @@ both squared sleep hours and the difference from 7 hours.
 - **Region A1:B5:** source
 - **Region C1:D5:** calculation
 
+### Reflection Questions
+
+1. Why is the difference from 7 negative for 6 hours of sleep, while squared sleep hours is positive?
+
 ## Tutorial
 
 ### Part: Calculate two predictors

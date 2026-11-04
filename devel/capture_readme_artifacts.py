@@ -175,11 +175,11 @@ def libreoffice_executable() -> str:
 
 #============================================
 def render_workbook(source: pathlib.Path, name: str, temporary: pathlib.Path,
-		destination: pathlib.Path, print_area: str) -> dict:
+		destination: pathlib.Path, print_area: str, sheet_name: str) -> dict:
 	"""Print a disposable XLSX copy through native Calc, retaining complete print content."""
 	workspace = pathlib.Path(tempfile.mkdtemp(prefix="workbook_", dir=temporary))
 	print_copy = workspace / f"{name}.xlsx"
-	prepare_workbook(source, print_copy, print_area)
+	prepare_workbook(source, print_copy, print_area, sheet_name)
 	profile = workspace / "profile"
 	process = subprocess.run([libreoffice_executable(),
 		f"-env:UserInstallation={profile.as_uri()}", "--headless", "--convert-to",
@@ -214,10 +214,14 @@ def render_workbook(source: pathlib.Path, name: str, temporary: pathlib.Path,
 
 
 #============================================
-def prepare_workbook(source: pathlib.Path, destination: pathlib.Path, print_area: str) -> None:
+def prepare_workbook(source: pathlib.Path, destination: pathlib.Path, print_area: str,
+		sheet_name: str) -> None:
 	"""Change only print settings in a disposable copy of the actual workbook."""
 	workbook = openpyxl.load_workbook(source)
-	sheet = workbook.active
+	sheet = workbook[sheet_name]
+	workbook.active = workbook.index(sheet)
+	for other in workbook:
+		other.sheet_state = "visible" if other is sheet else "hidden"
 	sheet.print_area = print_area
 	sheet.page_setup.orientation = "landscape"
 	sheet.page_setup.paperSize = sheet.PAPERSIZE_A3
@@ -288,16 +292,21 @@ def main() -> None:
 	root = pathlib.Path(repo_result.stdout.strip())
 	output = root / "tutorial_output"
 	caffeine = "caffeine_3_quadratic_regression"
+	caffeine_parts = ("caffeine_1_descriptive_statistics", "caffeine_2_linear_regression",
+		"caffeine_3_quadratic_regression")
 	microbes_f = "microbes_4_f_test"
 	microbes_anova = "microbes_5_anova"
-	pdf = output / caffeine / f"{caffeine}.pdf"
+	caffeine_release = output / "caffeine_release"
+	pdf = caffeine_release / f"{caffeine}.pdf"
 	f_pdf = output / microbes_f / f"{microbes_f}.pdf"
 	anova_xlsx = output / microbes_anova / f"{microbes_anova}.xlsx"
 	destination = root / "docs" / "screenshots"
 	# Fingerprint all canonical teaching sources and built student artifacts.
 	canonical = sorted((root / "tutorial_data").glob("*.md"))
-	protected = canonical + [output / stem / f"{stem}{suffix}"
-		for stem in (caffeine, microbes_f, microbes_anova)
+	protected = canonical + [caffeine_release / f"{stem}{suffix}"
+		for stem in caffeine_parts for suffix in (".docx", ".pdf")] + [caffeine_release / "workbook.xlsx"] + [
+		output / stem / f"{stem}{suffix}"
+		for stem in (microbes_f, microbes_anova)
 		for suffix in (".docx", ".pdf", ".xlsx")]
 	before = {str(path.relative_to(root)): digest(path) for path in protected}
 	temporary = pathlib.Path(tempfile.mkdtemp(prefix="readme_capture_"))
@@ -315,7 +324,7 @@ def main() -> None:
 	completed = temporary / "microbes_5_completed_anova.xlsx"
 	recalculate_workbook(completed_source, completed, temporary)
 	metadata.append(render_workbook(completed,
-		"microbes_5_completed_anova", temporary, destination, "H1:M16"))
+		"microbes_5_completed_anova", temporary, destination, "H1:M16", "30 Year ANOVA Test"))
 	after = {str(path.relative_to(root)): digest(path) for path in protected}
 	if after != before:
 		raise RuntimeError("A protected teaching source or canonical artifact changed")

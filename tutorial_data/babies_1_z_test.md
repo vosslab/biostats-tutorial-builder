@@ -86,6 +86,10 @@ sample can justify an approximation. There is no automatic cutoff at 30.
 - **Region D11:E17:** results
 - **Region D19:E19:** interpretation
 
+### Reflection Questions
+
+1. Discuss how changing the dataset size or individual baby weights affects the hypothesis test results and your interpretation.
+
 ## Tutorial
 
 ### Part: Scenario
@@ -254,8 +258,7 @@ based on which p-value is smaller.
 * Modify some of the existing baby weight values to higher or lower numbers and
   observe how the **sample mean**, **Z test statistic**, and **p-value** in Column E adjust
   automatically.
-* Discuss how changing the dataset size or individual baby weights affects the
-  hypothesis test results and your interpretation.
+* Answer reflection question 1 in the reflection tab.
 
 #### Key Takeaways:
 

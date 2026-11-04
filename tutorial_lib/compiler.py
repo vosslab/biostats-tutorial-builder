@@ -10,6 +10,7 @@ import tutorial_lib.parser
 import tutorial_lib.references as references
 import tutorial_lib.semantic_bindings as bindings
 import tutorial_lib.source_text
+import tutorial_lib.reflections
 import markdown_it.token
 
 NUMBER = re.compile(r"[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?\Z")
@@ -188,6 +189,13 @@ def compile_source(source: str, path: str | pathlib.Path = "tutorial.md") -> mod
 	_validate_incomplete_instructions(document)
 	import tutorial_lib.validation as validation
 	validation.validate_document(document)
+	if document.reflection_questions:
+		name = "Reflection Questions"
+		if any(sheet.name.casefold() == name.casefold() for sheet in document.worksheets):
+			diagnostic(document, "reflection-questions", document.reflection_questions[0].span,
+				"Generated reflection worksheet name collision", "Rename the authored worksheet")
+		else:
+			document.worksheets.append(tutorial_lib.reflections.worksheet(document))
 	return document
 
 
@@ -271,6 +279,7 @@ def _validate_incomplete_instructions(document: model.Document) -> None:
 
 
 def _compile_structure(document: model.Document) -> None:
+	reflection_indices = tutorial_lib.reflections.compile_questions(document)
 	section = "introduction"
 	seen_sections = []
 	sheet = None
@@ -290,6 +299,8 @@ def _compile_structure(document: model.Document) -> None:
 	skip_until = -1
 	title_count = 0
 	for index, token in enumerate(document.tokens):
+		if index in reflection_indices:
+			continue
 		location = span(document, token)
 		if section != "Workbook":
 			document.content_token_indices.append(index)
@@ -563,6 +574,8 @@ def _compile_structure(document: model.Document) -> None:
 		document.content_token_indices = list(range(section_indices["Workbook"]))
 		document.content_token_indices.extend(range(section_indices["Tutorial"] + 3,
 			len(document.tokens)))
+	document.content_token_indices = [index for index in document.content_token_indices
+		if index not in reflection_indices]
 
 
 def _role_region(document: model.Document, sheet: model.Worksheet, opening: str,

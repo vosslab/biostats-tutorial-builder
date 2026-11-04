@@ -18,6 +18,10 @@ def source() -> str:
 | --- |
 | 1 |
 
+### Reflection Questions
+
+1. How do the results support your conclusion?
+
 ## Tutorial
 
 ### Part: Practice

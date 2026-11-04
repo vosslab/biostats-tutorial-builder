@@ -1,4 +1,4 @@
-# Single-source tutorial specification
+# Tutorial specification
 
 Status: active implementation and readiness review, 2026-10-22. Earlier implementation and
 migration evidence applies to its recorded snapshots; current readiness work and closeout are tracked
@@ -13,9 +13,10 @@ judge the scientific content and instructional quality. Start with [AUTHORING_GU
 for visual examples; this specification defines the technical contract.
 
 One authored Markdown file contains list-authored instructions and table-authored workbook data.
-One successful build produces a DOCX tutorial, an XLSX student workbook, and a PDF exported from
-that DOCX through LibreOffice. Google Docs and Google Sheets import are the primary delivery path.
-HTML output is outside the initial scope.
+A single-source build produces a DOCX tutorial, an XLSX student workbook, and a PDF exported from
+that DOCX through LibreOffice. A multi-source build produces one DOCX and PDF for each source plus
+one compatible shared XLSX workbook. Google Docs and Google Sheets import are the primary delivery
+path. HTML output is outside the initial scope.
 
 The Markdown file is the source of truth after migration. DOCX, XLSX, and PDF are generated outputs.
 Local image companions are allowed; single-source means one content specification, not that every
@@ -102,10 +103,17 @@ tables at A1 and F1; F2:H2 remain blank but are visibly identified as student en
 - Treat reserved headings as structural only when parsed as headings, never inside code fences.
 - Require at least one worksheet and one tutorial part. Empty scaffold parts are lint errors until
   filled; creating a scaffold does not claim that it is buildable.
-- Restrict the Workbook section to the worksheet declarations, metadata, and tables defined below.
-  Report unrecognized content there rather than silently dropping it.
-- Exclude Workbook declarations and tables from the DOCX/PDF. A table intentionally included in
-  Tutorial is an ordinary document table and does not populate spreadsheet cells.
+- Restrict the Workbook section to worksheet declarations, metadata, tables, and the required
+  reflection-question list. Report other unrecognized content rather than silently dropping it.
+- Require exactly one `### Reflection Questions` heading under Workbook, with at least one ordinary
+  ordered-list question. The compiler normalizes source list numbering to begin at 1, regardless of
+  the Markdown list's authored start value; add no heading parameters.
+- Exclude Workbook declarations and tables from the DOCX/PDF. Append the generated reflection
+  section to the DOCX using native styles and direct students to its workbook tab. A table
+  intentionally included in Tutorial is an ordinary document table and does not populate cells.
+- Keep reflection questions in one ordered Workbook list. Authors use ordinary Tutorial prose to
+  indicate when students should answer each question. Do not create activity-local blocks, citation
+  IDs, or automatic associations between questions and Parts, Steps, or Substeps.
 - Use Markdown syntax parsing, not whole-document regular-expression replacement. Preserve source
   locations, list nesting, inline formatting, and formula text across semantic classification.
 
@@ -507,6 +515,8 @@ The current CLI provides these commands:
 source source_me.sh && python3 make_tutorial.py lint tutorial.md
 source source_me.sh && python3 make_tutorial.py build tutorial.md
 source source_me.sh && python3 make_tutorial.py build tutorial.md --format docx,xlsx
+source source_me.sh && python3 make_tutorial.py build part_1.md part_2.md part_3.md \
+  --output-dir tutorial_output/release
 source source_me.sh && python3 make_tutorial.py import-xlsx template.xlsx --output draft.md
 ```
 
@@ -516,6 +526,24 @@ requesting PDF always generates its DOCX prerequisite. `--output-dir` (`-o`) sel
 directory. The default output directory is relative to the invocation directory; asset resolution
 remains relative to the input file. A subset build publishes only the requested formats and its
 manifest, so an old PDF is not carried into a new bundle as if it matched the new DOCX.
+With more than one source, every source basename must be unique, compatible worksheet declarations
+are merged into `workbook.xlsx`, and each source receives its own DOCX and PDF. Conflicting seeded
+cell values or worksheet roles stop the build rather than choosing an arbitrary workbook state.
+Each source contributes a distinct reflection tab in source order. A single-source tab is
+`Reflection Questions`; shared-build tabs use `Part {resolvedpart} Reflection`, such as
+`Part 2 Reflection`. Use the single unique explicit Part identity within each source; use the
+source's one-based build position only when it has no unique explicit Part identity.
+Duplicate resolved identities across sources or conflicting tab names stop publication; they
+do not trigger a fallback to source position. Question identifiers
+match between each source's DOCX and tab: single-source questions are `1`, `2`, ... without an
+explicit Part identity and `3.1`, `3.2`, ... for explicit Part 3; shared-build questions use the
+resolved identity, such as `1.1`, `2.1` for implicit first and second sources. Each reflection tab
+stacks question text and editable answer space in one wide column, with wrapped text and rows at
+least 47.25 points high.
+
+Question identifiers are literal, editable Normal text in both the DOCX and workbook. Keep native
+Heading styles for section and question headings; do not rely on Word automatic list numbering or
+numbering fields for generated question identifiers.
 `import-xlsx` takes `--output` (`-o`) and refuses an existing destination. Do not add theme, parser,
 diagnostic-threshold, or spreadsheet-engine switches.
 

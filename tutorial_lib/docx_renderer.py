@@ -13,6 +13,7 @@ import tutorial_lib.validation
 import tutorial_lib.docx_inline
 import tutorial_lib.docx_styles
 import tutorial_lib.docx_numbering
+import tutorial_lib.reflections
 
 
 #============================================
@@ -370,4 +371,12 @@ def write_document(document: tutorial_lib.model.Document, output_path: str | pat
 	output.core_properties.title = document.title
 	output.core_properties.subject = "Spreadsheet tutorial"
 	render_tokens(output, document)
+	if document.reflection_questions:
+		output.add_paragraph("Reflection Questions", style="Heading 1")
+		name = next(sheet.name for sheet in document.worksheets if sheet.is_reflection)
+		output.add_paragraph(f"Answer these questions in the {name} worksheet tab.")
+		for number, question in enumerate(document.reflection_questions, 1):
+			identifier = tutorial_lib.reflections.question_identifier(document, number)
+			paragraph = output.add_paragraph(f"{identifier}. ")
+			tutorial_lib.docx_inline.render(paragraph, question.children, document)
 	output.save(output_path)

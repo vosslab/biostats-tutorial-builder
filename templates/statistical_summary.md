@@ -17,6 +17,10 @@ Replace this opening with the biological question and the meaning of each measur
 - **Region D1:E3:** calculation
 - **Region D5:E7:** interpretation
 
+### Reflection Questions
+
+1. What does the overall mean response tell you, and what differences between treatments could it hide?
+
 ## Tutorial
 
 ### Part: Describe the data

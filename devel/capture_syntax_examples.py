@@ -102,13 +102,15 @@ def capture_authoring_features(root: pathlib.Path, temporary: pathlib.Path,
 		("Step 2: Fill a column", "Step 3: Select a range", "fill"),
 		("Step 3: Select a range", "Step 4: Replace a supplied value", "select"),
 		("Step 4: Replace a supplied value", "Part 3: Offer alternatives", "replace"),
-		("Step 1: Provide a choice", None, "alternatives"),
+		("Step 1: Provide a choice", "Reflection Questions", "alternatives"),
 	]
 	captures = [capture_readme_artifacts.capture_pdf(pdf, start, end,
 		f"authoring_{name}", temporary, destination) for start, end, name in views]
 	for name, area in (("workbook", "A1:E6"), ("results", "D1:E3"), ("response", "D8:E9")):
 		captures.append(capture_readme_artifacts.render_workbook(xlsx, f"authoring_{name}",
-			temporary, destination, area))
+			temporary, destination, area, "Roots"))
+	captures.append(capture_readme_artifacts.render_workbook(xlsx, "authoring_reflection",
+		temporary, destination, "A1:A3", "Reflection Questions"))
 	text = source.read_text(encoding="ascii")
 	excerpt = "#### Step: Enter a formula\n" + text.split(
 		"#### Step: Enter a formula\n", 1)[1].split("\n#### Step:", 1)[0]
@@ -149,12 +151,12 @@ def main() -> None:
 			"syntax_text"),
 		("Step 2: Calculate squared sleep hours",
 			"Explanation: Read a formula before copying it", "syntax_actions"),
-		("Step 3: Compare the model features", None, "syntax_table"),
+		("Step 3: Compare the model features", "Reflection Questions", "syntax_table"),
 	]
 	metadata = [capture_readme_artifacts.capture_pdf(pdf, start, end, name, temporary, destination)
 		for start, end, name in views]
 	metadata.append(capture_readme_artifacts.render_workbook(xlsx, "syntax_workbook",
-		temporary, destination, "A1:F4"))
+		temporary, destination, "A1:F4", "Sleep and scores"))
 	feature_captures, feature_hashes = capture_authoring_features(root, temporary, destination)
 	metadata.extend(feature_captures)
 	assets = [pathlib.Path(item["asset"]) for item in metadata]

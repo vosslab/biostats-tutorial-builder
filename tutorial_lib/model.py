@@ -79,6 +79,14 @@ class Worksheet:
 	entry_cells: set[tuple[int, int]] = dataclasses.field(default_factory=set)
 	google: GoogleMapping | None = None
 	role_regions: list[RoleRegion] = dataclasses.field(default_factory=list)
+	is_reflection: bool = False
+
+
+@dataclasses.dataclass(frozen=True)
+class ReflectionQuestion:
+	text: str
+	span: SourceSpan
+	children: list
 
 
 @dataclasses.dataclass
@@ -131,6 +139,8 @@ class Document:
 	formula_checks: list[FormulaCheck] = dataclasses.field(default_factory=list)
 	assets: list[pathlib.Path] = dataclasses.field(default_factory=list)
 	content_token_indices: list[int] = dataclasses.field(default_factory=list)
+	reflection_questions: list[ReflectionQuestion] = dataclasses.field(default_factory=list)
+	reflection_part_number: int | None = None
 
 	@property
 	def has_errors(self) -> bool:

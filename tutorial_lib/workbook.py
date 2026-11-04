@@ -277,9 +277,32 @@ def write_workbook(document: tutorial_lib.model.Document, output_path: pathlib.P
 			for row in range(reference.start_row, reference.end_row + 1):
 				dimension = sheet.row_dimensions[row]
 				dimension.height = max(dimension.height or 15, minimum_height)
+		if source.is_reflection:
+			_style_reflection(sheet, source)
 	book.save(output_path)
 	book.close()
 	_preserve_numbers(document, pathlib.Path(output_path))
+
+
+#============================================
+def _style_reflection(sheet: openpyxl.worksheet.worksheet.Worksheet,
+	source: tutorial_lib.model.Worksheet) -> None:
+	"""Keep question and response rows readable in one wide editable column."""
+	sheet.column_dimensions["A"].width = 124
+	sheet.freeze_panes = "A2"
+	for (row, column), seed in source.cells.items():
+		cell = sheet.cell(row, column)
+		cell.alignment = openpyxl.styles.Alignment(vertical="top", wrap_text=True)
+		answer = (row, column) in source.entry_cells
+		cell.font = openpyxl.styles.Font(name="PT Sans", size=11,
+			bold=not answer, color="202124")
+		if row == 1:
+			cell.fill = openpyxl.styles.PatternFill("solid", fgColor="0067CC")
+			cell.font = openpyxl.styles.Font(name="PT Sans", size=14, bold=True, color="FFFFFF")
+		elif answer:
+			cell.fill = openpyxl.styles.PatternFill("solid", fgColor=INTERPRETATION_PANEL_FILL)
+		height = 15 * _wrapped_lines(seed.scalar.value, 124) + 3
+		sheet.row_dimensions[row].height = max(47.25, height)
 
 
 #============================================

@@ -161,6 +161,10 @@ protein preparations. No earlier tutorial or laboratory measurements are require
 | --- | --- |
 |  |  |
 
+### Reflection Questions
+
+1. Compare the ranking in G13:G15 with the concentration ranking and explain why volume matters for recovered mass.
+
 ## Tutorial
 
 ### Part: Prepare the calibration
@@ -259,8 +263,7 @@ original recovered preparations; do not rank raw absorbances alone when dilution
 In G13, enter [=F13*D13](enter:G13), then fill [G13:G15](fill:G13:G15) down. Multiplying
 concentration in mg/mL by the recovered preparation volume in mL gives BSA-equivalent recovered
 total protein in mg. This is the original undiluted preparation volume, not the diluted assay
-aliquot volume. Compare the ranking in G13:G15 with the concentration ranking and explain why
-volume matters for recovered mass.
+aliquot volume. Answer reflection question 1 in the reflection tab.
 
 #### Step: Interpret the limits
 

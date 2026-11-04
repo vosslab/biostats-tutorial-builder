@@ -74,6 +74,29 @@ files do not synchronize edits back to Markdown.
 
 **Owner.** [TUTORIAL_SPEC.md](TUTORIAL_SPEC.md).
 
+### Required reflection question list
+
+**Decision.** Require one ordinary numbered `### Reflection Questions` list under Workbook in each
+source. Generate an appended DOCX reflection section and a separate workbook tab per source, using
+matching literal, editable question identifiers and answer space. Use Normal text for those IDs and
+retain native Heading styles for headings. Normalize the source ordered list to start at 1 regardless
+of its authored start value. In shared builds, name tabs `Part {resolvedpart} Reflection`.
+
+**Why.** A single authored list keeps question wording in the source of truth while Tutorial prose
+can tell students when to answer each question.
+
+**Consequence.** Authors use no parameters, citation IDs, or automatic activity associations.
+Shared builds preserve one tab per source, named with spaces as in `Part 2 Reflection`. Resolve
+each source using its single unique explicit Part identity, or its source position only when it
+has no unique explicit Part identity. Duplicate resolved identities across sources fail before
+publication rather than falling back to source position. DOCX and workbook identifiers remain
+visible editable Normal text;
+Word automatic list numbering and numbering fields do not generate them. Starting at 1 is author
+guidance, while the compiler normalizes the source list and does not reject a different Markdown
+start value.
+
+**Owner.** [TUTORIAL_SPEC.md](TUTORIAL_SPEC.md).
+
 ### Semantic actions stay attached to authored prose
 
 **Decision.** Encode spreadsheet actions as semantic links around the natural student-facing words
@@ -188,6 +211,19 @@ exist. Report dry runs, unavailable credentials, and actual Google execution sep
 
 **Owner.** [tutorial_oracles.py](../devel/tutorial_oracles.py) and
 [GOOGLE_SHEETS_VALIDATION.md](GOOGLE_SHEETS_VALIDATION.md).
+
+### Shared workbook releases
+
+**Decision.** A normal build accepts one or more Markdown sources. A multi-source build writes one
+shared workbook and separate DOCX/PDF files for each source.
+
+**Why.** Dr. Caffeine is assigned as three compact documents that work through the same six-tab
+workbook. Keeping the source files separate preserves the ordinary authoring workflow.
+
+**Consequence.** All sources must declare compatible sheets; conflicting supplied cells stop
+publication. The bundle records every source and output in one manifest.
+
+**Owner.** [build.py](../tutorial_lib/build.py) and [make_tutorial.py](../make_tutorial.py).
 
 ### Repaired PETase teaching data
 

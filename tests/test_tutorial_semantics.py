@@ -9,7 +9,9 @@ def compile_tutorial(instructions: str, workbook: str = "") -> object:
 	if not workbook:
 		workbook = "### Sheet: Data\n\n| A | B |\n| --- | --- |\n| 1 | 2 |"
 	source = "# Example\n\n## Workbook\n\n" + workbook
-	source += "\n\n## Tutorial\n\n### Part 3: Analysis\n\n#### Step: Calculate\n\n"
+	source += ("\n\n### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n### Part 3: Analysis\n\n#### Step: Calculate\n\n")
 	source += instructions
 	return tutorial_lib.compiler.compile_source(source)
 
@@ -176,7 +178,7 @@ def test_label_only_list_items_need_substantive_content() -> None:
 		if item.category == "incomplete-instruction"]
 	assert len(diagnostics) == 1
 	assert diagnostics[0].severity == "error"
-	assert diagnostics[0].span.start_line == 17
+	assert diagnostics[0].span.start_line == 21
 
 	valid = compile_tutorial('- **Guide:** **Setup Another Table:**\n'
 		'  - **Enter C2:** `=A2`')
@@ -192,7 +194,7 @@ def test_label_only_list_items_need_substantive_content() -> None:
 		assert not any(item.category == "incomplete-instruction" for item in document.diagnostics)
 
 	empty_child = compile_tutorial('- **Guide:**\n  - **Setup Another Table:**')
-	assert any(item.category == "incomplete-instruction" and item.span.start_line == 18
+	assert any(item.category == "incomplete-instruction" and item.span.start_line == 22
 		for item in empty_child.diagnostics)
 
 	nonempty_fence = compile_tutorial('- **Guide:** **For Sample Means:**\n\n'
@@ -206,6 +208,8 @@ def test_label_only_list_items_need_substantive_content() -> None:
 	outside_tutorial = ('# Example\n\n- **Introduction:** **Overview:**\n\n'
 		'## Workbook\n\n- **Worksheet:** **Instructions:**\n\n'
 		'### Sheet: Data\n\n| A | B |\n| --- | --- |\n| 1 | 2 |\n\n'
+		'### Reflection Questions\n\n'
+		'1. How do the results support your conclusion?\n\n'
 		'## Tutorial\n\n### Part 3: Analysis\n\n#### Step: Calculate\n\n'
 		'- **Enter C2:** `=A2`')
 	document = tutorial_lib.compiler.compile_source(outside_tutorial)

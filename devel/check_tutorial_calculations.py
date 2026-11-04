@@ -10,6 +10,7 @@ import numpy
 import scipy.stats
 
 import tutorial_lib.compiler
+import tutorial_lib.build
 import tutorial_lib.model
 import tutorial_oracles
 import sheets_validation_lib
@@ -28,9 +29,10 @@ def parse_args() -> argparse.Namespace:
 def expectations(values: dict, sheet: str) -> dict:
 	result = {}
 	for cell, value in values.items():
+		address = cell if "!" in cell else sheet + "!" + cell
 		if isinstance(value, (int, float)) and not math.isfinite(value):
-			raise ValueError(f"Nonfinite oracle at {sheet}!{cell}")
-		result[sheet + "!" + cell] = {"value": value,
+			raise ValueError(f"Nonfinite oracle at {address}")
+		result[address] = {"value": value,
 			"relative_tolerance": 1e-7, "absolute_tolerance": 1e-10}
 	return result
 
@@ -89,26 +91,45 @@ def check_mapping(document: tutorial_lib.model.Document, item: dict) -> dict:
 
 
 #============================================
+def check_caffeine_release(documents: list[tutorial_lib.model.Document]) -> dict:
+	"""Verify the three Caffeine Parts as one completed shared workbook."""
+	workbook = tutorial_lib.build.merge_documents(documents)
+	values = tutorial_oracles.caffeine_release(workbook)
+	item = {"common": expectations(values, tutorial_oracles.analysis_sheet(workbook).name), "scenarios": {}}
+	result = check_mapping(workbook, item)
+	result["tutorial"] = "shared Caffeine release"
+	return result
+
+
+#============================================
 def main() -> int:
 	args = parse_args()
 	paths = sorted(pathlib.Path("tutorial_data").glob("*.md"))
-	if len(paths) != 12:
-		raise ValueError(f"Expected all 12 migrated tutorials, found {len(paths)}")
+	if not paths:
+		raise ValueError("No tutorial sources found")
 	payload, details = {"tutorials": {}}, []
+	documents = {}
 	for path in paths:
 		document = tutorial_lib.compiler.compile_document(path)
 		if document.has_errors:
 			raise ValueError(f"Cannot validate invalid tutorial {path}")
+		documents[path.name] = document
 		common, scenarios = tutorial_oracles.calculate(document)
-		sheet = document.worksheets[-1].name
+		sheet = tutorial_oracles.analysis_sheet(document).name
 		item = {"common": expectations(common, sheet), "scenarios": {
 			name: expectations(values, sheet) for name, values in scenarios.items()}}
 		payload["tutorials"][path.name] = item
 		details.append(check_mapping(document, item))
+	caffeine_names = ("caffeine_1_descriptive_statistics.md", "caffeine_2_linear_regression.md",
+		"caffeine_3_quadratic_regression.md")
+	shared_releases = []
+	if all(name in documents for name in caffeine_names):
+		shared_releases.append(check_caffeine_release([documents[name] for name in caffeine_names]))
 	checks = synthetic_direction_checks()
 	report = {"status": "independent_expectations_generated", "sheets_status": "not_executed",
 		"tutorial_count": len(details), "scenario_count": sum(d["scenario_count"] for d in details),
 		"formula_checks": sum(d["formula_checks"] for d in details),
+		"shared_releases": shared_releases,
 		"synthetic_direction_checks": checks, "tutorials": details,
 		"method": "SciPy probability/test APIs and NumPy SVD/QR models from compiled numeric seeds; "
 			"authored formula strings never enter numerical calculations"}

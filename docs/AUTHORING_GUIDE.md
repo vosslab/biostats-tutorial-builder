@@ -72,6 +72,14 @@ Your `.md` file contains both the Workbook tables and the Tutorial text. Keep co
 with it. Edit that source and rebuild when you revise your tutorial; edits made only in generated
 Word or Excel files do not flow back into Markdown.
 
+Every source includes one `### Reflection Questions` heading under `## Workbook`, followed by a
+numbered list. The compiler normalizes its numbering to begin at 1. Keep all questions in that list.
+In Tutorial prose, tell readers when to answer each question and use the matching question number.
+The compiler generates a reflection
+section at the end of the DOCX and a separate workbook tab with question text and answer space.
+For merged builds, each source keeps its own tab. See [TUTORIAL_SPEC.md](TUTORIAL_SPEC.md) for
+numbering and tab-name rules.
+
 The compiler controls fonts, colors, spacing, numbering, and worksheet presentation. You choose
 the data, supplied labels, blank work areas, formulas, and wording. A successful build verifies
 supported technical rules, not whether the science or teaching is sound.

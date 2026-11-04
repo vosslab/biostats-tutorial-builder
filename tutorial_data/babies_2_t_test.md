@@ -90,6 +90,11 @@ outliers.
 | not used |
 | --- |
 
+### Reflection Questions
+
+1. Discuss when the t-test results start to resemble the z-test.
+2. Discuss how the flexibility in sample size affects the results of the t-test and compare this to their earlier z-test results.
+
 ## Tutorial
 
 ### Part: Scenario
@@ -289,9 +294,8 @@ choose between the tests based on which p-value is smaller.
 * Change some baby weights in Column B and observe how the sample standard
   deviation, t-statistic, and p-value adjust automatically.
 * Add more baby weights (e.g., increasing the sample size beyond 30) and note how
-  the p-value changes. Discuss when the t-test results start to resemble the z-test.
-* Discuss how the flexibility in sample size affects the results of the t-test and
-  compare this to their earlier z-test results.
+  the p-value changes. Answer reflection question 1 in the reflection tab.
+* Answer reflection question 2 in the reflection tab.
 
 #### Key Takeaways:
 

@@ -21,7 +21,8 @@ def main(argv: list[str] | None = None) -> int:
 	lint = commands.add_parser("lint", help="Validate without writing deliverables")
 	lint.add_argument("source", type=pathlib.Path)
 	build = commands.add_parser("build", help="Generate a verified output bundle")
-	build.add_argument("source", type=pathlib.Path)
+	build.add_argument("sources", nargs="+", type=pathlib.Path,
+		help="One or more Markdown tutorials sharing a workbook")
 	build.add_argument("--format", "-f", choices=tutorial_lib.build.FORMATS, default="all")
 	build.add_argument("--output-dir", "-o", type=pathlib.Path)
 	importer = commands.add_parser("import-xlsx", help="Create a Markdown draft from an XLSX")
@@ -82,18 +83,20 @@ def main(argv: list[str] | None = None) -> int:
 		else:
 			print("Preview only; rerun with --write to replace the source.", file=sys.stderr)
 		return 0
-	document = tutorial_lib.compiler.compile_document(args.source)
-	for item in document.diagnostics:
-		location = f"{item.span.path}:{item.span.start_line}"
-		print(f"{location}: {item.severity} [{item.category}] {item.message}", file=sys.stderr)
-		print(f"  Correction: {item.correction}", file=sys.stderr)
-	if document.has_errors:
+	documents = ([tutorial_lib.compiler.compile_document(source) for source in args.sources]
+		if args.command == "build" else [tutorial_lib.compiler.compile_document(args.source)])
+	for document in documents:
+		for item in document.diagnostics:
+			location = f"{item.span.path}:{item.span.start_line}"
+			print(f"{location}: {item.severity} [{item.category}] {item.message}", file=sys.stderr)
+			print(f"  Correction: {item.correction}", file=sys.stderr)
+	if any(document.has_errors for document in documents):
 		return 1
 	if args.command == "build":
 		destination = args.output_dir
 		if destination is None:
-			destination = pathlib.Path("tutorial_output") / args.source.stem
-		published = tutorial_lib.build.build_document(document, destination, args.format)
+			destination = pathlib.Path("tutorial_output") / args.sources[0].stem
+		published = tutorial_lib.build.build_documents(documents, destination, args.format)
 		print(f"Published {published}")
 	else:
 		print("Offline lint passed; Google import, navigation, and calculation are unchecked.")

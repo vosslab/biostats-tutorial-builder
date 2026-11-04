@@ -15,6 +15,10 @@ Replace this explanation with the scientific question your calculation supports.
 - **Region A1:B4:** source
 - **Region C1:C4:** calculation
 
+### Reflection Questions
+
+1. How does squaring sleep hours change their units and their differences compared with the original values?
+
 ## Tutorial
 
 ### Part: Build a calculated column

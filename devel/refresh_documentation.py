@@ -42,6 +42,10 @@ def compose_guide(source: pathlib.Path, checkpoint: pathlib.Path,
 	# The existing checkpoint owns the workbook; guide fences are never executed.
 	checkpoint_text = checkpoint.read_text(encoding="utf-8")
 	workbook = checkpoint_text.split("\n## Workbook\n", 1)[1].split("\n## Tutorial\n", 1)[0]
+	workbook = workbook.split("\n### Reflection Questions\n", 1)[0]
+	workbook += "\n### Reflection Questions\n\n"
+	workbook += "1. Which design choice in your tutorial supports its learning goal, "
+	workbook += "and how will you check that it helps a reader?\n"
 	first_part = next(token.map[0] for token in tokens
 		if token.type == "heading_open" and token.tag == "h3")
 	lines.insert(first_part, f"## Workbook\n{workbook}\n## Tutorial\n\n")
@@ -51,14 +55,16 @@ def compose_guide(source: pathlib.Path, checkpoint: pathlib.Path,
 
 
 #============================================
-def build(source: pathlib.Path, destination: pathlib.Path) -> None:
+def build(sources: list[pathlib.Path], destination: pathlib.Path) -> None:
 	"""Refresh an owned output bundle with the current native renderer styles."""
-	print(f"Build documentation artifact: {source.name}", flush=True)
-	document = tutorial_lib.compiler.compile_document(source)
-	if document.has_errors:
-		messages = [item.message for item in document.diagnostics if item.severity == "error"]
-		raise ValueError(f"Cannot build {source}: {messages}")
-	tutorial_lib.build.build_document(document, destination, "all")
+	print("Build documentation artifact: " + ", ".join(source.name for source in sources),
+		flush=True)
+	documents = [tutorial_lib.compiler.compile_document(source) for source in sources]
+	for document in documents:
+		if document.has_errors:
+			messages = [item.message for item in document.diagnostics if item.severity == "error"]
+			raise ValueError(f"Cannot build {document.path}: {messages}")
+	tutorial_lib.build.build_documents(documents, destination, "all")
 
 
 #============================================
@@ -66,8 +72,12 @@ def main() -> None:
 	"""Run LibreOffice stages sequentially, capturing images before illustrated Part builds."""
 	root = pathlib.Path(__file__).resolve().parent.parent
 	# Keep canonical outputs current; the build API preserves manually edited bundles.
-	for stem in ("caffeine_3_quadratic_regression", "microbes_4_f_test", "microbes_5_anova"):
-		build(root / "tutorial_data" / f"{stem}.md", root / "tutorial_output" / stem)
+	caffeine = [root / "tutorial_data" / f"caffeine_{part}_{name}.md" for part, name in (
+		("1", "descriptive_statistics"), ("2", "linear_regression"),
+		("3", "quadratic_regression"))]
+	build(caffeine, root / "tutorial_output" / "caffeine_release")
+	for stem in ("microbes_4_f_test", "microbes_5_anova"):
+		build([root / "tutorial_data" / f"{stem}.md"], root / "tutorial_output" / stem)
 	for script in ("capture_readme_artifacts.py", "capture_syntax_examples.py"):
 		print(f"Capture documentation: {script}", flush=True)
 		# ASVS 1.2.5: executable and script paths remain distinct argv values.
@@ -76,7 +86,7 @@ def main() -> None:
 		source = compose_guide(root / "docs" / "learn" / f"{stem}.md",
 			root / "docs" / "examples" / "authoring_features.md",
 			root / "tutorial_output" / "authoring_course" / "sources" / f"{stem}.md")
-		build(source,
+		build([source],
 			root / "tutorial_output" / "authoring_course" / "parts" / stem)
 	print("Documentation artifacts and all screenshot receipts refreshed.", flush=True)
 

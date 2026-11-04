@@ -75,7 +75,7 @@ def annotated_formula_map(native: pathlib.Path, metadata: dict,
 def workbook_values(source: pathlib.Path, moved: bool, expanded: bool, completed: bool) -> dict:
 	"""Verify blank starters or independently calculated native Calc results."""
 	workbook = openpyxl.load_workbook(source, data_only=True)
-	sheet = workbook.active
+	sheet = workbook["Roots"]
 	data_column = "B" if moved else "A"
 	result_column = "F" if moved else "E"
 	deviation_column = "C" if moved else "B"
@@ -150,14 +150,14 @@ def main() -> None:
 	provenance = {}
 	checks = {}
 	document_views = [
-		("root_05_variation", "course_overview_document", "Exploring root lengths", None),
+		("root_05_variation", "course_overview_document", "Exploring root lengths", "Reflection Questions"),
 		("root_05_variation", "course_overview_excerpt", "Exploring root lengths", "Part 2: Summarize root lengths"),
-		("root_02_write", "course_markdown", "Exploring root lengths", None),
+		("root_02_write", "course_markdown", "Exploring root lengths", "Reflection Questions"),
 		("root_04_calculate", "course_count_action", "Step 1: Count the observations", "Step 2: Calculate the mean"),
-		("root_04_calculate", "course_mean_action", "Step 2: Calculate the mean", None),
-		("root_05_variation", "course_variation_action", "Step 3: Describe the spread", None),
-		("root_06_grow", "course_fixed_formula", "Step 1: Subtract the mean", None),
-		("root_07_move", "course_moved_action", "Step 1: Subtract the mean", None),
+		("root_04_calculate", "course_mean_action", "Step 2: Calculate the mean", "Reflection Questions"),
+		("root_05_variation", "course_variation_action", "Step 3: Describe the spread", "Reflection Questions"),
+		("root_06_grow", "course_fixed_formula", "Step 1: Subtract the mean", "Reflection Questions"),
+		("root_07_move", "course_moved_action", "Step 1: Subtract the mean", "Reflection Questions"),
 	]
 	for stem, name, start, stop in document_views:
 		provenance[name] = capture_readme_artifacts.capture_pdf(
@@ -185,7 +185,7 @@ def main() -> None:
 			capture_readme_artifacts.recalculate_workbook(disposable, source, case_directory)
 		checks[name] = workbook_values(source, stem == "root_07_move",
 			stem in ("root_06_grow", "root_07_move"), completed)
-		rendered = capture_readme_artifacts.render_workbook(source, name, temporary, destination, area)
+		rendered = capture_readme_artifacts.render_workbook(source, name, temporary, destination, area, "Roots")
 		provenance[name] = {**rendered, "native_xlsx": str(source.relative_to(root)), "print_area": area,
 			"state": checks[name]["state"], "source_sha256": capture_readme_artifacts.digest(source)}
 	provenance["course_formula_map"] = annotated_formula_map(

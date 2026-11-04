@@ -90,6 +90,23 @@ lesson, not to the compiler.
 The `interpretation` region styles the area. It does not write a research question or decide what a
 good response says. Supply prompt text that fits your own scenario.
 
+#### Step: Ask reflection questions
+
+Every complete tutorial requires exactly one `### Reflection Questions` section under
+`## Workbook`, after the analysis sheets and before `## Tutorial`. Write a numbered list with
+at least one question about the results and their meaning.
+
+```markdown
+### Reflection Questions
+
+1. How do the original and squared root lengths differ in units, and why does that matter?
+```
+
+The compiler adds a reflection worksheet with blank answer space and a final tutorial Part
+containing these questions. Keep questions in this section so the document and workbook agree.
+See [descriptive_statistics_reflection.md](../examples/descriptive_statistics_reflection.md)
+for a runnable example with five questions from the original exam-score workbook.
+
 #### Step: Connect an instruction to a blank cell
 
 Semantic links keep the words a student sees and the compiler's cell target together. The target
@@ -173,6 +190,10 @@ with your own content before building.
 | <result label> | <value> |
 | --- | --- |
 | <your label> | |
+
+### Reflection Questions
+
+1. <question asking readers to interpret their results>
 
 ## Tutorial
 

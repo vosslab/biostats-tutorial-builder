@@ -43,6 +43,10 @@
 - **Region F5:G7:** results
 - **Region F8:G8:** interpretation
 
+### Reflection Questions
+
+1. For the right-tailed alternative, state whether the data provide sufficient evidence that Joe's population mean is greater.
+
 ## Tutorial
 
 ### Part: Two-Sample T-Test Scenario
@@ -226,8 +230,7 @@ significance level of 0.05. Enter the significance level and decision formula on
   the two-tailed test, indicating that the average weight of newborns at 'Joe's Hospital of Fried
   Foods' \[is/is not\] significantly different from that of 'Green Vegetables Health Center.'"
 
-For the right-tailed alternative, state whether the data provide sufficient evidence that Joe's
-population mean is greater. Failing to reject does not establish equal means. These observational
+Answer reflection question 1 in the reflection tab. Failing to reject does not establish equal means. These observational
 data do not establish a causal effect of either hospital's diet.
 
 ##### Statistical references

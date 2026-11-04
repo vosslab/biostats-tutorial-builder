@@ -42,6 +42,11 @@ For BIOL 318/418. Continue the Busse Woods teaching scenario using the original 
 | 23.0 |  |  |  | 4.623 | 3.521 |  |  |  |  |  |  |  |
 | 24.0 |  |  |  | 6.505 | 4.982 |  |  |  |  |  |  |  |
 
+### Reflection Questions
+
+1. Describe how the **sample means**, **F-statistic**, and **p-value** change when you modify some of the Shannon Index values.
+2. Discuss how sample size influences the **ANOVA** test and compare this to earlier F-test results.
+
 ## Tutorial
 
 ### Part: Scenario
@@ -310,9 +315,9 @@ If the **p-value** is greater than 0.05, you would **fail to reject the null hyp
 
 Save a separate practice copy after recording the original result. Modified values are hypothetical examples.
 
-* Modify some of the Shannon Index values for the **1994**, **2004**, **2009**, **2014**, and **2024** data columns. Observe how the **sample means**, **F-statistic**, and **p-value** change.
+* Modify some of the Shannon Index values for the **1994**, **2004**, **2009**, **2014**, and **2024** data columns. Answer reflection question 1 in the reflection tab.
 * Add hypothetical numeric observations within rows 2:101 (increase the sample size) and note the impact on the **ANOVA** results.
-* Discuss how sample size influences the **ANOVA** test and compare this to earlier F-test results.
+* Answer reflection question 2 in the reflection tab.
 
 #### Key Takeaways:
 

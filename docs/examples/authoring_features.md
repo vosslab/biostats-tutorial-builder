@@ -34,6 +34,10 @@ Five invented root lengths provide small tables for demonstrating document and w
 
 - **Region D8:E9:** interpretation
 
+### Reflection Questions
+
+1. How do the original and squared root lengths differ in units, and why does that distinction matter?
+
 ## Tutorial
 
 ### Part: Format the document

@@ -52,7 +52,9 @@ def test_numeric_display_defaults_to_three_decimals_without_rounding_values(
 	source += "| 1.2345678901234567 | =A2/3 | hello | FALSE | |\n"
 	source += "| 2 | =A3/3 | goodbye | TRUE | |\n\n"
 	source += "- **Region A1:E3:** source\n- **Region F1:F3:** calculation\n\n"
-	source += "## Tutorial\n\n### Part: Calculate\n\n- **Worksheet:** Data\n\n"
+	source += ("### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n### Part: Calculate\n\n- **Worksheet:** Data\n\n")
 	source += "#### Step: Fill results\n\n- **Enter F2:** `=A2/3`\n"
 	source += "- **Fill F2:F3:** Down\n"
 	document = tutorial_lib.compiler.compile_source(source)
@@ -124,7 +126,9 @@ def test_future_headers_and_empty_interpretation_space_preserve_student_work(
 	source += "| Observation |\n| --- |\n| 1 |\n\n"
 	source += "- **Region A1:A2:** source\n- **Region C1:D3:** results\n"
 	source += "- **Region C5:E8:** interpretation\n- **Region C10:E10:** interpretation\n"
-	source += "- **Region H3:I5:** calculation\n\n## Tutorial\n\n"
+	source += ("- **Region H3:I5:** calculation\n\n### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n")
 	source += "### Part: Summarize\n\n- **Worksheet:** Data\n\n#### Step: Calculate\n\n"
 	source += "- **Label C1:** Statistic\n- **Label D1:** Value\n- **Enter D2:** `=A2`\n"
 	source += "- **Label H4:** Group A\n- **Label I4:** Group B\n"
@@ -232,7 +236,9 @@ def test_source_table_style_does_not_color_distant_student_workspace(tmp_path: p
 def test_blank_label_targets_reserve_space_for_all_alternatives(tmp_path: pathlib.Path) -> None:
 	"""Labels remain readable beside entered results without revealing student answers."""
 	source = "# Analysis\n\n## Workbook\n\n### Sheet: Data\n\n"
-	source += "| Observation |\n| --- |\n| 1 |\n\n## Tutorial\n\n"
+	source += ("| Observation |\n| --- |\n| 1 |\n\n### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n")
 	source += "### Part: Summarize\n\n- **Worksheet:** Data\n\n#### Step: Calculate\n\n"
 	source += "- **Label D4:** Sample standard deviation\n- **Enter E4:** `=1+1`\n"
 	source += "- **Alternative: Short**\n  - **Label H11:** p-value\n"
@@ -293,6 +299,8 @@ def test_import_preserves_sparse_addresses_and_literal_types(tmp_path: pathlib.P
 	source = draft.replace("Write the tutorial instructions here.",
 		"### Part: Review\n\n- **Worksheet:** Data\n\n"
 		"#### Step: Inspect\n\n- **Compare:** Inspect the imported cells.")
+	source = source.replace("## Tutorial", "### Reflection Questions\n\n"
+		"1. How do the imported cells preserve the original values?\n\n## Tutorial")
 	document = tutorial_lib.compiler.compile_source(source)
 	assert not document.has_errors
 	rebuilt = tmp_path / "rebuilt.xlsx"

@@ -40,6 +40,10 @@ For BIOL 318/418. Continue the Busse Woods teaching scenario using the original 
 | "Wildlife Refuge" | 4.079 | 3.521 |  |  |
 | "Woodland Meadow" | 6.565 | 4.982 |  |  |
 
+### Reflection Questions
+
+1. Discuss how **sample size** affects the **F-test** results and compare this to earlier **T-test** results. Focus on how a larger sample size can reduce **uncertainty** under the model and change the **F-distribution**, without guaranteeing a smaller **p-value**.
+
 ## Tutorial
 
 ### Part: Scenario
@@ -295,7 +299,7 @@ Save a separate practice copy after recording the original result. Modified valu
 
 * Change some of the **Shannon Index** values in **Column B** (2014 data) and **Column C** (2024 data). Observe how the **sample standard deviations**, **F-statistic**, and **p-value** adjust.
 * Add more sample locations (e.g., increase sample size beyond 30) and see how this impacts the **F-statistic** and **p-value**.
-* Discuss how **sample size** affects the **F-test** results and compare this to earlier **T-test** results. Focus on how a larger sample size can reduce **uncertainty** under the model and change the **F-distribution**, without guaranteeing a smaller **p-value**.
+* Answer reflection question 1 in the reflection tab.
 
 #### Key Takeaways:
 

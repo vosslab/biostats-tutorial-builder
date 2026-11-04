@@ -20,6 +20,15 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
 
 ## Tutorial converter
 
+- Require every tutorial to contain reflection questions, using the literal words "Reflection
+  Questions" in the authoring syntax. Students like having their answers on a separate tab.
+- Use the supplied descriptive-statistics workbook as the reflection-layout precedent. Show actual
+  Markdown conversions of past content before implementation and preserve question wording.
+- Use the local repository guidance and the existing markdown-to-tutorial workflow when adapting
+  the frozen materials; that is the point of this work.
+- Release the three Dr. Caffeine Parts together as separate Google Docs with one shared Google
+  Sheets workbook. Use the same regression dataset throughout so the warm-up supports the analysis.
+
 - Fix demonstrated data-integrity defects when discovered, including unintended prose changes and
   mismatched visible/action-target ranges. Keep the worksheet-editor repair narrow; a documentation
   limitation is not a substitute for correcting known source corruption.

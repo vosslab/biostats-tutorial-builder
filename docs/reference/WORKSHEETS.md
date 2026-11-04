@@ -38,6 +38,24 @@ Blank table cells are blank cells, not zeroes. The regions describe presentation
 Choose meaningful headers before styling. The four supported region roles are `source`,
 `calculation`, `results`, and `interpretation`; regions must not overlap.
 
+## Add reflection questions
+
+Every source has one ordinary numbered list under an exact `### Reflection Questions` heading in
+Workbook:
+
+```markdown
+### Reflection Questions
+
+1. Which measure best represents the center of these data, and why?
+2. What does the distribution suggest about the observations?
+```
+
+The compiler normalizes the source list to start at 1, regardless of the Markdown list's start
+value. Keep the list here and use ordinary Tutorial prose to tell readers when to answer each
+question. The generated DOCX appends a reflection section; the workbook gets a
+separate tab with question text and editable answer space. For multi-source numbering and tab names,
+see [../TUTORIAL_SPEC.md](../TUTORIAL_SPEC.md).
+
 ## Place another table
 
 Type this Markdown before the next table:

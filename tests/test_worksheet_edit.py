@@ -15,7 +15,9 @@ def lesson() -> str:
 	source = "# Coordinate practice\n\n## Workbook\n\n### Sheet: Data\n\n"
 	source += "| Hours | Score |\n| --- | --- |\n" + rows
 	source += "\n- **Region A1:B26:** source\n- **Region C1:C26:** calculation\n"
-	source += "\n## Tutorial\n\n### Part: Spreadsheet practice\n\n#### Step: Calculate\n\n"
+	source += ("\n### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n### Part: Spreadsheet practice\n\n#### Step: Calculate\n\n")
 	source += "In cell C2, enter [=A2^2](enter:C2), then [fill down through C26](fill:C2:C26). "
 	source += "Use =AVERAGE(A2:A26), but retain =COUNT(B2:B101) for future rows.\n"
 	return source
@@ -219,7 +221,9 @@ def test_insert_preserves_all_anchored_table_geometry(tmp_path: pathlib.Path, ki
 	source = "# Tables\n\n## Workbook\n\n### Sheet: Data\n\n#### At: B1\n\n"
 	source += "| Observation |\n| --- |\n| 12 |\n| 15 |\n"
 	source += "\n#### At: D1\n\n| Statistic | Value |\n| --- | --- |\n| Mean | |\n"
-	source += "\n## Tutorial\n\n### Part: Calculate\n\n#### Step: Mean\n\n"
+	source += ("\n### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n### Part: Calculate\n\n#### Step: Mean\n\n")
 	source += "In cell E2, enter [`=AVERAGE(B2:B3)`](enter:E2).\n"
 	path = tmp_path / "tables.md"
 	path.write_text(source, encoding="utf-8")
@@ -239,7 +243,9 @@ def test_legacy_target_and_nested_formula_shift_once_but_code_examples_stay_lite
 	"""Executable fenced formulas follow the same edit as their legacy target."""
 	source = "# Formula\n\n## Workbook\n\n### Sheet: Data\n\n"
 	source += "| Observation |\n| --- |\n| 12 |\n| 15 |\n"
-	source += "\n## Tutorial\n\n### Part: Calculate\n\n#### Step: Count\n\n"
+	source += ("\n### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n### Part: Calculate\n\n#### Step: Count\n\n")
 	source += "- **Enter E2:**\n\n  ```sheets\n  =COUNT(A2:A3)\n  ```\n"
 	source += "\n```text\nIn cell E2, use `=COUNT(A2:A3)`.\n```\n"
 	path = tmp_path / "formula.md"

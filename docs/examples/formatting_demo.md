@@ -23,6 +23,10 @@ student workbook. Students calculate the blank values; the worksheet already nam
 | Linear term | Describes a steady change. |
 | Squared term | Allows a curved relationship. |
 
+### Reflection Questions
+
+1. Why can a squared sleep-hours term describe a pattern that a straight-line model misses?
+
 ## Tutorial
 
 ### Part: Explore a curved relationship

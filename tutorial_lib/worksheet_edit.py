@@ -162,6 +162,8 @@ def _worksheet(document: object, name: str) -> object:
 	matches = [sheet for sheet in document.worksheets if sheet.name.casefold() == name.casefold()]
 	if len(matches) != 1:
 		raise WorksheetEditError(f"Unknown worksheet: {name}")
+	if matches[0].is_reflection:
+		raise WorksheetEditError("Reflection worksheet layout is generated; edit its authored questions")
 	return matches[0]
 
 
@@ -299,7 +301,8 @@ def _address(start_row: int, end_row: int, start_column: int, end_column: int) -
 def _line_scopes(source: str, document: object) -> list[str | None]:
 	"""Assign conservative worksheet scopes to physical source lines."""
 	lines = source.splitlines()
-	single = document.worksheets[0].name if len(document.worksheets) == 1 else None
+	analysis_sheets = [sheet for sheet in document.worksheets if not sheet.is_reflection]
+	single = analysis_sheets[0].name if len(analysis_sheets) == 1 else None
 	scopes = []
 	workbook_sheet = None
 	tutorial_sheet = single

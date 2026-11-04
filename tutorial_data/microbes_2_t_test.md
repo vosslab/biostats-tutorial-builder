@@ -38,6 +38,11 @@
 | "Wildlife Refuge" | 3.521 |  |  |
 | "Woodland Meadow" | 4.982 |  |  |
 
+### Reflection Questions
+
+1. Discuss how the t reference distribution approaches the normal distribution as degrees of freedom increase; this does not make the population SD known or guarantee a smaller p-value.
+2. Discuss how the flexibility in **sample size** affects the results of the **one-sample T-test** and compare this to your earlier **z-test** results. Specifically, observe how a larger sample size reduces uncertainty, impacting the p-value and overall hypothesis test results.
+
 ## Tutorial
 
 ### Part: Scenario:
@@ -242,8 +247,8 @@ Completing this interpretation allows you to clearly state whether the data prov
 Save a separate practice copy after recording the original result. Add hypothetical numeric observations only within rows 2:101; leave unobserved cells blank.
 
 * Change some of the **Shannon Index** values for microbial diversity in **Column B** (Busse Woods data). Observe how the **sample standard deviation**, **t-statistic**, and **p-value** adjust automatically.
-* Add more sample locations (e.g., increasing the sample size beyond 30\) and note how the **p-value** changes. Discuss how the t reference distribution approaches the normal distribution as degrees of freedom increase; this does not make the population SD known or guarantee a smaller p-value.
-* Discuss how the flexibility in **sample size** affects the results of the **one-sample T-test** and compare this to your earlier **z-test** results. Specifically, observe how a larger sample size reduces uncertainty, impacting the p-value and overall hypothesis test results.
+* Add more sample locations (e.g., increasing the sample size beyond 30\) and note how the **p-value** changes. Answer reflection question 1 in the reflection tab.
+* Answer reflection question 2 in the reflection tab.
 
 #### Key Takeaways:
 

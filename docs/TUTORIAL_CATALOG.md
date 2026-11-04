@@ -36,13 +36,24 @@ The Busse Woods lessons analyze Shannon diversity indices with explicit directio
 
 ## Dr. Caffeine
 
-Each lesson includes all 25 original sleep/score pairs, so it can start from a fresh workbook.
+The three Caffeine Parts use the same shared six-tab workbook and release together.
 
 | Source | Method |
 | --- | --- |
 | [caffeine_1_descriptive_statistics.md](../tutorial_data/caffeine_1_descriptive_statistics.md) | Mean, median, sample SD |
 | [caffeine_2_linear_regression.md](../tutorial_data/caffeine_2_linear_regression.md) | Linear fit, prediction, two-tailed slope test |
 | [caffeine_3_quadratic_regression.md](../tutorial_data/caffeine_3_quadratic_regression.md) | Quadratic fit, curvature test, model comparison |
+
+Build their shared release with the three sources in order. The bundle contains one `workbook.xlsx`
+and one DOCX/PDF pair for each source:
+
+```bash
+source source_me.sh && python3 make_tutorial.py build \
+  tutorial_data/caffeine_1_descriptive_statistics.md \
+  tutorial_data/caffeine_2_linear_regression.md \
+  tutorial_data/caffeine_3_quadratic_regression.md \
+  --output-dir tutorial_output/caffeine_release
+```
 
 ## Illustrative PETase calibration
 

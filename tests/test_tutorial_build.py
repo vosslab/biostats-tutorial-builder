@@ -12,6 +12,7 @@ import subprocess
 
 # Third-party modules
 import docx
+import openpyxl
 import pytest
 import pypdf
 
@@ -31,6 +32,22 @@ def make_document(directory: pathlib.Path) -> tutorial_lib.model.Document:
 	sheet = tutorial_lib.model.Worksheet("Data", span)
 	sheet.cells[(1, 1)] = tutorial_lib.model.CellSeed(
 		1, 1, tutorial_lib.model.Scalar("text", "Value"), span
+	)
+	document.worksheets.append(sheet)
+	return document
+
+
+#============================================
+def make_named_document(directory: pathlib.Path, name: str, sheet_name: str,
+	value: str) -> tutorial_lib.model.Document:
+	"""Create a second minimal source for shared-workbook publication tests."""
+	source = directory / f"{name}.md"
+	source.write_text(f"{name} tutorial\n", encoding="utf-8")
+	document = tutorial_lib.model.Document(source, source.read_text(encoding="utf-8"))
+	span = tutorial_lib.model.SourceSpan(str(source), 1, 1)
+	sheet = tutorial_lib.model.Worksheet(sheet_name, span)
+	sheet.cells[(1, 1)] = tutorial_lib.model.CellSeed(
+		1, 1, tutorial_lib.model.Scalar("text", value), span
 	)
 	document.worksheets.append(sheet)
 	return document
@@ -122,4 +139,93 @@ def test_successful_converter_with_unreadable_pdf_preserves_bundle(
 	pdf_bytes = b"%PDF-"
 	with pytest.raises(RuntimeError, match="unreadable PDF"):
 		tutorial_lib.build.build_document(document, destination)
+	assert {path.name: path.read_bytes() for path in destination.iterdir()} == before
+
+
+#============================================
+def test_multi_source_build_keeps_documents_separate_and_unites_sheets(
+	tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+	"""Several Markdown tutorials produce isolated documents and one workbook."""
+	first = make_document(tmp_path)
+	second = make_named_document(tmp_path, "follow_up", "Results", "Outcome")
+	monkeypatch.setattr(tutorial_lib.build.tutorial_lib.docx_renderer, "write_document", write_docx)
+	destination = tmp_path / "published"
+	tutorial_lib.build.build_documents([first, second], destination, "docx,xlsx")
+	assert {path.name for path in destination.iterdir()} == {
+		"lesson.docx", "follow_up.docx", "workbook.xlsx", "validation.json"}
+	assert docx.Document(destination / "lesson.docx").paragraphs[0].text == first.source
+	assert docx.Document(destination / "follow_up.docx").paragraphs[0].text == second.source
+	workbook = openpyxl.load_workbook(destination / "workbook.xlsx")
+	assert workbook.sheetnames == ["Data", "Results"]
+	assert workbook["Data"]["A1"].value == "Value"
+	assert workbook["Results"]["A1"].value == "Outcome"
+	workbook.close()
+
+
+#============================================
+def test_multi_source_merge_rejects_conflicting_cell_values(tmp_path: pathlib.Path) -> None:
+	"""Two sources cannot silently assign different values to one shared cell."""
+	first = make_document(tmp_path)
+	second = make_named_document(tmp_path, "conflict", "Data", "Different")
+	with pytest.raises(ValueError, match="Conflicting values"):
+		tutorial_lib.build.merge_documents([first, second])
+
+
+#============================================
+def test_multi_source_merge_rebases_alternative_groups_without_mutating_sources(
+	tmp_path: pathlib.Path,
+) -> None:
+	"""Source-local alternatives cannot collide in one shared workbook model."""
+	first = make_document(tmp_path)
+	second = make_named_document(tmp_path, "follow_up", "Results", "Outcome")
+	span = tutorial_lib.model.SourceSpan(str(first.path), 1, 1)
+	first.actions.append(tutorial_lib.model.Action("enter", span, 1, "first",
+		alternative_group=1, alternative_branch=1,
+		generated_actions=[tutorial_lib.model.Action("enter", span, 1, "fill",
+			alternative_group=1, alternative_branch=1)]))
+	second.actions.append(tutorial_lib.model.Action("enter", span, 1, "second",
+		alternative_group=1, alternative_branch=1,
+		generated_actions=[tutorial_lib.model.Action("enter", span, 1, "fill",
+			alternative_group=1, alternative_branch=1)]))
+	merged = tutorial_lib.build.merge_documents([first, second])
+	assert [action.alternative_group for action in merged.actions] == [1, 2]
+	assert [action.generated_actions[0].alternative_group for action in merged.actions] == [1, 2]
+	assert first.actions[0].generated_actions[0].alternative_group == 1
+	assert second.actions[0].generated_actions[0].alternative_group == 1
+
+
+#============================================
+def test_multi_source_merge_preserves_repeated_action_order(tmp_path: pathlib.Path) -> None:
+	"""Later instructions remain meaningful even when they repeat an earlier value."""
+	document = make_document(tmp_path)
+	span = tutorial_lib.model.SourceSpan(str(document.path), 1, 1)
+	for kind, value in (("enter", 1), ("replace", 2), ("enter", 1)):
+		document.actions.append(tutorial_lib.model.Action(kind, span, 1, str(value),
+			scalar=tutorial_lib.model.Scalar("number", value)))
+	merged = tutorial_lib.build.merge_documents([document])
+	assert [(action.kind, action.scalar.value) for action in merged.actions] == [
+		("enter", 1), ("replace", 2), ("enter", 1)]
+
+
+#============================================
+def test_multi_source_failure_preserves_existing_bundle(
+	tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+	"""A later document failure cannot replace an already verified release."""
+	first = make_document(tmp_path)
+	second = make_named_document(tmp_path, "follow_up", "Results", "Outcome")
+	destination = tmp_path / "published"
+	monkeypatch.setattr(tutorial_lib.build.tutorial_lib.docx_renderer, "write_document", write_docx)
+	tutorial_lib.build.build_documents([first, second], destination, "docx,xlsx")
+	before = {path.name: path.read_bytes() for path in destination.iterdir()}
+
+	def fail_later(document: tutorial_lib.model.Document, path: pathlib.Path) -> None:
+		if document.path.stem == "follow_up":
+			raise RuntimeError("later document failed")
+		write_docx(document, path)
+
+	monkeypatch.setattr(tutorial_lib.build.tutorial_lib.docx_renderer, "write_document", fail_later)
+	with pytest.raises(RuntimeError, match="later document failed"):
+		tutorial_lib.build.build_documents([first, second], destination, "docx,xlsx")
 	assert {path.name: path.read_bytes() for path in destination.iterdir()} == before

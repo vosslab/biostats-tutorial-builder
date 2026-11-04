@@ -33,7 +33,9 @@ def test_managed_screenshot_comments_are_nonvisible_metadata_only(tmp_path: path
 	begin = '<!-- screenshots:begin (managed by screenshot-docs) -->'
 	end = '<!-- screenshots:end -->'
 	prefix = '# Metadata\n\n## Workbook\n\n### Sheet: Data\n\n'
-	prefix += '| Value |\n| --- |\n| 1 |\n\n## Tutorial\n\n### Part: Review\n\n'
+	prefix += ('| Value |\n| --- |\n| 1 |\n\n### Reflection Questions\n\n'
+		'1. How do the results support your conclusion?\n\n'
+		'## Tutorial\n\n### Part: Review\n\n')
 	prefix += '#### Step: Observe\n\n'
 	source = prefix + '  ' + begin + '  \n' + end + '\n\nRead the evidence.\n'
 	document = tutorial_lib.compiler.compile_source(source)
@@ -93,7 +95,9 @@ def test_automatic_formula_color_and_compact_list_paragraphs() -> None:
 	formula = '=IF(A2<3,"A*B",SUM(A2:B2))'
 	source = '# Automatic\n\n## Workbook\n\n### Sheet: Data\n\n'
 	source += '| A | B |\n| --- | --- |\n| 1 | 2 |\n\n'
-	source += '## Tutorial\n\n### Part: Analysis\n\n#### Step: Calculate\n\n'
+	source += ('### Reflection Questions\n\n'
+		'1. How do the results support your conclusion?\n\n'
+		'## Tutorial\n\n### Part: Analysis\n\n#### Step: Calculate\n\n')
 	source += 'Body use ' + formula + ', then compare.\n\n'
 	source += 'Body quote "' + formula + '".\n\n'
 	source += '- **Enter C2:** ' + formula + '\n\n'
@@ -162,7 +166,9 @@ def test_justification_keeps_deliberate_definition_lines_left_aligned() -> None:
 def test_formula_continuation_becomes_a_copyable_display_without_rewriting_prose() -> None:
 	"""An intentional formula line survives Markdown soft-break normalization."""
 	source = '# Formula display\n\n## Workbook\n\n### Sheet: Data\n\n| A | B |\n| --- | --- |\n| 1 | 2 |\n\n'
-	source += '## Tutorial\n\n### Part: Analysis\n\n#### Step: Calculate\n\n'
+	source += ('### Reflection Questions\n\n'
+		'1. How do the results support your conclusion?\n\n'
+		'## Tutorial\n\n### Part: Analysis\n\n#### Step: Calculate\n\n')
 	source += '* In **E11**, calculate the result using this formula:\n  [`=E6^2 / E5^2`](enter:E11)\n'
 	document = tutorial_lib.compiler.compile_source(source)
 	assert not document.has_errors
@@ -183,7 +189,9 @@ def test_formula_display_keeps_its_justified_introduction_without_trapping_follo
 	"""A displayed formula stays with its long explanation, not the next paragraph."""
 	source = '# Formula display\n\n## Workbook\n\n### Sheet: Data\n\n'
 	source += '| A | B |\n| --- | --- |\n| 1 | 2 |\n\n'
-	source += '## Tutorial\n\n### Part: Analysis\n\n#### Step: Calculate\n\n'
+	source += ('### Reflection Questions\n\n'
+		'1. How do the results support your conclusion?\n\n'
+		'## Tutorial\n\n### Part: Analysis\n\n#### Step: Calculate\n\n')
 	source += '* In **E11**, carefully calculate the result using this formula after reviewing '
 	source += 'the evidence from every measurement and comparing the numerator with the denominator. '
 	source += 'This explanation is deliberately long enough to wrap naturally across several lines '\
@@ -221,7 +229,9 @@ def test_literal_action_payloads_keep_copy_text_without_formula_style() -> None:
 	for kind, payload, expected_value, code in cases:
 		source = '# Literal\n\n## Workbook\n\n### Sheet: Data\n\n'
 		source += '| A | B |\n| --- | --- |\n| 1 | 2 |\n\n'
-		source += '## Tutorial\n\n### Part: Analysis\n\n#### Step: Calculate\n\n'
+		source += ('### Reflection Questions\n\n'
+			'1. How do the results support your conclusion?\n\n'
+			'## Tutorial\n\n### Part: Analysis\n\n#### Step: Calculate\n\n')
 		if kind == 'Replace':
 			source += '- **Enter C2:** before\n'
 		source += f'- **{kind} C2:** ' + payload
@@ -358,7 +368,9 @@ def test_editable_formula_links_and_independent_lists(tmp_path: pathlib.Path) ->
 def test_semantic_bindings_preserve_numbered_caffeine_instruction_text() -> None:
 	"""Bindings keep their authored paragraph text, heading emphasis and GFM numbering."""
 	source = "# Caffeine model\n\n## Workbook\n\n### Sheet: Data\n\n"
-	source += "| Sleep | Score |\n| --- | --- |\n| 6 | 91 |\n\n## Tutorial\n\n"
+	source += ("| Sleep | Score |\n| --- | --- |\n| 6 | 91 |\n\n### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n")
 	source += "### **pArT:** **Build** the predictor\n\n"
 	source += "#### Step: **Square** the predictor\n\n"
 	source += "1. Add a squared predictor column.\n"
@@ -407,7 +419,9 @@ def test_result_labels_stay_with_adjacent_entries(tmp_path: pathlib.Path) -> Non
 	"""Keep adjacent result pairs without joining chains or crossing block boundaries."""
 	source = "# Results\n\n## Workbook\n\n### Sheet: Data\n\n"
 	source += "| x | y |\n| --- | --- |\n| 1 | 2 |\n\n"
-	source += "## Tutorial\n\n### Part: Analysis\n\n#### Step: Calculate\n\n"
+	source += ("### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n### Part: Analysis\n\n#### Step: Calculate\n\n")
 	source += "- **Label C1:** Summary\n"
 	source += "- **Label C2:** Slope\n"
 	source += "- **Enter D2:** `=SUM(A2:B2)`\n"
@@ -461,7 +475,9 @@ def test_result_labels_stay_with_adjacent_entries(tmp_path: pathlib.Path) -> Non
 def test_semantic_adjacent_label_stays_with_direct_or_nested_entry(tmp_path: pathlib.Path) -> None:
 	"""Only adjacent sibling labels pair with same-row entries, including first nested formulas."""
 	base = "# Pagination\n\n## Workbook\n\n### Sheet: Data\n\n| A | B | C | D | E |\n"
-	base += "| --- | --- | --- | --- | --- |\n| 1 | 2 | 3 | 4 | 5 |\n\n## Tutorial\n\n"
+	base += ("| --- | --- | --- | --- | --- |\n| 1 | 2 | 3 | 4 | 5 |\n\n### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n")
 	base += "### Part: Analysis\n\n#### Step: Prepare\n\n"
 	cases = {
 		"direct": "1. Label [D13](label:D13)\n2. Enter [=1](enter:E13)\n",
@@ -496,7 +512,9 @@ def test_semantic_adjacent_label_stays_with_direct_or_nested_entry(tmp_path: pat
 def test_final_body_paragraph_stays_with_its_predecessor(tmp_path: pathlib.Path) -> None:
 	"""A short closing paragraph cannot be stranded by itself at a page break."""
 	source = "# Closing\n\n## Workbook\n\n### Sheet: Data\n\n| A | B |\n| --- | --- |\n| 1 | 2 |\n\n"
-	source += "## Tutorial\n\n### Part: Analysis\n\n#### Step: Finish\n\n"
+	source += ("### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n### Part: Analysis\n\n#### Step: Finish\n\n")
 	source += "Review the result before moving on.\n\n"
 	source += "**_Ask the instructor for the next tutorial link._**\n"
 	document = tutorial_lib.compiler.compile_source(source, tmp_path / "closing.md")
@@ -525,7 +543,9 @@ def test_local_webp_embeds_lossless_png_without_changing_source(tmp_path: pathli
 	image.save(asset, format="WEBP", lossless=True, exact=True)
 	original = asset.read_bytes()
 	source = "# Image\n\n## Workbook\n\n### Sheet: Data\n\n| A |\n| --- |\n| 1 |\n\n"
-	source += "## Tutorial\n\n### Part: Review\n\n#### Step: Observe\n\n"
+	source += ("### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n### Part: Review\n\n#### Step: Observe\n\n")
 	source += "![Screenshot evidence](screenshot.webp)\n"
 	document = tutorial_lib.compiler.compile_source(source, tmp_path / "images.md")
 	assert not document.has_errors

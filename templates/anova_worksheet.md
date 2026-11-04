@@ -16,6 +16,10 @@ Replace this scenario with the groups, response variable, and hypothesis for you
 - **Region E1:J4:** calculation
 - **Region E6:F8:** interpretation
 
+### Reflection Questions
+
+1. How does variation within each dose group affect the evidence for a difference among group means?
+
 ## Tutorial
 
 ### Part: Organize an ANOVA table

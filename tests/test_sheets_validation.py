@@ -13,7 +13,9 @@ def test_independent_branches_preserve_replacements_and_literal_types() -> None:
 	"""Prevent branch leakage and accidental evaluation of literal text."""
 	source = "# Example\n\n## Workbook\n\n### Sheet: Data\n\n"
 	source += "| Header | Result |\n| --- | --- |\n| 2 | |\n\n"
-	source += "## Tutorial\n\n### Part: Calculate\n\n#### Step: Values\n\n"
+	source += ("### Reflection Questions\n\n"
+		"1. How do the results support your conclusion?\n\n"
+		"## Tutorial\n\n### Part: Calculate\n\n#### Step: Values\n\n")
 	source += "- **Alternative: First**\n  - **Enter B2:** `=A2+1`\n"
 	source += "- **Alternative: Second**\n  - **Enter B2:** `=A2+2`\n\n"
 	source += "- **Replace B2:** `=A2+3`\n"

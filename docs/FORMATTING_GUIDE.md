@@ -196,6 +196,32 @@ A response area uses the same table syntax and an interpretation region:
 Replace these demonstration labels with wording appropriate to your tutorial. The region gives
 a response space its presentation; it does not generate an interpretation or evaluate a response.
 
+## Reflection questions
+
+Write required reflection questions once as a numbered list under Workbook. The compiler normalizes
+the source list to begin at 1, even when its Markdown start value differs:
+
+```markdown
+### Reflection Questions
+
+1. How do the original and squared root lengths differ in units, and why does that distinction matter?
+```
+
+**Generated workbook tab:**
+
+![Generated Reflection Questions workbook tab with the root-length units question above editable answer space](screenshots/authoring_reflection.webp)
+
+This preview comes from [examples/authoring_features.md](examples/authoring_features.md).
+For the original five-question example, build
+[examples/descriptive_statistics_reflection.md](examples/descriptive_statistics_reflection.md).
+
+Use ordinary Tutorial prose to tell readers when to answer each number. The compiler appends the
+questions to the DOCX and generates a separate tab with each question stacked above editable answer
+space in one wide column. Question identifiers are literal editable text and match in both outputs.
+It wraps question text and gives question and answer rows at least 47.25 points of height. In a
+multi-source build, every source has its own reflection tab. See
+[TUTORIAL_SPEC.md](TUTORIAL_SPEC.md) for identifier and tab-name rules.
+
 ## Formula instructions
 
 **You type inside a Tutorial Part:**

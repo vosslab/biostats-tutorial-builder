@@ -24,6 +24,10 @@ They are for learning spreadsheet skills; they provide no evidence about real pl
 | Mean (mm) | |
 | Sample standard deviation (mm) | |
 
+### Reflection Questions
+
+1. What does one root-length observation represent, and what can these invented data tell you about real plants?
+
 ## Tutorial
 
 ### Part: Explore the observations

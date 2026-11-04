@@ -1,5 +1,44 @@
 # Changelog
 
+## 2026-11-04
+
+### Additions and New Features
+
+- Replace the activity-local reflection proposal with the required Workbook list contract: one
+  plain numbered list, generated DOCX section, and one reflection tab per source. The implementation
+  requires each source's Workbook list, generates matching editable question identifiers and answer
+  areas, and assigns shared-build Part IDs automatically without step mapping. The feature is
+  implemented and accepted after fresh SPEC, QUALITY, and INTEGRATION reviews.
+- Clarify reflection output: shared workbook tabs use spaced names such as `Part 2 Reflection`,
+  question identifiers are literal editable text in DOCX and workbook, and the compiler normalizes
+  source list starts to 1 without making that author recommendation a lint gate.
+- Adapt the three Dr. Caffeine sources around one shared six-tab workbook. Build multiple existing
+  Markdown sources into one compatible XLSX and separate Google Docs-ready DOCX/PDF documents.
+
+### Behavior or Interface Changes
+
+- Use the regression dataset throughout the Caffeine warm-up, linear regression, and quadratic
+  regression. Preserve the frozen student artifacts as the source reference while correcting their
+  inconsistent warm-up dataset and spreadsheet formulas.
+
+### Fixes and Maintenance
+
+- Extend independent numerical expectations to support one tutorial whose formula results span
+  multiple worksheets. Update Caffeine catalog and build guidance for the shared release.
+
+### Developer Tests and Notes
+
+- Final shared-workbook execution in LibreOffice Calc matches all 103 independent formula
+  expectations. The complete numerical inventory covers 254 formulas across 12 tutorials.
+  Reflection corpus/template/example sources compile (12 corpus sources and 30 questions); 13
+  single-source plus shared outputs match all 46 source/output hashes. Calc passes 103 checks with
+  zero errors. Native visual review inspected 41 documentation images, including the generated
+  reflection preview, and the latest receipt records 14 source and 22 image hashes. The final
+  repository suite reports 2,146 passed and one failure: the existing unavailable Podman VM
+  connection. Google import remains unverified.
+- The baseline full suite reported 2,115 passing tests and one pre-existing Podman disk check
+  failure because the local Podman VM connection at localhost:54395 was refused.
+
 ## 2026-10-23
 
 ### Additions and New Features
