@@ -6,14 +6,38 @@ import base64
 import hashlib
 import pathlib
 import urllib.parse
+import subprocess
+import tempfile
+import zipfile
 
 import PIL.Image
 import docx.oxml
 import docx.oxml.ns
 import docx.shared
 import docx.opc.constants
+import defusedxml.ElementTree
 
 import tutorial_lib.docx_styles
+
+
+MATH_NAMESPACES = {"m": "http://schemas.openxmlformats.org/officeDocument/2006/math"}
+
+
+#============================================
+def add_math(paragraph: object, source: str) -> None:
+	"""Insert Pandoc's editable Office Math for one author-written TeX expression."""
+	with tempfile.TemporaryDirectory(prefix="tutorial-math-") as temporary:
+		output = pathlib.Path(temporary) / "math.docx"
+		result = subprocess.run(["pandoc", "--from=markdown+tex_math_dollars", "--to=docx",
+			"--output", str(output)], input=("$" + source + "$\n").encode(), capture_output=True)
+		if result.returncode:
+			raise ValueError("Pandoc could not render TeX mathematics: " + result.stderr.decode().strip())
+		with zipfile.ZipFile(output) as package:
+			root = defusedxml.ElementTree.fromstring(package.read("word/document.xml"))
+	math = root.find(".//m:oMath", MATH_NAMESPACES)
+	if math is None:
+		raise ValueError("Pandoc produced no editable Office Math object")
+	paragraph._p.append(docx.oxml.parse_xml(defusedxml.ElementTree.tostring(math)))
 
 
 #============================================
@@ -150,6 +174,8 @@ def render(paragraph: object, tokens: list, document: object, action: object = N
 			links.pop()
 		elif kind == "image":
 			add_image(paragraph, token, document, parent=links[-1] if links else None)
+		elif kind == "math_inline":
+			add_math(paragraph, token.content)
 		elif kind in ("softbreak", "hardbreak"):
 			add_text(paragraph, " " if kind == "softbreak" else "\n", state,
 				parent=links[-1] if links else None)

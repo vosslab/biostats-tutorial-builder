@@ -2,15 +2,35 @@
 
 ## 2026-11-04
 
+### Part 2 structural consistency
+
+- Make research-question and hypothesis labels real headings, flatten peer relationship definitions,
+  and separate regression calculations and prediction into numbered substeps with ordered actions.
+
+### Part 1 instructional flow
+
+- Organize descriptive-statistics calculations into numbered mean, median, sample-standard-deviation,
+  and summary substeps, with ordered learner actions. Preserve the existing formulas and prose.
+
+### Workflow scope
+
+- Record standing human guidance: Google Drive uploading is always out of scope. Deliver local
+  artifacts without uploading to Drive or importing into Google Docs or Google Sheets.
+
+### Fixes and Maintenance
+
+- Render Caffeine figures from recovered full-proportion artwork, add native figure captions and
+  table titles, clarify shared-workbook reflection labels, and name the released student workbook.
+- Add native Word contents fields and editable TeX/Office Math for explanatory equations while
+  preserving literal spreadsheet formulas.
+
 ### Additions and New Features
 
-- Replace the activity-local reflection proposal with the required Workbook list contract: one
-  plain numbered list, generated DOCX section, and one reflection tab per source. The implementation
-  requires each source's Workbook list, generates matching editable question identifiers and answer
-  areas, and assigns shared-build Part IDs automatically without step mapping. The feature is
-  implemented and accepted after fresh SPEC, QUALITY, and INTEGRATION reviews.
+- Keep the required Workbook reflection list and generated reflection tab per source, while
+  repeating each full prompt in the relevant Tutorial prose instead of appending a duplicate DOCX
+  section. Shared builds assign Part IDs automatically without step mapping.
 - Clarify reflection output: shared workbook tabs use spaced names such as `Part 2 Reflection`,
-  question identifiers are literal editable text in DOCX and workbook, and the compiler normalizes
+  question identifiers are literal editable text in the workbook, and the compiler normalizes
   source list starts to 1 without making that author recommendation a lint gate.
 - Adapt the three Dr. Caffeine sources around one shared six-tab workbook. Build multiple existing
   Markdown sources into one compatible XLSX and separate Google Docs-ready DOCX/PDF documents.

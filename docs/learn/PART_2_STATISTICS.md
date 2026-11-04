@@ -102,8 +102,10 @@ at least one question about the results and their meaning.
 1. How do the original and squared root lengths differ in units, and why does that matter?
 ```
 
-The compiler adds a reflection worksheet with blank answer space and a final tutorial Part
-containing these questions. Keep questions in this section so the document and workbook agree.
+The compiler adds a reflection worksheet with blank answer space. Repeat each full question in the
+relevant Tutorial prose so the document tells students exactly when to answer it; the DOCX does not
+append a duplicate reflection section. Keep questions in this section so the workbook remains
+authoritative.
 See [descriptive_statistics_reflection.md](../examples/descriptive_statistics_reflection.md)
 for a runnable example with five questions from the original exam-score workbook.
 

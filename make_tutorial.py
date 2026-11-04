@@ -25,6 +25,7 @@ def main(argv: list[str] | None = None) -> int:
 		help="One or more Markdown tutorials sharing a workbook")
 	build.add_argument("--format", "-f", choices=tutorial_lib.build.FORMATS, default="all")
 	build.add_argument("--output-dir", "-o", type=pathlib.Path)
+	build.add_argument("--workbook-name", help="Name the generated shared workbook")
 	importer = commands.add_parser("import-xlsx", help="Create a Markdown draft from an XLSX")
 	importer.add_argument("source", type=pathlib.Path)
 	importer.add_argument("--output", "-o", type=pathlib.Path, required=True)
@@ -96,7 +97,8 @@ def main(argv: list[str] | None = None) -> int:
 		destination = args.output_dir
 		if destination is None:
 			destination = pathlib.Path("tutorial_output") / args.sources[0].stem
-		published = tutorial_lib.build.build_documents(documents, destination, args.format)
+		published = tutorial_lib.build.build_documents(documents, destination, args.format,
+			workbook_name=args.workbook_name)
 		print(f"Published {published}")
 	else:
 		print("Offline lint passed; Google import, navigation, and calculation are unchecked.")

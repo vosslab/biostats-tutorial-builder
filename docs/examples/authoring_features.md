@@ -71,7 +71,7 @@ Scientific text can include &alpha;, H<sub>0</sub>, and mm<sup>2</sup>.
 
 #### Step: Include an image
 
-![A normal curve with the area left of minus one shaded.](../../tutorial_data/assets/microbes_1_z_test_image2.png)
+![A normal curve with the area left of minus one shaded.](../../tutorial_data/microbes/assets/microbes_1_z_test_image2.png)
 
 This image comes from the instructor's Microbes z-test tutorial.
 

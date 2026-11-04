@@ -244,7 +244,7 @@ def build_document(document: tutorial_lib.model.Document, destination: pathlib.P
 
 #============================================
 def build_documents(documents: list[tutorial_lib.model.Document], destination: pathlib.Path,
-	formats: str = "all") -> pathlib.Path:
+	formats: str = "all", workbook_name: str | None = None) -> pathlib.Path:
 	"""Publish separate tutorial documents and one compatible shared workbook."""
 	if not documents:
 		raise ValueError("At least one compiled tutorial is required.")
@@ -283,7 +283,10 @@ def build_documents(documents: list[tutorial_lib.model.Document], destination: p
 					document, docx_path)
 				run_stage("DOCX package verification", verify_docx, docx_path)
 		if "xlsx" in requested:
-			workbook_name = "workbook.xlsx" if len(documents) > 1 else f"{documents[0].path.stem}.xlsx"
+			workbook_name = workbook_name or ("workbook.xlsx" if len(documents) > 1
+				else f"{documents[0].path.stem}.xlsx")
+			if pathlib.Path(workbook_name).name != workbook_name or not workbook_name.endswith(".xlsx"):
+				raise ValueError("Workbook name must be a plain .xlsx filename.")
 			workbook_path = staging / workbook_name
 			run_stage("XLSX rendering", tutorial_lib.workbook.write_workbook,
 				workbook_document, workbook_path)

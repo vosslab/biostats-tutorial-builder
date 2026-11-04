@@ -286,7 +286,8 @@ def test_standard_styles_and_direct_fonts() -> None:
 	assert table_link.find("w:rPr/w:rFonts", NAMESPACES).get(
 		docx.oxml.ns.qn("w:ascii")) == "PT Sans Narrow"
 	assert output.tables[0].cell(1, 1).paragraphs[0].runs[0].font.name == "Roboto Mono"
-	formula = output.paragraphs[-1]
+	formula = next(paragraph for paragraph in output.paragraphs
+		if paragraph.text == "=SUM(A1:B1)")
 	assert formula.runs[0].font.name == "Roboto Mono"
 	assert formula.paragraph_format.keep_together is True
 	assert formula._p.find("w:pPr/w:shd", NAMESPACES) is not None
@@ -386,29 +387,29 @@ def test_semantic_bindings_preserve_numbered_caffeine_instruction_text() -> None
 	tutorial_lib.docx_renderer.render_tokens(output, document)
 	paragraph_text = [paragraph.text for paragraph in output.paragraphs]
 	assert paragraph_text == [
-		"Caffeine model", "Part 1: Build the predictor", "Step 1: Square the predictor",
+		"Caffeine model", "Contents", "Part 1: Build the predictor", "Step 1: Square the predictor",
 		"Add a squared predictor column.", "Set its heading to Sleep hours squared.",
 		"Enter =A2^2 for the first student.",
 		"Copy C2:C26, then select A1:B26.",
 		"See the original class template.",
 	]
-	assert any(run.text == "Build" and run.bold for run in output.paragraphs[1].runs)
-	assert any(run.text == "Square" and run.bold for run in output.paragraphs[2].runs)
-	assert output.paragraphs[4].runs[1].font.color.rgb is None
-	formula_run = next(run for run in output.paragraphs[5].runs if run.text == "=A2^2")
+	assert any(run.text == "Build" and run.bold for run in output.paragraphs[2].runs)
+	assert any(run.text == "Square" and run.bold for run in output.paragraphs[3].runs)
+	assert output.paragraphs[5].runs[1].font.color.rgb is None
+	formula_run = next(run for run in output.paragraphs[6].runs if run.text == "=A2^2")
 	assert str(formula_run.font.color.rgb) == "007A00"
-	assert [paragraph.style.name for paragraph in output.paragraphs[3:7]] == [
+	assert [paragraph.style.name for paragraph in output.paragraphs[4:8]] == [
 		"Normal", "Normal", "Normal", "Normal",
 	]
 	assert [paragraph._p.find("w:pPr/w:numPr", NAMESPACES) is not None
-		for paragraph in output.paragraphs[3:7]] == [True, True, True, True]
+		for paragraph in output.paragraphs[4:8]] == [True, True, True, True]
 	assert output.paragraphs[-1]._p.find(".//w:hyperlink", NAMESPACES) is not None
 	relationships = output.part.rels
 	assert not any("label:" in relation.target_ref or "enter:" in relation.target_ref
 		or "fill:" in relation.target_ref or "select:" in relation.target_ref
 		for relation in relationships.values())
 	assert all(paragraph.paragraph_format.space_after.pt == 2
-		for paragraph in output.paragraphs[3:7])
+		for paragraph in output.paragraphs[4:8])
 	assert output.styles["Heading 1"].font.size.pt == 18
 	assert output.styles["Heading 2"].font.size.pt == 15
 	assert output.styles["Heading 3"].font.size.pt == 12

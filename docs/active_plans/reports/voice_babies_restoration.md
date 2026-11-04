@@ -18,7 +18,7 @@ original 2025 artifact was changed.
 
 ### National z-test
 
-In [babies_1_z_test.md](../../../tutorial_data/babies_1_z_test.md), the source's scenario, population
+In [babies_1_z_test.md](../../../tutorial_data/babies/babies_1_z_test.md), the source's scenario, population
 and sample explanations, numbered setup and calculation instructions, Z-statistic note, 5.1/5.2
 p-value grouping, decision explanation, interpretation examples, practice bullets, numbered
 takeaways, and Joe's committee scene are restored. The standalone workbook instructions describe
@@ -34,7 +34,7 @@ examining results, and the prose does not treat a higher sample mean as signific
 
 ### National one-sample t-test
 
-In [babies_2_t_test.md](../../../tutorial_data/babies_2_t_test.md), the original t-test opening,
+In [babies_2_t_test.md](../../../tutorial_data/babies/babies_2_t_test.md), the original t-test opening,
 committee issues, scenario, numbered setup and Steps 1-10, degrees-of-freedom explanation, p-value
 substeps, decision pair, interpretation, three practice bullets, three takeaways, and redemption
 ending are restored. The parenthetical population-mean aside is nested under its original numbered
@@ -53,7 +53,7 @@ fried-food-awards joke remain around that corrected outcome.
 
 ### Two-sample t-test
 
-In [babies_3_two_sample_t_test.md](../../../tutorial_data/babies_3_two_sample_t_test.md), the two
+In [babies_3_two_sample_t_test.md](../../../tutorial_data/babies/babies_3_two_sample_t_test.md), the two
 original scenario paragraphs, Step 0's three reasons, setup/calculation sequence, hypothesis
 explanation, `T.TEST` walkthrough, important notes, and interpretation example are restored. The
 corrected story says Joe hopes to regain eligibility; it does not claim he has already been

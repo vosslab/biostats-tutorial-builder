@@ -10,10 +10,10 @@ Run from the repository root using the Python bootstrap:
 
 ```bash
 source source_me.sh && python3 -m devel.validate_google_sheets \
-  --dry-run --output build/sheets-validation tutorial_data/babies_1_z_test.md
+  --dry-run --output build/sheets-validation tutorial_data/babies/babies_1_z_test.md
 ```
 
-Use actual tutorial paths such as [the babies z-test](../tutorial_data/babies_1_z_test.md). Dry run writes
+Use actual tutorial paths such as [the babies z-test](../tutorial_data/babies/babies_1_z_test.md). Dry run writes
 `execution-cases.json` and `report.json` locally and makes no Google requests. The report says
 `not_run` for Google calculation and scientific oracle checks.
 
@@ -25,7 +25,7 @@ prints credential contents. Missing ADC produces `unavailable` and exit code 2.
 ```bash
 source source_me.sh && python3 -m devel.validate_google_sheets \
   --live --expectations tutorial_output/validation/tutorial_expectations.json \
-  --output build/sheets-live tutorial_data/babies_1_z_test.md
+  --output build/sheets-live tutorial_data/babies/babies_1_z_test.md
 ```
 
 Each case creates a workbook titled `TUTORIAL VALIDATION - ...` with original worksheet names,

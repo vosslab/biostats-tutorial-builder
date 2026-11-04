@@ -18,14 +18,14 @@ an execution note, not a product or authoring requirement.
 
 ## Settled contract clarifications
 
-- **D2 — tab names:** In shared builds use the literal spaced form `Part 2 Reflection`, following
+- **D2 - tab names:** In shared builds use the literal spaced form `Part 2 Reflection`, following
   the examples. Resolve the identity from a unique explicit Part number or the source's one-based
   build position. Keep the native Word tab name `Reflection Questions` for a single-source build.
-- **D3 — editable identifiers:** Render generated question identifiers as literal editable Normal
+- **D3 - editable identifiers:** Render generated question identifiers as literal editable Normal
   text in both DOCX and workbook. Keep existing native Heading styles for headings. Avoid Word
   automatic list numbering, which can renumber imported documents (for example, `3.1`). Production
   code does not need numbered fields for these identifiers.
-- **D4 — source list start:** Starting the Markdown ordered list at 1 is author guidance, not a
+- **D4 - source list start:** Starting the Markdown ordered list at 1 is author guidance, not a
   compiler gate. Normalize its parsed ordered-list sequence to start at 1 as planned, regardless of
   the authored start value.
 

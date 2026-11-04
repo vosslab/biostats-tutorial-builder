@@ -2,7 +2,7 @@
 
 Compared the actual paragraphs in
 [the Fall 2025 source](../../../2025_Artifacts/PETase_1_Linear_Regression_Tutorial_Fall_2025.md)
-with [the current lesson](../../../tutorial_data/petase_1_linear_regression.md).
+with [the current lesson](../../../tutorial_data/petase/petase_1_linear_regression.md).
 Earlier restoration summaries did not establish prose fidelity: the current opening had still
 shortened the engineering, purification, Bradford, and regression explanations. This pass restores
 that wording, including the fictional startup's mutant activity, strain designs, and fermentation

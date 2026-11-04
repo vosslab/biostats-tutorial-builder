@@ -1,5 +1,9 @@
 # Usage
 
+Google Drive uploading is always out of scope for this repository. Builds and delivery produce
+local files only. Do not upload artifacts to Google Drive or import them into Google Docs or
+Google Sheets as part of this workflow. Google-compatible output does not authorize uploading.
+
 For the student authoring path, see [AUTHORING_GUIDE.md](AUTHORING_GUIDE.md). This page is for building
 and maintaining tutorial files.
 
@@ -24,13 +28,13 @@ synthetic PETase calibration example.
 Lint checks one source without writing output files:
 
 ```bash
-python3 make_tutorial.py lint tutorial_data/babies_1_z_test.md
+python3 make_tutorial.py lint tutorial_data/babies/babies_1_z_test.md
 ```
 
 Build DOCX, XLSX, and PDF into `tutorial_output/<source-stem>/`:
 
 ```bash
-python3 make_tutorial.py build tutorial_data/babies_1_z_test.md
+python3 make_tutorial.py build tutorial_data/babies/babies_1_z_test.md
 ```
 
 PDF output is reopened with a PDF reader and must contain pages before the bundle is published.
@@ -39,8 +43,8 @@ Use `--format` to build a supported subset. `docx,xlsx` skips PDF conversion; `d
 build one file. `all` is the default. `--output-dir` selects a different bundle directory.
 
 ```bash
-python3 make_tutorial.py build tutorial_data/babies_1_z_test.md --format docx,xlsx
-python3 make_tutorial.py build tutorial_data/babies_1_z_test.md --format xlsx --output-dir /tmp/babies-workbook
+python3 make_tutorial.py build tutorial_data/babies/babies_1_z_test.md --format docx,xlsx
+python3 make_tutorial.py build tutorial_data/babies/babies_1_z_test.md --format xlsx --output-dir /tmp/babies-workbook
 ```
 
 The bundle contains the requested deliverables and `validation.json`. The report describes offline
@@ -52,10 +56,20 @@ Pass several sources to build their DOCX/PDF files beside one compatible shared 
 order controls the workbook tab order:
 
 ```bash
-python3 make_tutorial.py build tutorial_data/caffeine_1_descriptive_statistics.md \
-  tutorial_data/caffeine_2_linear_regression.md \
-  tutorial_data/caffeine_3_quadratic_regression.md \
+python3 make_tutorial.py build tutorial_data/caffeine/caffeine_1_descriptive_statistics.md \
+  tutorial_data/caffeine/caffeine_2_linear_regression.md \
+  tutorial_data/caffeine/caffeine_3_quadratic_regression.md \
   --output-dir tutorial_output/caffeine_release
+```
+
+Use `--workbook-name` when students must receive a specifically named workbook:
+
+```bash
+python3 make_tutorial.py build tutorial_data/caffeine/caffeine_1_descriptive_statistics.md \
+	tutorial_data/caffeine/caffeine_2_linear_regression.md \
+	tutorial_data/caffeine/caffeine_3_quadratic_regression.md \
+	--output-dir tutorial_output/caffeine_release \
+	--workbook-name Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx
 ```
 
 Each source also gets its own generated reflection tab, kept in source order. The tab name and
@@ -66,7 +80,7 @@ states through LibreOffice Calc:
 
 ```bash
 python3 devel/check_tutorial_calculations.py -o tutorial_output/validation/local_calc
-python3 devel/validate_libreoffice.py tutorial_data/*.md \
+python3 devel/validate_libreoffice.py tutorial_data/*/*.md \
   -e tutorial_output/validation/local_calc/tutorial_expectations.json \
   -o tutorial_output/validation/local_calc/calc
 ```
@@ -98,7 +112,7 @@ links, and explicit cell instructions together.
 The command prints a preview and leaves the source unchanged by default:
 
 ```bash
-python3 make_tutorial.py worksheet-edit tutorial_data/caffeine_3_quadratic_regression.md \
+python3 make_tutorial.py worksheet-edit tutorial_data/caffeine/caffeine_3_quadratic_regression.md \
   --sheet "Quadratic Regression" insert-columns --at A --count 1
 ```
 
@@ -137,7 +151,7 @@ Google Sheets execution cases without API requests:
 
 ```bash
 python3 -m devel.check_tutorial_calculations
-python3 -m devel.validate_google_sheets tutorial_data/*.md --dry-run \
+python3 -m devel.validate_google_sheets tutorial_data/*/*.md --dry-run \
   --expectations tutorial_output/validation/tutorial_expectations.json --output tutorial_output/validation/sheets
 ```
 

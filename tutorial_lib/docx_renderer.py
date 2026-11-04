@@ -28,6 +28,34 @@ def add_bookmark(paragraph: object, slug: str, identifier: int) -> None:
 
 
 #============================================
+def add_table_of_contents(output: object, document: tutorial_lib.model.Document) -> None:
+	"""Add a visible native, updateable contents field below the document title."""
+	paragraph = output.add_paragraph("Contents", style="Heading 1")
+	field = docx.oxml.OxmlElement("w:fldSimple")
+	field.set(docx.oxml.ns.qn("w:instr"), 'TOC \\o "1-3" \\h \\z \\u')
+	# Seed the field result so the delivered file is immediately readable offline.
+	# Word and Google Docs can refresh this native field when their heading/page
+	# navigation is available; the cached entries deliberately list the major
+	# instructional milestones rather than a misleading update instruction.
+	for heading in document.headings:
+		if heading.level > 4:
+			continue
+		run = docx.oxml.OxmlElement("w:r")
+		if heading.level == 4:
+			tab = docx.oxml.OxmlElement("w:tab")
+			run.append(tab)
+		text = docx.oxml.OxmlElement("w:t")
+		text.text = heading.display
+		run.append(text)
+		field.append(run)
+		break_run = docx.oxml.OxmlElement("w:r")
+		break_element = docx.oxml.OxmlElement("w:br")
+		break_run.append(break_element)
+		field.append(break_run)
+	paragraph._p.append(field)
+
+
+#============================================
 def add_heading(output: object, token: object, inline: object, document: object,
 	identifier: int) -> None:
 	"""Preserve authored heading runs and use native outline styles."""
@@ -62,6 +90,8 @@ def add_heading(output: object, token: object, inline: object, document: object,
 		paragraph.add_run(prefix)
 	tutorial_lib.docx_inline.render(paragraph, children, document)
 	add_bookmark(paragraph, heading.slug, identifier)
+	if style == "Title":
+		add_table_of_contents(output, document)
 
 
 #============================================
@@ -199,6 +229,8 @@ def render_tokens(output: object, document: tutorial_lib.model.Document) -> None
 	column = 0
 	quote_depth = 0
 	action = None
+	figure_number = 0
+	table_number = 0
 	headings = {item.token_index: item for item in document.headings}
 	actions = {item.token_index: item for item in document.actions}
 	indices = document.content_token_indices
@@ -233,6 +265,16 @@ def render_tokens(output: object, document: tutorial_lib.model.Document) -> None
 			tutorial_lib.docx_inline.render(
 				paragraph, first_children, document, action, font_name=font_name,
 			)
+			images = [child for child in first_children if child.type == "image"]
+			if cell is None and len(images) == 1:
+				figure_number += 1
+				paragraph.paragraph_format.keep_with_next = True
+				caption = output.add_paragraph(style="Normal")
+				caption.paragraph_format.left_indent = docx.shared.Inches(
+					tutorial_lib.docx_styles.BODY_INDENT_INCHES)
+				caption.paragraph_format.space_after = docx.shared.Pt(8)
+				caption.add_run(f"Figure {figure_number}. ").bold = True
+				caption.add_run(images[0].content)
 			if cell is None and not formula_only(first_children):
 				indent = tutorial_lib.docx_styles.BODY_INDENT_INCHES
 				if quote_depth:
@@ -303,6 +345,13 @@ def render_tokens(output: object, document: tutorial_lib.model.Document) -> None
 		elif kind == "blockquote_close":
 			quote_depth -= 1
 		elif kind == "table_open":
+			table_number += 1
+			caption = output.add_paragraph(style="Normal")
+			caption.paragraph_format.left_indent = docx.shared.Inches(
+				tutorial_lib.docx_styles.BODY_INDENT_INCHES)
+			caption.paragraph_format.keep_with_next = True
+			caption.add_run(f"Table {table_number}. ").bold = True
+			caption.add_run("Workbook reference table")
 			# Count the header's cells, without inferring spreadsheet semantics.
 			columns = 0
 			for following in indices[position + 1:]:
@@ -371,12 +420,4 @@ def write_document(document: tutorial_lib.model.Document, output_path: str | pat
 	output.core_properties.title = document.title
 	output.core_properties.subject = "Spreadsheet tutorial"
 	render_tokens(output, document)
-	if document.reflection_questions:
-		output.add_paragraph("Reflection Questions", style="Heading 1")
-		name = next(sheet.name for sheet in document.worksheets if sheet.is_reflection)
-		output.add_paragraph(f"Answer these questions in the {name} worksheet tab.")
-		for number, question in enumerate(document.reflection_questions, 1):
-			identifier = tutorial_lib.reflections.question_identifier(document, number)
-			paragraph = output.add_paragraph(f"{identifier}. ")
-			tutorial_lib.docx_inline.render(paragraph, question.children, document)
 	output.save(output_path)

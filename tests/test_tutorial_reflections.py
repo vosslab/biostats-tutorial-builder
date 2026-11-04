@@ -66,10 +66,9 @@ def test_matching_question_order_and_identifiers_in_exports(
 	assert sheet.row_dimensions[4].height > 47.25
 	assert sheet["A3"].font.name == "PT Sans"
 	paragraphs = [item.text for item in docx.Document(docx_path).paragraphs]
-	assert paragraphs[-4:-2] == ["Reflection Questions",
-		"Answer these questions in the Reflection Questions worksheet tab."]
-	assert paragraphs[-2] == sheet["A2"].value
-	assert paragraphs[-1] == sheet["A4"].value
+	assert "Reflection Questions" not in paragraphs
+	assert sheet["A2"].value not in paragraphs
+	assert sheet["A4"].value not in paragraphs
 	book.close()
 
 
@@ -88,8 +87,8 @@ def test_merge_resolves_shared_identity_without_mutating_sources(tmp_path: objec
 	bundle = tmp_path / "bundle"
 	tutorial_lib.build.build_documents([first, second], bundle, "docx,xlsx")
 	paragraphs = [item.text for item in docx.Document(bundle / "three.docx").paragraphs]
-	assert "Answer these questions in the Part 3 Reflection worksheet tab." in paragraphs
-	assert paragraphs[-1].startswith("3.1. ")
+	assert "Reflection Questions" not in paragraphs
+	assert not any(item.startswith("3.1. ") for item in paragraphs)
 	book = openpyxl.load_workbook(bundle / "workbook.xlsx")
 	assert book.sheetnames == ["Data", "Part 1 Reflection", "Part 3 Reflection"]
 	book.close()

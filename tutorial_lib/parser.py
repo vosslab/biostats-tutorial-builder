@@ -2,6 +2,7 @@
 
 import pathlib
 import markdown_it
+import mdit_py_plugins.dollarmath
 import tutorial_lib.model
 import tutorial_lib.formulas
 import tutorial_lib.semantic_bindings
@@ -10,6 +11,7 @@ import tutorial_lib.semantic_bindings
 def markdown_parser() -> markdown_it.MarkdownIt:
 	parser = markdown_it.MarkdownIt("commonmark", {"html": True})
 	parser.enable("table")
+	mdit_py_plugins.dollarmath.dollarmath_plugin(parser, allow_space=False, allow_digits=False)
 	parser.inline.ruler.before("link", "semantic_binding", tutorial_lib.semantic_bindings.inline_binding)
 	parser.inline.add_terminator_char("=")
 	parser.inline.ruler.before("text", "spreadsheet_formula", tutorial_lib.formulas.inline_formula)

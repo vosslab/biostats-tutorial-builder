@@ -108,8 +108,9 @@ tables at A1 and F1; F2:H2 remain blank but are visibly identified as student en
 - Require exactly one `### Reflection Questions` heading under Workbook, with at least one ordinary
   ordered-list question. The compiler normalizes source list numbering to begin at 1, regardless of
   the Markdown list's authored start value; add no heading parameters.
-- Exclude Workbook declarations and tables from the DOCX/PDF. Append the generated reflection
-  section to the DOCX using native styles and direct students to its workbook tab. A table
+- Exclude Workbook declarations, tables, and the authoritative reflection list from the DOCX/PDF.
+  Repeat each full reflection question in its relevant Tutorial prose; do not append a generated
+  reflection section to the DOCX. A table
   intentionally included in Tutorial is an ordinary document table and does not populate cells.
 - Keep reflection questions in one ordered Workbook list. Authors use ordinary Tutorial prose to
   indicate when students should answer each question. Do not create activity-local blocks, citation
@@ -534,14 +535,14 @@ Each source contributes a distinct reflection tab in source order. A single-sour
 `Part 2 Reflection`. Use the single unique explicit Part identity within each source; use the
 source's one-based build position only when it has no unique explicit Part identity.
 Duplicate resolved identities across sources or conflicting tab names stop publication; they
-do not trigger a fallback to source position. Question identifiers
-match between each source's DOCX and tab: single-source questions are `1`, `2`, ... without an
-explicit Part identity and `3.1`, `3.2`, ... for explicit Part 3; shared-build questions use the
-resolved identity, such as `1.1`, `2.1` for implicit first and second sources. Each reflection tab
+do not trigger a fallback to source position. Workbook question identifiers are `1`, `2`, ...
+without an explicit Part identity and `3.1`, `3.2`, ... for explicit Part 3; shared-build
+questions use the resolved identity, such as `1.1`, `2.1` for implicit first and second sources.
+Tutorial prose repeats the full corresponding prompt at its teaching point. Each reflection tab
 stacks question text and editable answer space in one wide column, with wrapped text and rows at
 least 47.25 points high.
 
-Question identifiers are literal, editable Normal text in both the DOCX and workbook. Keep native
+Question identifiers are literal, editable Normal text in the workbook. Keep native
 Heading styles for section and question headings; do not rely on Word automatic list numbering or
 numbering fields for generated question identifiers.
 `import-xlsx` takes `--output` (`-o`) and refuses an existing destination. Do not add theme, parser,

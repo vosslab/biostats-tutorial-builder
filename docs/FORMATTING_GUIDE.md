@@ -105,7 +105,7 @@ complete example under `docs/examples/`; adjust it for your own file location.
 ```markdown
 #### Step: Include an image
 
-![A normal curve with the area left of minus one shaded.](../../tutorial_data/assets/microbes_1_z_test_image2.png)
+![A normal curve with the area left of minus one shaded.](../../tutorial_data/microbes/assets/microbes_1_z_test_image2.png)
 
 This image comes from the instructor's Microbes z-test tutorial.
 ```
@@ -215,9 +215,10 @@ This preview comes from [examples/authoring_features.md](examples/authoring_feat
 For the original five-question example, build
 [examples/descriptive_statistics_reflection.md](examples/descriptive_statistics_reflection.md).
 
-Use ordinary Tutorial prose to tell readers when to answer each number. The compiler appends the
-questions to the DOCX and generates a separate tab with each question stacked above editable answer
-space in one wide column. Question identifiers are literal editable text and match in both outputs.
+Use ordinary Tutorial prose to repeat each full question at the point students should answer it.
+The compiler generates a separate tab with each question stacked above editable answer space in one
+wide column; it does not append a duplicate question section to the DOCX. Question identifiers are
+literal editable text in the workbook.
 It wraps question text and gives question and answer rows at least 47.25 points of height. In a
 multi-source build, every source has its own reflection tab. See
 [TUTORIAL_SPEC.md](TUTORIAL_SPEC.md) for identifier and tab-name rules.
@@ -244,7 +245,7 @@ Put a formula in a Workbook table when you want it supplied in advance. Put it i
 Enter action when the reader should enter it. Leave that starter cell blank.
 
 The same action-link syntax preserves the wording of an instructor's longer instruction. This
-excerpt is from [../tutorial_data/microbes_1_z_test.md](../tutorial_data/microbes_1_z_test.md):
+excerpt is from [../tutorial_data/microbes/microbes_1_z_test.md](../tutorial_data/microbes/microbes_1_z_test.md):
 
 ```markdown
 #### Step: Calculate the Z-Statistic

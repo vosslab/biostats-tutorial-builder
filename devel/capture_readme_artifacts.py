@@ -302,9 +302,10 @@ def main() -> None:
 	anova_xlsx = output / microbes_anova / f"{microbes_anova}.xlsx"
 	destination = root / "docs" / "screenshots"
 	# Fingerprint all canonical teaching sources and built student artifacts.
-	canonical = sorted((root / "tutorial_data").glob("*.md"))
+	canonical = sorted((root / "tutorial_data").rglob("*.md"))
 	protected = canonical + [caffeine_release / f"{stem}{suffix}"
-		for stem in caffeine_parts for suffix in (".docx", ".pdf")] + [caffeine_release / "workbook.xlsx"] + [
+		for stem in caffeine_parts for suffix in (".docx", ".pdf")] + [
+		caffeine_release / "Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx"] + [
 		output / stem / f"{stem}{suffix}"
 		for stem in (microbes_f, microbes_anova)
 		for suffix in (".docx", ".pdf", ".xlsx")]
@@ -320,7 +321,8 @@ def main() -> None:
 	metadata = [capture_pdf(source, start, end, name,
 		temporary, destination) for source, start, end, name in views]
 	completed_source = temporary / "microbes_5_completed_anova_source.xlsx"
-	completed_workbook(anova_xlsx, root / "tutorial_data" / f"{microbes_anova}.md", completed_source)
+	completed_workbook(anova_xlsx, root / "tutorial_data" / "microbes" / f"{microbes_anova}.md",
+		completed_source)
 	completed = temporary / "microbes_5_completed_anova.xlsx"
 	recalculate_workbook(completed_source, completed, temporary)
 	metadata.append(render_workbook(completed,

@@ -79,6 +79,17 @@ longer formula on its own line:
 Keep one logical formula on one source line; Word handles visual wrapping. Quotes in ordinary
 Tutorial prose do not invoke the Workbook's JSON scalar rules.
 
+## Write explanatory mathematics
+
+Use dollar-delimited TeX for an equation that students read rather than enter into a spreadsheet:
+
+```markdown
+$\hat{y} = b_0 + b_1x$
+```
+
+The DOCX contains editable Office Math. Keep spreadsheet formulas such as `=SLOPE(B2:B26,A2:A26)`
+as ordinary formula text; dollar-delimited mathematics is for explanatory notation.
+
 ## Read validation limits
 
 Static A1 references and declared worksheets can be checked without calculating results. Named

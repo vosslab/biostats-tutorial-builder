@@ -21,7 +21,7 @@ The original [Fried Foods Z-Test guide](../../../2025_Artifacts/Fried_Foods_1_Z-
 [DOCX](../../../2025_Artifacts/Fried_Foods_1_Z-Test_Tutorial_Guide.docx), and [PDF](../../../2025_Artifacts/Fried_Foods_1_Z-Test_Tutorial_Guide.pdf)
 teach setup, population values, sample summaries, the Z statistic, both tail choices, decisions,
 interpretation, practice, and the transition to the t-test. Those parts fall on source PDF pp. 1,
-2, 3, 4, 5, and 6 respectively. The generated [babies_1_z_test source](../../../tutorial_data/babies_1_z_test.md)
+2, 3, 4, 5, and 6 respectively. The generated [babies_1_z_test source](../../../tutorial_data/babies/babies_1_z_test.md)
 preserves that sequence and the 24 observations. It retains the normal-curve figure, practice
 prompts, and Joe's comic award story. Generated `tutorial_output/babies_1_z_test/babies_1_z_test.pdf`
 pp. 1-6 and `tutorial_output/babies_1_z_test/babies_1_z_test.docx` carry the same
@@ -69,7 +69,7 @@ cover the changed assumption, setup, sample size/mean/SD, t statistic, degrees o
 tail-specific p-values, decision, interpretation, practice, and Joe's redemption ending. In the
 source PDF, these run from scenario/setup on p. 1, through setup/sample size on p. 2, summaries and
 degrees of freedom on p. 3, tail choices and p-values on p. 4, and decisions/practice/conclusion on
-p. 5. The generated [babies_2_t_test source](../../../tutorial_data/babies_2_t_test.md) preserves
+p. 5. The generated [babies_2_t_test source](../../../tutorial_data/babies/babies_2_t_test.md) preserves
 these topics, all 24 data values, the national benchmark, and the story voice. It adds explicit
 null and alternative statements, cautions about independence/normality/outliers, and correctly
 states that sample size alone does not invalidate a Z test. These are useful corrections to the
@@ -116,7 +116,7 @@ move from the prior one-sample scenario through two-group summaries, hypothesis 
 decision, and interpretation. In the source PDF, the scenario/setup are on p. 1, summaries and the
 start of hypothesis choice on p. 2, remaining hypotheses and p-value work on p. 3, and decision /
 interpretation on p. 4. The generated
-[babies_3_two_sample_t_test source](../../../tutorial_data/babies_3_two_sample_t_test.md) keeps
+[babies_3_two_sample_t_test source](../../../tutorial_data/babies/babies_3_two_sample_t_test.md) keeps
 that sequence and story setup, plus all 24 values for both groups. Generated PDF pages 1-4 retain
 the introduction/setup, summaries/hypotheses, p-value work, and decision/interpretation respectively;
 the `tutorial_output/babies_3_two_sample_t_test/babies_3_two_sample_t_test.pdf` and

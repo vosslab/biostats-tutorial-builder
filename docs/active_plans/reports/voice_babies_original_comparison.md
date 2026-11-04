@@ -31,7 +31,7 @@ restore the explanatory paragraph at lines 7 and 51, the scene-setting and tutor
 `Part 1: National z-test` part are warranted by the standalone generated workbook, but do not replace
 the original lesson headings or number-group structure.
 
-At current [babies_1_z_test.md](../../../tutorial_data/babies_1_z_test.md):
+At current [babies_1_z_test.md](../../../tutorial_data/babies/babies_1_z_test.md):
 
 - Lines 125-165 replace the original nine-item population setup and six-item sample-values steps
   with a `Label`/`Enter` log and nested `Method`/`Instruction` labels. Restore the original numbered
@@ -72,7 +72,7 @@ lesson's personality and statistical scaffolding. Source exact opening DOCX word
 T-test is a statistical test used when you want to know if the average of your sample is meaningfully
 different from a known value, but you cannot assume the population standard deviation is known."
 
-At current [babies_2_t_test.md](../../../tutorial_data/babies_2_t_test.md):
+At current [babies_2_t_test.md](../../../tutorial_data/babies/babies_2_t_test.md):
 
 - Lines 103-129 convert the original paired issue list and narrative into `Instruction` bullets and
   append standalone hypothesis prose. Restore the source paragraphs/list grouping and wording; retain
@@ -109,7 +109,7 @@ The original is already numbered and explanatory; current introductory `Before c
 summaries` content is a legitimate teaching improvement, but its timing-specific placement may be
 retained under the original Step 6 hypothesis-selection subsection.
 
-At current [babies_3_two_sample_t_test.md](../../../tutorial_data/babies_3_two_sample_t_test.md):
+At current [babies_3_two_sample_t_test.md](../../../tutorial_data/babies/babies_3_two_sample_t_test.md):
 
 - Lines 60-68 reduce the three numbered Step 0 reasons to label bullets and add qualifications.
   Restore the original numbered group, retaining the clarifications about independence, small-sample

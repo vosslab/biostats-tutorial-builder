@@ -74,9 +74,9 @@ Word or Excel files do not flow back into Markdown.
 
 Every source includes one `### Reflection Questions` heading under `## Workbook`, followed by a
 numbered list. The compiler normalizes its numbering to begin at 1. Keep all questions in that list.
-In Tutorial prose, tell readers when to answer each question and use the matching question number.
-The compiler generates a reflection
-section at the end of the DOCX and a separate workbook tab with question text and answer space.
+In Tutorial prose, repeat each full question at the point students should answer it and use the
+matching question number. The compiler generates a separate workbook tab with question text and
+answer space; it does not append a duplicate question section to the DOCX.
 For merged builds, each source keeps its own tab. See [TUTORIAL_SPEC.md](TUTORIAL_SPEC.md) for
 numbering and tab-name rules.
 
@@ -98,8 +98,8 @@ The following are author and instructor judgments, separate from compiler valida
 - Are supplied data, images, and borrowed material credited, including synthetic data?
 
 The instructor's z-test tutorials show finished materials you may recognize:
-[../tutorial_data/babies_1_z_test.md](../tutorial_data/babies_1_z_test.md) and
-[../tutorial_data/microbes_1_z_test.md](../tutorial_data/microbes_1_z_test.md).
+[../tutorial_data/babies/babies_1_z_test.md](../tutorial_data/babies/babies_1_z_test.md) and
+[../tutorial_data/microbes/microbes_1_z_test.md](../tutorial_data/microbes/microbes_1_z_test.md).
 They illustrate the expected quality and the compiler's output; choose your own content.
 Other examples are in [TUTORIAL_CATALOG.md](TUTORIAL_CATALOG.md).
 

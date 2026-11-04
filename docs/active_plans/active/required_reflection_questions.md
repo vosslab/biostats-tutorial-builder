@@ -3,9 +3,9 @@
 ## Goal
 
 Require each tutorial source to author one `### Reflection Questions` section under `## Workbook`.
-Keep the questions in the single Markdown source, show a generated reflection section in the DOCX,
-and collect them on a generated workbook tab with editable answer space. The DOCX and workbook use
-the same literal editable question identifiers. Authors write ordinary numbered list items; the
+Keep the questions in the single Markdown source, repeat each full question in its relevant Tutorial
+prose, and collect them on a generated workbook tab with editable answer space. Authors write
+ordinary numbered list items; the
 compiler normalizes their source numbering to begin at 1, regardless of the Markdown start value.
 They do not supply tab names, parameters, citation IDs, or step associations.
 
@@ -44,13 +44,10 @@ After you calculate the mean and median, answer Reflection Question 1.
 Reflection questions can be answered at different points in the tutorial. Authors place ordinary
 timing references in Tutorial prose and keep their numbering accurate when the list changes. The
 compiler does not link questions to activities, steps, or citations. The Workbook section remains
-excluded from the generated DOCX except for the generated reflection section.
+excluded from the generated DOCX, including its authoritative reflection list.
 
 ## Generated output
 
-- Append one generated `Reflection Questions` section to the DOCX using native Heading styles.
-  Direct students to the matching workbook tab. Use the same literal identifiers as editable Normal
-  text in the document and tab. Do not use Word automatic list numbering or numbering fields for IDs.
 - Add one generated reflection tab per source. A single-source tab is `Reflection Questions`.
   In a multi-source build, use `Part {resolvedpart} Reflection` (for example, `Part 2 Reflection`).
   Use the single unique explicit Part identity within each source; use that source's one-based
@@ -72,7 +69,7 @@ excluded from the generated DOCX except for the generated reflection section.
 | Workstream | Completion evidence |
 | --- | --- |
 | Core contract | Compiler enforces the Workbook heading/list rule and preserves source locations. |
-| Generated output | DOCX section and workbook tabs use matching identifiers, names, ordering, and readable answer rows. |
+| Generated output | Workbook tabs use matching identifiers, names, ordering, and readable answer rows; Tutorial prose presents the full prompts at their teaching points. |
 | Source migration | Migrate the 12 current lessons, templates, and buildable examples separately; preserve question wording and author timing references. |
 | Tests and consumers | Focused checks cover required syntax, number resolution, duplicate identities, generated outputs, and existing consumers of workbook sheet order. |
 | Authoring docs | Guides and specification show the literal syntax, numbering rules, generated tab, and answer layout. |

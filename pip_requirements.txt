@@ -1,4 +1,5 @@
 markdown-it-py
+mdit-py-plugins
 python-docx
 openpyxl
 pypdf

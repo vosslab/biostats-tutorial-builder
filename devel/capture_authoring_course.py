@@ -118,8 +118,8 @@ def workbook_values(source: pathlib.Path, moved: bool, expanded: bool, completed
 #============================================
 def protected_hashes(root: pathlib.Path) -> dict[str, str]:
 	"""Protect canonical lessons and built teaching artifacts during isolated capture."""
-	paths = sorted((root / "tutorial_data").glob("*.md"))
-	for lesson in (root / "tutorial_data").glob("*.md"):
+	paths = sorted((root / "tutorial_data").rglob("*.md"))
+	for lesson in (root / "tutorial_data").rglob("*.md"):
 		paths += [path for path in (root / "tutorial_output" / lesson.stem).glob("*") if path.is_file()]
 	result = {str(path.relative_to(root)): capture_readme_artifacts.digest(path) for path in paths}
 	return result

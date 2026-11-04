@@ -20,6 +20,15 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
 
 ## Tutorial converter
 
+- Use consistent semantic headings and numbered substeps for distinct tasks throughout each lesson.
+  Keep peer concepts at the same list depth; bold paragraphs are not a substitute for headings.
+
+- Use more numbered Steps, Substeps, and action lists to make the instructional flow clear; avoid
+  long stretches of unnumbered calculation paragraphs.
+
+- Google Drive uploading is always out of scope for this repository. Deliver and validate local
+  files; do not upload them to Google Drive or import them into Google Docs or Google Sheets.
+
 - Require every tutorial to contain reflection questions, using the literal words "Reflection
   Questions" in the authoring syntax. Students like having their answers on a separate tab.
 - Use the supplied descriptive-statistics workbook as the reflection-layout precedent. Show actual
@@ -129,6 +138,10 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
   includes dark reds, oranges, lime, green, teal, cyan, blue, purple, magenta, and pink; select
   colors purposefully.
 - Give headings varied left indentation, with Step headings farther left than body paragraphs.
+- Never stretch figures. Use proportional image sizing, figure captions and numbers, table titles,
+  native contents, and a clear left-to-right instructional hierarchy in released documents.
+- Use one explicit workbook name in the file and every Make a copy instruction. Render explanatory
+  equations as readable mathematics rather than plain-text variable names.
 - Fully justify paragraphs that run longer than two lines.
 - Use the README and current output screenshots to show off the pipeline's capabilities.
 - Tutorial authors establish labels and worksheet structure first; they do not start with unlabeled

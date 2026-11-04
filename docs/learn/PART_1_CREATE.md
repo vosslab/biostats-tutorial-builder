@@ -129,7 +129,7 @@ what the reader should learn from the image.
 ```markdown
 #### Step: Include an image
 
-![A normal curve with the area left of minus one shaded.](../../tutorial_data/assets/microbes_1_z_test_image2.png)
+![A normal curve with the area left of minus one shaded.](../../tutorial_data/microbes/assets/microbes_1_z_test_image2.png)
 
 This image comes from the instructor's Microbes z-test tutorial.
 

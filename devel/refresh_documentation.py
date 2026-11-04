@@ -55,7 +55,8 @@ def compose_guide(source: pathlib.Path, checkpoint: pathlib.Path,
 
 
 #============================================
-def build(sources: list[pathlib.Path], destination: pathlib.Path) -> None:
+def build(sources: list[pathlib.Path], destination: pathlib.Path,
+	workbook_name: str | None = None) -> None:
 	"""Refresh an owned output bundle with the current native renderer styles."""
 	print("Build documentation artifact: " + ", ".join(source.name for source in sources),
 		flush=True)
@@ -64,7 +65,7 @@ def build(sources: list[pathlib.Path], destination: pathlib.Path) -> None:
 		if document.has_errors:
 			messages = [item.message for item in document.diagnostics if item.severity == "error"]
 			raise ValueError(f"Cannot build {document.path}: {messages}")
-	tutorial_lib.build.build_documents(documents, destination, "all")
+	tutorial_lib.build.build_documents(documents, destination, "all", workbook_name)
 
 
 #============================================
@@ -72,12 +73,13 @@ def main() -> None:
 	"""Run LibreOffice stages sequentially, capturing images before illustrated Part builds."""
 	root = pathlib.Path(__file__).resolve().parent.parent
 	# Keep canonical outputs current; the build API preserves manually edited bundles.
-	caffeine = [root / "tutorial_data" / f"caffeine_{part}_{name}.md" for part, name in (
+	caffeine = [root / "tutorial_data" / "caffeine" / f"caffeine_{part}_{name}.md" for part, name in (
 		("1", "descriptive_statistics"), ("2", "linear_regression"),
 		("3", "quadratic_regression"))]
-	build(caffeine, root / "tutorial_output" / "caffeine_release")
+	build(caffeine, root / "tutorial_output" / "caffeine_release",
+		"Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx")
 	for stem in ("microbes_4_f_test", "microbes_5_anova"):
-		build([root / "tutorial_data" / f"{stem}.md"], root / "tutorial_output" / stem)
+		build([root / "tutorial_data" / "microbes" / f"{stem}.md"], root / "tutorial_output" / stem)
 	for script in ("capture_readme_artifacts.py", "capture_syntax_examples.py"):
 		print(f"Capture documentation: {script}", flush=True)
 		# ASVS 1.2.5: executable and script paths remain distinct argv values.

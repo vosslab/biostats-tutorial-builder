@@ -4,7 +4,7 @@ These 12 editable Markdown sources combine student instructions and starting wor
 Build one source from the repository root:
 
 ```bash
-source source_me.sh && python3 make_tutorial.py build tutorial_data/babies_1_z_test.md
+source source_me.sh && python3 make_tutorial.py build tutorial_data/babies/babies_1_z_test.md
 ```
 
 The bundle appears in `tutorial_output/babies_1_z_test/` with DOCX, XLSX, PDF, and `validation.json`.
@@ -18,9 +18,9 @@ The hospital scenarios teach comparisons against a national benchmark and betwee
 
 | Source | Method |
 | --- | --- |
-| [babies_1_z_test.md](../tutorial_data/babies_1_z_test.md) | One-sample Z; known population SD |
-| [babies_2_t_test.md](../tutorial_data/babies_2_t_test.md) | One-sample t; estimated SD |
-| [babies_3_two_sample_t_test.md](../tutorial_data/babies_3_two_sample_t_test.md) | Welch two-sample t |
+| [babies_1_z_test.md](../tutorial_data/babies/babies_1_z_test.md) | One-sample Z; known population SD |
+| [babies_2_t_test.md](../tutorial_data/babies/babies_2_t_test.md) | One-sample t; estimated SD |
+| [babies_3_two_sample_t_test.md](../tutorial_data/babies/babies_3_two_sample_t_test.md) | Welch two-sample t |
 
 ## Microbial diversity
 
@@ -28,11 +28,11 @@ The Busse Woods lessons analyze Shannon diversity indices with explicit directio
 
 | Source | Method |
 | --- | --- |
-| [microbes_1_z_test.md](../tutorial_data/microbes_1_z_test.md) | One-sample Z |
-| [microbes_2_t_test.md](../tutorial_data/microbes_2_t_test.md) | One-sample t |
-| [microbes_3_two_sample_t_test.md](../tutorial_data/microbes_3_two_sample_t_test.md) | Welch two-sample t |
-| [microbes_4_f_test.md](../tutorial_data/microbes_4_f_test.md) | Two-sample variance F test |
-| [microbes_5_anova.md](../tutorial_data/microbes_5_anova.md) | One-way ANOVA; right-tail F probability |
+| [microbes_1_z_test.md](../tutorial_data/microbes/microbes_1_z_test.md) | One-sample Z |
+| [microbes_2_t_test.md](../tutorial_data/microbes/microbes_2_t_test.md) | One-sample t |
+| [microbes_3_two_sample_t_test.md](../tutorial_data/microbes/microbes_3_two_sample_t_test.md) | Welch two-sample t |
+| [microbes_4_f_test.md](../tutorial_data/microbes/microbes_4_f_test.md) | Two-sample variance F test |
+| [microbes_5_anova.md](../tutorial_data/microbes/microbes_5_anova.md) | One-way ANOVA; right-tail F probability |
 
 ## Dr. Caffeine
 
@@ -40,24 +40,25 @@ The three Caffeine Parts use the same shared six-tab workbook and release togeth
 
 | Source | Method |
 | --- | --- |
-| [caffeine_1_descriptive_statistics.md](../tutorial_data/caffeine_1_descriptive_statistics.md) | Mean, median, sample SD |
-| [caffeine_2_linear_regression.md](../tutorial_data/caffeine_2_linear_regression.md) | Linear fit, prediction, two-tailed slope test |
-| [caffeine_3_quadratic_regression.md](../tutorial_data/caffeine_3_quadratic_regression.md) | Quadratic fit, curvature test, model comparison |
+| [caffeine_1_descriptive_statistics.md](../tutorial_data/caffeine/caffeine_1_descriptive_statistics.md) | Mean, median, sample SD |
+| [caffeine_2_linear_regression.md](../tutorial_data/caffeine/caffeine_2_linear_regression.md) | Linear fit, prediction, two-tailed slope test |
+| [caffeine_3_quadratic_regression.md](../tutorial_data/caffeine/caffeine_3_quadratic_regression.md) | Quadratic fit, curvature test, model comparison |
 
-Build their shared release with the three sources in order. The bundle contains one `workbook.xlsx`
+Build their shared release with the three sources in order. The bundle contains one
+`Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx`
 and one DOCX/PDF pair for each source:
 
 ```bash
 source source_me.sh && python3 make_tutorial.py build \
-  tutorial_data/caffeine_1_descriptive_statistics.md \
-  tutorial_data/caffeine_2_linear_regression.md \
-  tutorial_data/caffeine_3_quadratic_regression.md \
+  tutorial_data/caffeine/caffeine_1_descriptive_statistics.md \
+  tutorial_data/caffeine/caffeine_2_linear_regression.md \
+  tutorial_data/caffeine/caffeine_3_quadratic_regression.md \
   --output-dir tutorial_output/caffeine_release
 ```
 
 ## Illustrative PETase calibration
 
-[petase_1_linear_regression.md](../tutorial_data/petase_1_linear_regression.md) uses **synthetic teaching data**.
+[petase_1_linear_regression.md](../tutorial_data/petase/petase_1_linear_regression.md) uses **synthetic teaching data**.
 It repairs a contaminated legacy lesson with a Bradford calibration, interpolation, dilution
 correction, and recovered total protein estimates. It does not represent recovered experimental
 measurements or establish PETase-specific protein abundance or enzyme activity.

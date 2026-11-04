@@ -4,7 +4,7 @@ Path note (2026-10-22): paths and command examples below use the current reposit
 Recorded observations belong to their stated snapshots; renamed output manifests retain their
 original contents until the final rebuild and verification refresh.
 
-[petase_1_linear_regression.md](../../../tutorial_data/petase_1_linear_regression.md) is a complete
+[petase_1_linear_regression.md](../../../tutorial_data/petase/petase_1_linear_regression.md) is a complete
 illustrative Bradford regression lesson, **not a recovered original experiment**. All seeded numbers
 are synthetic teaching data, stated in the title, introduction, worksheet name, column headers, and
 instructions. The coordinator authorized that approach after recovery found no original measurements.
@@ -43,8 +43,8 @@ The extracted bytes match the base64 payloads exactly:
 
 | Companion | SHA-256 |
 | --- | --- |
-| [petase_01.png](../../../tutorial_data/assets/petase_01.png) | `ac18ea8fdb0ecf2729e226f8a8cb2cc256e8df7152d22f2dcf58603a52553a7d` |
-| [petase_02.png](../../../tutorial_data/assets/petase_02.png) | `d954d55629e392d10e847a8b23c47107bfc26a668b5a4db669b1ad4d5b6083f1` |
+| [petase_01.png](../../../tutorial_data/petase/assets/petase_01.png) | `ac18ea8fdb0ecf2729e226f8a8cb2cc256e8df7152d22f2dcf58603a52553a7d` |
+| [petase_02.png](../../../tutorial_data/petase/assets/petase_02.png) | `d954d55629e392d10e847a8b23c47107bfc26a668b5a4db669b1ad4d5b6083f1` |
 
 ## Scientific corrections and primary sources
 

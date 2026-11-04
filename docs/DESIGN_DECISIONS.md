@@ -77,10 +77,10 @@ files do not synchronize edits back to Markdown.
 ### Required reflection question list
 
 **Decision.** Require one ordinary numbered `### Reflection Questions` list under Workbook in each
-source. Generate an appended DOCX reflection section and a separate workbook tab per source, using
-matching literal, editable question identifiers and answer space. Use Normal text for those IDs and
-retain native Heading styles for headings. Normalize the source ordered list to start at 1 regardless
-of its authored start value. In shared builds, name tabs `Part {resolvedpart} Reflection`.
+source. Keep full question wording in the relevant Tutorial prose and generate a separate workbook
+tab per source, using matching literal, editable question identifiers and answer space. Do not append
+a duplicate question dump to the DOCX. Normalize the source ordered list to start at 1 regardless of
+its authored start value. In shared builds, name tabs `Part {resolvedpart} Reflection`.
 
 **Why.** A single authored list keeps question wording in the source of truth while Tutorial prose
 can tell students when to answer each question.
@@ -236,7 +236,7 @@ original Bradford measurements.
 **Consequence.** Keep synthetic provenance visible. Interpret Bradford as total protein relative
 to a standard, rather than PETase-specific abundance, activity, or fermentation productivity.
 
-**Owner.** [petase_1_linear_regression.md](../tutorial_data/petase_1_linear_regression.md) and
+**Owner.** [petase_1_linear_regression.md](../tutorial_data/petase/petase_1_linear_regression.md) and
 [petase_migration.md](active_plans/reports/petase_migration.md).
 
 ### User-selected tutorial layout
@@ -470,6 +470,20 @@ wrapping can change after import, so the estimate is not a claim of live Google 
 
 **Owner.** [DOCX styles](../tutorial_lib/docx_styles.py), [DOCX renderer](../tutorial_lib/docx_renderer.py),
 and the [student publishing implementation ledger](active_plans/student_publishing_implementation.md).
+
+### Proportional figures and editable mathematics
+
+**Decision.** Retain each image's aspect ratio, caption figures below their images, title document
+tables above their grids, and render dollar-delimited TeX with editable Office Math.
+
+**Why.** Visual teaching material must remain legible after DOCX and Google Docs conversion; plain
+text variables obscure the mathematical structure students need to read.
+
+**Consequence.** The renderer uses Pandoc for native Office Math and uses the existing Word heading
+styles for the native table of contents. Workbook formulas remain literal spreadsheet text.
+
+**Owner.** [DOCX renderer](../tutorial_lib/docx_renderer.py) and
+[inline renderer](../tutorial_lib/docx_inline.py).
 
 
 

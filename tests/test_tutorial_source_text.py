@@ -72,7 +72,7 @@ def test_explicit_action_destination_must_match_binding_target() -> None:
 
 def test_active_lessons_and_templates_are_ascii_without_numeric_entities() -> None:
 	"""Starter content models the same keyboard-friendly source rule it teaches."""
-	paths = sorted((ROOT / "tutorial_data").glob("*.md"))
+	paths = sorted((ROOT / "tutorial_data").rglob("*.md"))
 	paths.extend(sorted((ROOT / "templates").glob("*.md")))
 	assert paths
 	for path in paths:

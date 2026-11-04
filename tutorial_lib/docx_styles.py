@@ -24,7 +24,7 @@ TABLE_STRIPE_FILL = "EEF5FC"
 FORMULA_COLOR = "007A00"
 FORMULA_FILL = "E7F4EA"
 FORMULA_BORDER = "007A00"
-BODY_INDENT_INCHES = 0.2
+BODY_INDENT_INCHES = 0.35
 USABLE_PAGE_WIDTH_INCHES = 6.9
 FONT_PATHS = (
 	pathlib.Path("/System/Library/Fonts/Supplemental/PTSans.ttc"),
@@ -186,8 +186,10 @@ def configure(document: object) -> None:
 			style.paragraph_format.keep_with_next = True
 			style.paragraph_format.space_before = docx.shared.Pt(14)
 			style.paragraph_format.space_after = docx.shared.Pt(6)
+			# Heading depth must read from the left edge inward.  The body begins
+			# after every heading level, so the structure survives Google import.
 			style.paragraph_format.left_indent = docx.shared.Inches(
-				{"Heading 1": 0.1, "Heading 2": 0, "Heading 3": 0.12}[name])
+				{"Heading 1": 0, "Heading 2": 0.12, "Heading 3": 0.24}[name])
 			style.font.color.rgb = docx.shared.RGBColor.from_string(
 				{"Heading 1": "003FFF", "Heading 2": "007576", "Heading 3": "B74300"}[name])
 	title = styles["Title"]

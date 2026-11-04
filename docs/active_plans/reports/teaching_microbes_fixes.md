@@ -14,7 +14,7 @@ as findings to assess, rather than as authoritative descriptions of the original
 | 4: F-test | Missing personal advisor task, title art, and recap; seeded D1/E1 implicit | Restored the student's observation and advisor's variance comparison, title art, four takeaways, and the older-theses bridge to ANOVA. Clarified that D1/E1 already contain headers. Explicitly called independence hypothetical. |
 | 5: ANOVA | Generalized opening; missing title art and recap | Restored the return to older theses with the advisor, original ANOVA title art, and four concise takeaways about omnibus means, right-tail p, sample size, and scope. |
 
-The new [t_distributions.png](../../../tutorial_data/assets/t_distributions.png) replaces the
+The new [t_distributions.png](../../../tutorial_data/microbes/assets/t_distributions.png) replaces the
 original lesson 3 distribution image. The original labels implied a threshold near n = 30 and its
 curves did not accurately represent the distributions. The replacement plots the standard normal
 density and Student t densities at df = 3 and 23 using `scipy.stats.norm.pdf` and `scipy.stats.t.pdf`

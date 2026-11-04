@@ -8,10 +8,10 @@ models on those same observations. Their axes describe sleep hours and exam scor
 reported R-squared values agree with the workbook data.
 
 - Replace active use of `caffeine_06.png` with
-  [caffeine_sleep_score_scatter.png](../../../tutorial_data/assets/caffeine_sleep_score_scatter.png).
+  [caffeine_sleep_score_scatter.png](../../../tutorial_data/caffeine/assets/caffeine_sleep_score_scatter.png).
   No trendline or coefficient appears before the initial shape prediction.
 - Replace active use of `caffeine_13.png` with
-  [caffeine_sleep_score_model_comparison.png](../../../tutorial_data/assets/caffeine_sleep_score_model_comparison.png).
+  [caffeine_sleep_score_model_comparison.png](../../../tutorial_data/caffeine/assets/caffeine_sleep_score_model_comparison.png).
   Both panels use identical axis limits and the same 25 points. The quadratic fit bends downward.
 - Remove active references to `caffeine_04.png` and `caffeine_09.png`, whose embedded scenario
   labels conflict with the actual sleep/score observations. Their original files remain retained.

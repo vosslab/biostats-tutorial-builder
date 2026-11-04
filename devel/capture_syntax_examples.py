@@ -31,7 +31,7 @@ def protected_hashes(root: pathlib.Path) -> dict[str, str]:
 	"""Fingerprint the example source and all pre-existing canonical teaching inputs."""
 	protected = [root / "docs" / "examples" / name for name in
 		("formatting_demo.md", "authoring_features.md")]
-	protected += sorted((root / "tutorial_data").glob("*.md"))
+	protected += sorted((root / "tutorial_data").rglob("*.md"))
 	result = {str(path.relative_to(root)): digest(path) for path in protected}
 	return result
 
@@ -120,7 +120,7 @@ def capture_authoring_features(root: pathlib.Path, temporary: pathlib.Path,
 		"source_excerpt": excerpt.strip(), "native_crop": "authoring_enter.webp",
 		"description": "Literal source beside the actual DOCX-to-PDF crop"})
 	hashes = {str(source.relative_to(root)): digest(source)}
-	instructor = root / "tutorial_data/microbes_1_z_test.md"
+	instructor = root / "tutorial_data/microbes/microbes_1_z_test.md"
 	instructor_output = temporary / "instructor_example"
 	subprocess.run(["python3", "make_tutorial.py", "build", str(instructor),
 		"--format", "all", "--output-dir", str(instructor_output)], cwd=root, check=True)

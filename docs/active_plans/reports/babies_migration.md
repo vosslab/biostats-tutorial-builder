@@ -16,11 +16,11 @@ one-sample t: 2; two-sample t: none). No source artifact was modified.
 
 The migrated files are:
 
-- [babies_1_z_test.md](../../../tutorial_data/babies_1_z_test.md): 7 numbered steps, 2 substeps,
+- [babies_1_z_test.md](../../../tutorial_data/babies/babies_1_z_test.md): 7 numbered steps, 2 substeps,
   23 scalar assignments, 10 original PNG companions.
-- [babies_2_t_test.md](../../../tutorial_data/babies_2_t_test.md): 10 numbered steps, 3 substeps,
+- [babies_2_t_test.md](../../../tutorial_data/babies/babies_2_t_test.md): 10 numbered steps, 3 substeps,
   24 scalar assignments, 2 original PNG companions.
-- [babies_3_two_sample_t_test.md](../../../tutorial_data/babies_3_two_sample_t_test.md): 9 numbered
+- [babies_3_two_sample_t_test.md](../../../tutorial_data/babies/babies_3_two_sample_t_test.md): 9 numbered
   steps, numbered 0-8, 3 substeps, 20 scalar assignments including two explicit alternatives.
 
 National lessons retain the entire original data sheet and seed the same data on their respective

@@ -64,8 +64,8 @@ Roots is simply a small formatting example. Use your own content in your tutoria
 
 The existing z-test lessons show finished classroom materials and source structure:
 
-- [tutorial_data/babies_1_z_test.md](tutorial_data/babies_1_z_test.md)
-- [tutorial_data/microbes_1_z_test.md](tutorial_data/microbes_1_z_test.md)
+- [tutorial_data/babies/babies_1_z_test.md](tutorial_data/babies/babies_1_z_test.md)
+- [tutorial_data/microbes/microbes_1_z_test.md](tutorial_data/microbes/microbes_1_z_test.md)
 
 This cropped F-test instruction shows a longer formula with the instructor's explanation:
 

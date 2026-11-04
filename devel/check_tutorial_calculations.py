@@ -104,7 +104,7 @@ def check_caffeine_release(documents: list[tutorial_lib.model.Document]) -> dict
 #============================================
 def main() -> int:
 	args = parse_args()
-	paths = sorted(pathlib.Path("tutorial_data").glob("*.md"))
+	paths = sorted(pathlib.Path("tutorial_data").rglob("*.md"))
 	if not paths:
 		raise ValueError("No tutorial sources found")
 	payload, details = {"tutorials": {}}, []

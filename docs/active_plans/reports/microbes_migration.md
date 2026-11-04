@@ -7,11 +7,11 @@ original contents until the final rebuild and verification refresh.
 ## Coverage
 
 All five complete Microbes tutorials have been migrated to single-source Markdown. Their source
-files are [microbes_1_z_test.md](../../../tutorial_data/microbes_1_z_test.md),
-[microbes_2_t_test.md](../../../tutorial_data/microbes_2_t_test.md),
-[microbes_3_two_sample_t_test.md](../../../tutorial_data/microbes_3_two_sample_t_test.md),
-[microbes_4_f_test.md](../../../tutorial_data/microbes_4_f_test.md), and
-[microbes_5_anova.md](../../../tutorial_data/microbes_5_anova.md).
+files are [microbes_1_z_test.md](../../../tutorial_data/microbes/microbes_1_z_test.md),
+[microbes_2_t_test.md](../../../tutorial_data/microbes/microbes_2_t_test.md),
+[microbes_3_two_sample_t_test.md](../../../tutorial_data/microbes/microbes_3_two_sample_t_test.md),
+[microbes_4_f_test.md](../../../tutorial_data/microbes/microbes_4_f_test.md), and
+[microbes_5_anova.md](../../../tutorial_data/microbes/microbes_5_anova.md).
 
 | Tutorial | Original instruction steps | Preserved embedded images | Seeded source cells |
 | --- | --- | --- | --- |

@@ -52,7 +52,7 @@ Workbook:
 
 The compiler normalizes the source list to start at 1, regardless of the Markdown list's start
 value. Keep the list here and use ordinary Tutorial prose to tell readers when to answer each
-question. The generated DOCX appends a reflection section; the workbook gets a
+question. The generated workbook gets a
 separate tab with question text and editable answer space. For multi-source numbering and tab names,
 see [../TUTORIAL_SPEC.md](../TUTORIAL_SPEC.md).
 
