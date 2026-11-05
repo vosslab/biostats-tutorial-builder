@@ -1,6 +1,7 @@
 """Compile the authored question list and derive matching workbook/DOCX identities."""
 
 import re
+import copy
 import dataclasses
 import urllib.parse
 
@@ -135,12 +136,22 @@ def resolve_documents(documents: list[model.Document]) -> list[model.Document]:
 				f"{used_numbers[number]} and {document.path}; change the explicit Part number "
 				"or source order")
 		used_numbers[number] = document.path
-		copy = dataclasses.replace(document, reflection_part_number=number,
+		resolved_document = dataclasses.replace(document, reflection_part_number=number,
 			worksheets=[sheet for sheet in document.worksheets if not sheet.is_reflection])
-		if copy.reflection_questions:
+		parts = [heading for heading in document.headings if heading.kind == "part"]
+		if len(parts) == 1:
+			heading = dataclasses.replace(parts[0], number=str(number),
+				display=f"Part {number}: {parts[0].title}")
+			resolved_document.headings = [heading if item == parts[0] else item
+				for item in document.headings]
+			resolved_document.tokens = list(document.tokens)
+			token = copy.copy(document.tokens[heading.token_index])
+			token.meta = dict(token.meta, heading=heading)
+			resolved_document.tokens[heading.token_index] = token
+		if resolved_document.reflection_questions:
 			name = f"Part {number} Reflection"
-			if any(sheet.name.casefold() == name.casefold() for sheet in copy.worksheets):
+			if any(sheet.name.casefold() == name.casefold() for sheet in resolved_document.worksheets):
 				raise ValueError(f"Generated reflection worksheet name collision: {name}")
-			copy.worksheets.append(worksheet(copy, name))
-		resolved.append(copy)
+			resolved_document.worksheets.append(worksheet(resolved_document, name))
+		resolved.append(resolved_document)
 	return resolved

@@ -15,7 +15,7 @@ example lesson students must complete.
 | Results | Generated XLSX, D1:E3; supplied labels and blank result cells |
 | Response | Generated XLSX, D8:E9; a separate response table below the data |
 | Source/output comparison | Literal source beside the unchanged Enter instruction crop |
-| Instructor excerpt | The Calculate the Z-Statistic step in [../../tutorial_data/microbes_1_z_test.md](../../tutorial_data/microbes_1_z_test.md) |
+| Instructor excerpt | The Calculate the Z-Statistic step in [../../tutorial_data/microbes/microbes_1_z_test.md](../../tutorial_data/microbes/microbes_1_z_test.md) |
 
 The workbook images show starter files, with learner calculations left blank. The screenshot
 workflow prints disposable copies through LibreOffice Calc; it does not fill these answers.

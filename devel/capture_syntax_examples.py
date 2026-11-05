@@ -92,20 +92,21 @@ def capture_authoring_features(root: pathlib.Path, temporary: pathlib.Path,
 	pdf = output / "authoring_features.pdf"
 	xlsx = output / "authoring_features.xlsx"
 	views = [
-		("Roots formatting examples", "Part 1: Format the document", "title"),
-		("Part 1: Format the document", "Explanation: Mark up scientific text", "headings"),
-		("Explanation: Mark up scientific text", "Step 2: Show a document table", "text"),
-		("Step 2: Show a document table", "Step 3: Include an image", "table"),
-		("Step 3: Include an image", "Step 4: Link to a section", "image"),
-		("Step 4: Link to a section", "Part 2: Connect a workbook", "links"),
-		("Step 1: Enter a formula", "Step 2: Fill a column", "enter"),
-		("Step 2: Fill a column", "Step 3: Select a range", "fill"),
-		("Step 3: Select a range", "Step 4: Replace a supplied value", "select"),
-		("Step 4: Replace a supplied value", "Part 3: Offer alternatives", "replace"),
-		("Step 1: Provide a choice", "Reflection Questions", "alternatives"),
+		("Roots formatting examples", "Part 1: Format the document", "title", 1, 2),
+		("Part 1: Format the document", "Explanation: Mark up scientific text", "headings", 2, 1),
+		("Explanation: Mark up scientific text", "Step 2: Show a document table", "text", 1, 2),
+		("Step 2: Show a document table", "Step 3: Include an image", "table", 2, 2),
+		("Step 3: Include an image", "Step 4: Link to a section", "image", 2, 2),
+		("Step 4: Link to a section", "Part 2: Connect a workbook", "links", 2, 2),
+		("Step 1: Enter a formula", "Step 2: Fill a column", "enter", 2, 2),
+		("Step 2: Fill a column", "Step 3: Select a range", "fill", 2, 2),
+		("Step 3: Select a range", "Step 4: Replace a supplied value", "select", 2, 2),
+		("Step 4: Replace a supplied value", "Part 3: Offer alternatives", "replace", 2, 2),
+		("Step 1: Provide a choice", None, "alternatives", 2, 1),
 	]
 	captures = [capture_readme_artifacts.capture_pdf(pdf, start, end,
-		f"authoring_{name}", temporary, destination) for start, end, name in views]
+		f"authoring_{name}", temporary, destination, occurrence, end_occurrence)
+		for start, end, name, occurrence, end_occurrence in views]
 	for name, area in (("workbook", "A1:E6"), ("results", "D1:E3"), ("response", "D8:E9")):
 		captures.append(capture_readme_artifacts.render_workbook(xlsx, f"authoring_{name}",
 			temporary, destination, area, "Roots"))
@@ -146,15 +147,15 @@ def main() -> None:
 	pdf, xlsx = build_example(root, temporary)
 	views = [
 		("Part 1: Explore a curved relationship", "Explanation: Why square a value?",
-			"syntax_headings"),
+			"syntax_headings", 2, 1),
 		("Explanation: Why square a value?", "Step 2: Calculate squared sleep hours",
-			"syntax_text"),
+			"syntax_text", 1, 2),
 		("Step 2: Calculate squared sleep hours",
-			"Explanation: Read a formula before copying it", "syntax_actions"),
-		("Step 3: Compare the model features", "Reflection Questions", "syntax_table"),
+			"Explanation: Read a formula before copying it", "syntax_actions", 2, 1),
+		("Step 3: Compare the model features", None, "syntax_table", 2, 1),
 	]
-	metadata = [capture_readme_artifacts.capture_pdf(pdf, start, end, name, temporary, destination)
-		for start, end, name in views]
+	metadata = [capture_readme_artifacts.capture_pdf(pdf, start, end, name, temporary, destination,
+		occurrence, end_occurrence) for start, end, name, occurrence, end_occurrence in views]
 	metadata.append(capture_readme_artifacts.render_workbook(xlsx, "syntax_workbook",
 		temporary, destination, "A1:F4", "Sleep and scores"))
 	feature_captures, feature_hashes = capture_authoring_features(root, temporary, destination)

@@ -1,6 +1,7 @@
 """Authoritative reflection lists stay aligned across editable exports and bundles."""
 
 import copy
+import pathlib
 
 import docx
 import pytest
@@ -72,25 +73,29 @@ def test_matching_question_order_and_identifiers_in_exports(
 	book.close()
 
 
-def test_merge_resolves_shared_identity_without_mutating_sources(tmp_path: object) -> None:
+@pytest.mark.parametrize("part,number", [("Part: Analyze", 2), ("Part 3: Analyze", 3)])
+def test_merge_resolves_shared_identity_without_mutating_sources(
+	part: str, number: int, tmp_path: object) -> None:
 	first_path, second_path = tmp_path / "one.md", tmp_path / "three.md"
 	first_path.write_text(source(), encoding="utf-8")
-	second_path.write_text(source(part="Part 3: Analyze"), encoding="utf-8")
+	second_path.write_text(source(part=part), encoding="utf-8")
 	first = tutorial_lib.compiler.compile_document(first_path)
 	second = tutorial_lib.compiler.compile_document(second_path)
 	original = copy.deepcopy([first, second])
 	merged = tutorial_lib.build.merge_documents([first, second])
 	assert [sheet.name for sheet in merged.worksheets] == [
-		"Data", "Part 1 Reflection", "Part 3 Reflection"]
+		"Data", "Part 1 Reflection", f"Part {number} Reflection"]
 	assert merged.worksheets[1].cells[(2, 1)].scalar.value.startswith("1.1. ")
-	assert merged.worksheets[2].cells[(2, 1)].scalar.value.startswith("3.1. ")
+	assert merged.worksheets[2].cells[(2, 1)].scalar.value.startswith(f"{number}.1. ")
 	bundle = tmp_path / "bundle"
 	tutorial_lib.build.build_documents([first, second], bundle, "docx,xlsx")
 	paragraphs = [item.text for item in docx.Document(bundle / "three.docx").paragraphs]
+	assert f"Part {number}: Analyze" in paragraphs
+	assert "Part 1: Analyze" not in paragraphs
 	assert "Reflection Questions" not in paragraphs
 	assert not any(item.startswith("3.1. ") for item in paragraphs)
 	book = openpyxl.load_workbook(bundle / "workbook.xlsx")
-	assert book.sheetnames == ["Data", "Part 1 Reflection", "Part 3 Reflection"]
+	assert book.sheetnames == ["Data", "Part 1 Reflection", f"Part {number} Reflection"]
 	book.close()
 	assert [first, second] == original
 
@@ -114,3 +119,13 @@ def test_generated_names_and_part_identities_cannot_collide() -> None:
 		"### Sheet: Data", "### Sheet: Part 2 Reflection"), "reserved.md")
 	with pytest.raises(ValueError, match="collision"):
 		tutorial_lib.build.merge_documents([first, second])
+
+
+def test_shared_lesson_work_precedes_its_reflection() -> None:
+	root = pathlib.Path(__file__).resolve().parents[1]
+	paths = sorted((root / "tutorial_data/caffeine").glob("*.md"))
+	documents = [tutorial_lib.compiler.compile_document(path) for path in paths]
+	merged = tutorial_lib.build.merge_documents(documents)
+	assert [sheet.name for sheet in merged.worksheets] == [
+		"Data", "Sample Mean", "Part 1 Reflection", "Linear Regression",
+		"Part 2 Reflection", "Quadratic Regression", "Part 3 Reflection"]

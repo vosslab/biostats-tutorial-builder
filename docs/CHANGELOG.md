@@ -2,6 +2,76 @@
 
 ## 2026-11-04
 
+### Complete contents navigation
+
+- Include every Step and Substep in a native linked TOC with subordinate indentation and hanging
+  indents. Show a single Part in a title-area Subtitle while preserving its body heading; retain
+  Part entries when a document has multiple Parts. Exclude the Contents label from the outline.
+
+### Workbook filename presentation
+
+- Record the human-approved standalone workbook filename line used in all three Caffeine introductions.
+
+### Part identity and guidance review
+
+- Synchronize single-Part document headings and contents with shared-build reflection identities;
+  declare Caffeine Parts 1, 2, and 3 explicitly for standalone builds too.
+- Reconcile superseded numbering and Google-access instructions, and record the human's caption,
+  proportional figure bounds, and inline reflection preferences in the guidance.
+
+### Remove assignment labels
+
+- Remove student section-assignment names from the Caffeine warm-up heading.
+
+### Caffeine narrative refinement
+
+- Restore Caffeine's shared proportional figure maximum after removing temporary pagination-only
+  image caps; natural sparse print pages are not a release defect.
+- Justify ordinary narrative paragraphs without local line-count guesses while leaving specialized
+  lists, equations, figures, captions, and prompt callouts left aligned. Give long Caffeine
+  workbook filenames their own visible code lines without inserting hidden characters.
+- Split every Caffeine reflection into its exact identifier, workbook question, and answer-tab
+  destination; retain surrounding explanation as ordinary prose outside the modest native callout.
+
+### Formula-entry displays
+
+- Render every semantic Enter or Replace formula as an individually copyable, destination-labeled
+  display line. Restructure Caffeine Part 3's linked formula groups into one readable action per
+  target cell while retaining the authored formula bytes.
+- Replace full-width shaded formula cards with compact native green run borders around display
+  text. Keep reflection callouts shaded; local DOCX/PDF rendering is verified separately from any
+  future Google Docs import behavior.
+
+### Consistent heading weight
+
+- Let unmarked inline text inherit paragraph bold styling so plain and Markdown-bold headings
+  render consistently. Preserve explicit emphasis and defer rebuilding during the formatting queue.
+
+### Menu path formatting
+
+- Style bold or code-formatted menu paths and Choose actions with bold Roboto Mono, dark text,
+  and a light gray background. Normalize menu arrows while preserving formulas and comparisons.
+
+### Page margins
+
+- Set all document margins to 0.6 inches and derive the usable Letter-page width from that margin.
+  Defer artifact rebuilds while queued formatting changes continue.
+
+### Workbook tab sequence
+
+- Keep common data first, then place each lesson's work tabs immediately before its reflection tab.
+
+### Descriptive Caffeine captions
+
+- Replace generic illustration captions with descriptions based on direct image inspection.
+  Distinguish fictional comic annotations from the actual sleep dataset and fitted results.
+
+### Behavior or Interface Changes
+
+- Group the twelve tutorial sources and every topic asset beneath `tutorial_data/babies/`,
+  `tutorial_data/caffeine/`, `tutorial_data/microbes/`, and `tutorial_data/petase/`. Recursive
+  discovery and documentation commands now use topic-qualified paths.
+
 ### Part 2 structural consistency
 
 - Make research-question and hypothesis labels real headings, flatten peer relationship definitions,
@@ -19,6 +89,22 @@
 
 ### Fixes and Maintenance
 
+- Restore the native DOCX teaching hierarchy: Part, Step, Substep, and body/task text use
+  0, 0.1, 0.2, and 0.3-inch edges; lists, continuations, formulas, prompts, captions, and quotes
+  derive from that context while figures stay centered.
+- Lead Caffeine regression instruction with familiar linear and quadratic equations, map only the
+  needed workbook coefficients, and clarify the quadratic-coefficient reflection prompt.
+- Regenerate the Caffeine scientific scatter and fit-comparison figures from the authored data
+  without standalone plot titles, while preserving axes, fitted curves, R-squared values, and panel labels.
+- Anchor the Caffeine screenshot capture to stable Step titles rather than shifted generated numbers.
+- Highlight full contextual reflection prompts with native paragraph shading and borders while
+  keeping the workbook list as the single question source.
+- Unify DOCX heading, body, list, continuation, formula, quote, figure-caption, and table-caption
+  indentation around one native list and quote hierarchy.
+- Center standalone DOCX figures in a 6.5-inch-wide by 3-inch-tall proportional fit box, reserve
+  caption room, and split line-break-separated figures from their surrounding prose.
+- Select the instructional heading occurrences after the generated contents field when refreshing
+  syntax-example screenshots.
 - Render Caffeine figures from recovered full-proportion artwork, add native figure captions and
   table titles, clarify shared-workbook reflection labels, and name the released student workbook.
 - Add native Word contents fields and editable TeX/Office Math for explanatory equations while

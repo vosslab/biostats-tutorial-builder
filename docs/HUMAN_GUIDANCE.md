@@ -20,11 +20,61 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
 
 ## Tutorial converter
 
+- Contents should include every Step and Substep, with Substeps indented beneath their parent
+  Steps. Omit the usually single Part from Contents while preserving its body heading.
+
+- Put the supplied workbook filename on its own line, as shown in the Caffeine introductions.
+  Use the exact filename `Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx`.
+
+- Label the Caffeine lessons Part 1, Part 2, and Part 3, including standalone builds, contents,
+  headings, reflection identifiers, and workbook tabs.
+
+- Keep figures within default maximum bounds of 6.5 inches wide and 3 inches tall, preserving
+  proportions. Discourage size overrides; use them only when readability requires one.
+
+- Format figure captions one point smaller than body text, with a larger inset like a journal.
+  Figures have numbered captions and no titles; tables have titles.
+
+- Integrate reflection prompts beside the relevant instruction in shaded aside boxes, rather than
+  collecting them at the end of a Part. Keep their identifiers and answer tabs clear.
+
+- Remove student section-assignment names from published tutorial text and headings.
+
+- Keep heading weight consistent across equivalent Steps, Parts, and Substeps regardless of
+  whether their source text has explicit bold markup.
+
+- Visually distinguish spreadsheet menu paths such as File > Make a copy from ordinary prose.
+
+- Use 0.6-inch margins on all four sides to maximize usable page space on my printers.
+
+- Order workbook tabs by Part: work, reflection, then the next Part's work and reflection.
+
+- Inspect the images and write specific, useful figure captions instead of generic illustration labels.
+
 - Use consistent semantic headings and numbered substeps for distinct tasks throughout each lesson.
   Keep peer concepts at the same list depth; bold paragraphs are not a substitute for headings.
 
 - Use more numbered Steps, Substeps, and action lists to make the instructional flow clear; avoid
   long stretches of unnumbered calculation paragraphs.
+
+- Put each formula students must Enter or Replace on its own readable display line, with the
+  destination cell immediately above it. Prefer one entry formula per numbered action.
+
+- Formula displays should use green text and a compact green border around the formula itself,
+  without a background fill or a full-width paragraph box. Keep reflection callouts shaded.
+
+- Fully justify ordinary body prose. Keep headings, lists, equations, captions, and reflection
+  callouts purposefully left aligned; center figures. Reflection callouts contain only the exact prompt
+  and answer destination; explanation belongs outside the box.
+
+- Use a visible hierarchy: Part at 0 inches, Step at 0.1, Substep at 0.2, and body/task text at
+  0.3. Body paragraphs and first-level tasks share the 0.3-inch edge regardless of heading context.
+
+- Advance each deeper list by 0.25 inches. Continuations, formulas, prompts, captions, and quotes
+  derive from their real context.
+
+- Tutorials are primarily for Google Docs, not print pagination. Review clipping, overlap,
+  readability, and logical grouping; leave naturally sparse page tails alone.
 
 - Google Drive uploading is always out of scope for this repository. Deliver and validate local
   files; do not upload them to Google Drive or import them into Google Docs or Google Sheets.
@@ -66,14 +116,16 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
 - Keep the workflow KISS and avoid speculative gates. Agents should resolve scientific migration
   issues with authoritative sources and document corrections.
 - Use local DOCX/XLSX behavior checks and agent PDF visual assessment to determine completion.
-  Google import is optional when access exists; claim it only with observed evidence.
+  Google Drive uploads and Google Docs/Sheets imports are always out of scope, even with access.
 - Complete milestones without waiting for human milestone signoff.
 - Repair PETase with a clearly labeled synthetic Bradford dataset when original measurements
   cannot be recovered.
-- Run the optional Google Sheets calculation check when access is available.
+- Keep Google Sheets calculation checks local or dry-run only; do not upload files to run them.
 - Use the final layout `make_tutorial.py`, `tutorial_lib/`, `tutorial_data/`, and
   `tutorial_output/`; this supersedes the earlier distinct-prefix naming request.
 - Apply the selected names consistently without old-name aliases or legacy compatibility stubs.
+- Group authored lessons and their topic assets beneath `tutorial_data/`, preserving filenames and
+  every unused legacy asset with its own topic.
 - Treat this as preproduction: fix the design, keep it KISS, and finish the work without legacy
   compatibility layers or stubs. Check the real student walkthrough and current artifacts before
   declaring completion.
@@ -92,6 +144,16 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
   expert inspection does not count as student testing. Keep wording changes focused on actual learner
   needs and preserve the source voice.
 - Keep numbering coherent across the three independently usable Caffeine lessons.
+- Use clearly defined Part and Step headings, then add real Substeps for distinct instructional
+  tasks below a Step. Keep related ordered actions together instead of making each action a heading.
+- Introduce regression with familiar `y = mx + b` and `y = ax^2 + bx + c` equations, defining y
+  as predicted exam score. Map to workbook coefficient notation only where students need it.
+- Keep standalone figures consistently sized and horizontally centered; preserve every image's
+  proportions, and keep captions readable beneath the figure.
+- Prefer the standard standalone-figure size. Use per-image maximum bounds only for exceptional
+  readability needs, never as routine styling.
+- When the work queue is busy, prioritize implementing queued fixes and defer slow rebuilds and
+  validation checks until the queue is lower.
 - In generated DOCX/PDF, use Regular PT Sans for body text, PT Sans Narrow for compact tables, and
   Roboto Mono for formulas/cells/menus. These are available in Google Docs. Keep Atkinson Hyperlegible
   Next out of this project because it is unavailable there.
@@ -137,7 +199,8 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
 - Give the compiler considerable visual freedom, including color and flair. My favorite palette
   includes dark reds, oranges, lime, green, teal, cyan, blue, purple, magenta, and pink; select
   colors purposefully.
-- Give headings varied left indentation, with Step headings farther left than body paragraphs.
+- Give Parts, Steps, Substeps, and task text the explicit stepped indentation hierarchy recorded
+  above. Keep figures centered in the printable page and figure captions inset beyond body text.
 - Never stretch figures. Use proportional image sizing, figure captions and numbers, table titles,
   native contents, and a clear left-to-right instructional hierarchy in released documents.
 - Use one explicit workbook name in the file and every Make a copy instruction. Render explanatory

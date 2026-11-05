@@ -104,14 +104,14 @@ def test_binding_emphasis_preserves_visible_prose_and_scalar_values() -> None:
 	output = docx.Document()
 	tutorial_lib.docx_styles.configure(output)
 	tutorial_lib.docx_renderer.render_tokens(output, document)
-	paragraphs = output.paragraphs[-5:]
+	paragraphs = output.paragraphs[-7:]
 	assert [paragraph.text for paragraph in paragraphs] == [
-		'Label Sample Size.', f'Enter 3.5, then {formula}.',
+		'Label Sample Size.', 'Enter 3.5, then the formula below.', 'In D7, enter:', formula,
 		'Keep ' + json.dumps(literal) + '.', 'Label *literal* and bold.',
 		'Keep ' + json.dumps(literal) + '.']
 	assert any(run.text == 'Size' and run.bold and run.italic for run in paragraphs[0].runs)
 	assert any(run.text == '3.5' and run.italic for run in paragraphs[1].runs)
-	assert any(run.text == formula and run.bold for run in paragraphs[1].runs)
+	assert any(run.text == formula and run.bold for run in paragraphs[3].runs)
 	assert any(run.text == json.dumps(literal) and run.bold for run in paragraphs[-1].runs)
 
 

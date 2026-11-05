@@ -2,6 +2,7 @@
 
 import pathlib
 import copy
+import re
 
 import docx
 import docx.oxml
@@ -30,29 +31,44 @@ def add_bookmark(paragraph: object, slug: str, identifier: int) -> None:
 #============================================
 def add_table_of_contents(output: object, document: tutorial_lib.model.Document) -> None:
 	"""Add a visible native, updateable contents field below the document title."""
-	paragraph = output.add_paragraph("Contents", style="Heading 1")
-	field = docx.oxml.OxmlElement("w:fldSimple")
-	field.set(docx.oxml.ns.qn("w:instr"), 'TOC \\o "1-3" \\h \\z \\u')
-	# Seed the field result so the delivered file is immediately readable offline.
-	# Word and Google Docs can refresh this native field when their heading/page
-	# navigation is available; the cached entries deliberately list the major
-	# instructional milestones rather than a misleading update instruction.
-	for heading in document.headings:
-		if heading.level > 4:
-			continue
-		run = docx.oxml.OxmlElement("w:r")
-		if heading.level == 4:
-			tab = docx.oxml.OxmlElement("w:tab")
-			run.append(tab)
-		text = docx.oxml.OxmlElement("w:t")
-		text.text = heading.display
-		run.append(text)
-		field.append(run)
-		break_run = docx.oxml.OxmlElement("w:r")
-		break_element = docx.oxml.OxmlElement("w:br")
-		break_run.append(break_element)
-		field.append(break_run)
-	paragraph._p.append(field)
+	parts = [heading for heading in document.headings if heading.kind == "part"]
+	if len(parts) == 1:
+		output.add_paragraph(parts[0].display, style="Subtitle")
+	entries = [heading for heading in document.headings
+		if heading.kind in ("step", "substep")
+		or heading.kind == "part" and len(parts) > 1]
+	paragraph = output.add_paragraph()
+	run = paragraph.add_run("Contents")
+	run.bold = True
+	run.font.size = docx.shared.Pt(18)
+	run.font.color.rgb = docx.shared.RGBColor.from_string("003FFF")
+	paragraph.paragraph_format.keep_with_next = True
+	# A complex field permits separate, hanging-indented entries and native refresh.
+	begin = docx.oxml.OxmlElement("w:fldChar")
+	begin.set(docx.oxml.ns.qn("w:fldCharType"), "begin")
+	paragraph.add_run()._r.append(begin)
+	instruction = docx.oxml.OxmlElement("w:instrText")
+	levels = "2-3" if len(parts) == 1 else "1-3"
+	instruction.text = f'TOC \\o "{levels}" \\h \\z'
+	paragraph.add_run()._r.append(instruction)
+	separate = docx.oxml.OxmlElement("w:fldChar")
+	separate.set(docx.oxml.ns.qn("w:fldCharType"), "separate")
+	paragraph.add_run()._r.append(separate)
+	for heading in entries:
+		paragraph = output.add_paragraph()
+		depth = {"part": 0, "step": 1, "substep": 2}[heading.kind]
+		if len(parts) == 1:
+			depth -= 1
+		paragraph.paragraph_format.left_indent = docx.shared.Inches(depth * 0.2 + 0.15)
+		paragraph.paragraph_format.first_line_indent = docx.shared.Inches(-0.15)
+		paragraph.paragraph_format.space_after = docx.shared.Pt(2)
+		link = tutorial_lib.docx_inline.link_element(paragraph, "#" + heading.slug)
+		run = paragraph.add_run(heading.display)
+		tutorial_lib.docx_styles.format_run(run, None, linked=True)
+		link.append(run._r)
+	end = docx.oxml.OxmlElement("w:fldChar")
+	end.set(docx.oxml.ns.qn("w:fldCharType"), "end")
+	paragraph.add_run()._r.append(end)
 
 
 #============================================
@@ -197,15 +213,76 @@ def display_formula_break(children: list) -> tuple[list, list, tutorial_lib.mode
 
 
 #============================================
+def formula_entry_children(children: list) -> tuple[list, list[tuple[list, tutorial_lib.model.Action]]]:
+	"""Move bound formula entries into readable displays without touching examples.
+
+	Only ``Enter`` and ``Replace`` actions whose scalar is a spreadsheet formula are
+	moved.  Ordinary inline equations and code examples therefore remain part of
+	the author's prose.  The source token sequence is copied rather than edited so
+	the compiled document remains reusable by the other exporters.
+	"""
+	narrative = []
+	entries = []
+	position = 0
+	while position < len(children):
+		child = children[position]
+		action = child.meta.get("binding_action")
+		if (child.type != "link_open" or action is None or action.kind not in ("enter", "replace")
+			or action.scalar is None or action.scalar.kind != "formula"):
+			narrative.append(child)
+			position += 1
+			continue
+		end = position + 1
+		while end < len(children) and children[end].type != "link_close":
+			end += 1
+		if end == len(children):
+			raise ValueError("Formula action link has no closing token")
+		entry = children[position:end + 1]
+		entries.append((entry, action))
+		previous = narrative[-1] if narrative else None
+		# Retain a grammatical explanation while the formula itself moves below it.
+		# The targeted Caffeine source uses its clearer explicit form; this fallback
+		# protects older authored inline actions without dropping a word or formula.
+		replacement = "the formula below"
+		if previous is not None and previous.type == "text":
+			if re.search(r"formula\s*$", previous.content, re.IGNORECASE):
+				replacement = "below"
+			elif re.search(r"(?:enter|type)\s*:\s*$", previous.content, re.IGNORECASE):
+				replacement = ""
+		copy_token = copy.copy(child)
+		copy_token.type = "text"
+		copy_token.tag = ""
+		copy_token.nesting = 0
+		copy_token.attrs = {}
+		copy_token.content = replacement
+		copy_token.meta = {}
+		narrative.append(copy_token)
+		position = end + 1
+	return narrative, entries
+
+
+#============================================
+def add_formula_entry_context(output: object, action: tutorial_lib.model.Action,
+	lists: list, items: list, quote_depth: int) -> None:
+	"""Name an action destination directly above its editable formula display."""
+	if action.target is None:
+		raise ValueError("Formula entry action has no destination")
+	paragraph = output.add_paragraph(style="Normal")
+	tutorial_lib.docx_styles.format_content(paragraph, len(lists) if items else 0, quote_depth)
+	tutorial_lib.docx_styles.format_list(paragraph)
+	verb = "enter" if action.kind == "enter" else "replace with"
+	paragraph.add_run(f"In {action.target.address}, {verb}:")
+	paragraph.paragraph_format.keep_with_next = True
+
+
+#============================================
 def add_formula_display(output: object, children: list, document: tutorial_lib.model.Document,
-	lists: list, items: list) -> None:
+	lists: list, items: list, quote_depth: int) -> None:
 	"""Render a standalone instruction formula without turning ordinary prose into cards."""
 	paragraph = output.add_paragraph(style="Normal")
-	tutorial_lib.docx_styles.format_formula(paragraph)
-	if items:
-		paragraph.paragraph_format.left_indent = docx.shared.Inches(
-			tutorial_lib.docx_styles.LIST_INDENT_INCHES * len(lists))
+	tutorial_lib.docx_styles.format_formula(paragraph, len(lists) if items else 0, quote_depth)
 	tutorial_lib.docx_inline.render(paragraph, children, document)
+	tutorial_lib.docx_styles.format_formula_display_runs(paragraph)
 
 
 #============================================
@@ -215,6 +292,68 @@ def formula_only(children: list) -> bool:
 		"link_open", "link_close", "strong_open", "strong_close", "em_open", "em_close")
 		and not (child.type == "text" and not child.content.strip())]
 	return len(meaningful) == 1 and meaningful[0].meta.get("role") == "formula"
+
+
+#============================================
+def contextual_reflection(document: tutorial_lib.model.Document, source: str) -> bool:
+	"""Identify an exact question-only prompt for a modest native callout.
+
+	Explanations belong outside the callout.  This deliberately narrow source form
+	keeps the generated workbook question as the authority while retaining a readable
+	destination for students.
+	"""
+	clean = source.replace("**", "").strip()
+	for number, question in enumerate(document.reflection_questions, 1):
+		identifier = tutorial_lib.reflections.question_identifier(document, number)
+		expected = (f"Reflection {identifier}: {question.text} "
+			f"Write your answer in the Part {identifier.split('.')[0]} Reflection tab.")
+		if clean == expected:
+			return True
+	return False
+
+
+#============================================
+def block_figure(children: list) -> tuple[list, object, list] | None:
+	"""Return one display-image split when Markdown separates it from prose.
+
+	A linked image remains genuinely inline.  A line-break-separated image is a
+	figure even when its explanatory prose shares the source paragraph.
+	"""
+	images = [index for index, child in enumerate(children) if child.type == "image"]
+	if len(images) != 1:
+		return None
+	image_index = images[0]
+	link_depth = 0
+	for child in children[:image_index]:
+		if child.type == "link_open":
+			link_depth += 1
+		elif child.type == "link_close":
+			link_depth -= 1
+	if link_depth:
+		return None
+	before = children[:image_index]
+	after = children[image_index + 1:]
+	breaks = {"softbreak", "hardbreak"}
+	before_boundary = not before or before[-1].type in breaks
+	after_boundary = not after or after[0].type in breaks
+	if not before_boundary or not after_boundary:
+		return None
+	if before and before[-1].type in breaks:
+		before = before[:-1]
+	if after and after[0].type in breaks:
+		after = after[1:]
+	return before, children[image_index], after
+
+
+#============================================
+def add_figure_caption(output: object, figure_number: int, image: object,
+	list_depth: int, quote_depth: int) -> None:
+	"""Add the numbered native-Normal caption directly below its figure."""
+	caption = output.add_paragraph(style="Normal")
+	tutorial_lib.docx_styles.format_figure_caption(caption, list_depth, quote_depth)
+	caption.add_run(f"Figure {figure_number}. ").bold = True
+	caption.add_run(image.content)
+	tutorial_lib.docx_styles.format_figure_caption_runs(caption)
 
 
 #============================================
@@ -262,33 +401,57 @@ def render_tokens(output: object, document: tutorial_lib.model.Document) -> None
 			if items:
 				children = trim_terminal_hardbreak(children)
 			first_children, formula_children, formula_action = display_formula_break(children)
+			first_children, formula_entries = formula_entry_children(first_children)
+			figure = block_figure(first_children) if cell is None else None
+			if figure is not None:
+				before, image, after = figure
+				if before:
+					tutorial_lib.docx_inline.render(
+						paragraph, before, document, action, font_name=font_name,
+					)
+					if not items and not quote_depth:
+						tutorial_lib.docx_styles.justify_narrative(paragraph)
+					figure_paragraph = output.add_paragraph(style="Normal")
+				else:
+					figure_paragraph = paragraph
+				tutorial_lib.docx_styles.format_figure(figure_paragraph)
+				figure_paragraph.paragraph_format.keep_with_next = True
+				tutorial_lib.docx_inline.render(
+					figure_paragraph, [image], document, block_images=True,
+				)
+				figure_number += 1
+				add_figure_caption(output, figure_number, image,
+					len(lists) if items else 0, quote_depth)
+				if after:
+					paragraph = output.add_paragraph(style="Normal")
+					tutorial_lib.docx_styles.format_content(
+						paragraph, len(lists) if items else 0, quote_depth)
+					if items:
+						tutorial_lib.docx_styles.format_list(paragraph)
+					tutorial_lib.docx_inline.render(
+						paragraph, after, document, action, font_name=font_name,
+					)
+					if not items and not quote_depth:
+						tutorial_lib.docx_styles.justify_narrative(paragraph)
+				continue
 			tutorial_lib.docx_inline.render(
 				paragraph, first_children, document, action, font_name=font_name,
 			)
-			images = [child for child in first_children if child.type == "image"]
-			if cell is None and len(images) == 1:
-				figure_number += 1
-				paragraph.paragraph_format.keep_with_next = True
-				caption = output.add_paragraph(style="Normal")
-				caption.paragraph_format.left_indent = docx.shared.Inches(
-					tutorial_lib.docx_styles.BODY_INDENT_INCHES)
-				caption.paragraph_format.space_after = docx.shared.Pt(8)
-				caption.add_run(f"Figure {figure_number}. ").bold = True
-				caption.add_run(images[0].content)
-			if cell is None and not formula_only(first_children):
-				indent = tutorial_lib.docx_styles.BODY_INDENT_INCHES
-				if quote_depth:
-					indent += 0.25
-				if items:
-					indent += tutorial_lib.docx_styles.LIST_INDENT_INCHES * len(lists)
-				width = tutorial_lib.docx_styles.USABLE_PAGE_WIDTH_INCHES - indent
-				tutorial_lib.docx_styles.justify_narrative(paragraph, width)
+			is_reflection_prompt = cell is None and contextual_reflection(document, token.content)
+			if is_reflection_prompt:
+				tutorial_lib.docx_styles.format_reflection_prompt(paragraph)
+			if (cell is None and not items and not quote_depth and not is_reflection_prompt
+				and not formula_only(first_children)):
+				tutorial_lib.docx_styles.justify_narrative(paragraph)
 			if formula_action is not None:
 				# The narrative introduces this display; keep that relationship on the
 				# introductory paragraph so the formula can still flow with its own
 				# following prose.
 				paragraph.paragraph_format.keep_with_next = True
-				add_formula_display(output, formula_children, document, lists, items)
+				add_formula_display(output, formula_children, document, lists, items, quote_depth)
+			for entry_children, entry_action in formula_entries:
+				add_formula_entry_context(output, entry_action, lists, items, quote_depth)
+				add_formula_display(output, entry_children, document, lists, items, quote_depth)
 			if cell is None:
 				keep_label_with_entry(paragraph, document, position, pagination_action, actions)
 		elif kind in ("bullet_list_open", "ordered_list_open"):
@@ -313,24 +476,23 @@ def render_tokens(output: object, document: tutorial_lib.model.Document) -> None
 		elif kind == "paragraph_open":
 			action = token.meta.get("action", actions.get(index, action))
 			paragraph = cell.paragraphs[0] if cell is not None else output.add_paragraph(style="Normal")
-			if quote_depth:
-				paragraph.paragraph_format.left_indent = docx.shared.Inches(0.25)
 			if items and cell is None:
 				tutorial_lib.docx_styles.format_list(paragraph)
 				if not items[-1]:
 					tutorial_lib.docx_numbering.apply_list(paragraph, lists[-1])
+					tutorial_lib.docx_styles.format_content(paragraph, len(lists), quote_depth, True)
 					items[-1] = True
 				else:
-					paragraph.paragraph_format.left_indent = docx.shared.Inches(
-						tutorial_lib.docx_styles.LIST_INDENT_INCHES * len(lists),
-					)
+					tutorial_lib.docx_styles.format_content(paragraph, len(lists), quote_depth)
+			elif cell is None:
+				tutorial_lib.docx_styles.format_content(paragraph, 0, quote_depth)
 		elif kind == "paragraph_close":
 			paragraph = None
 		elif kind in ("fence", "code_block"):
 			if output.paragraphs:
 				output.paragraphs[-1].paragraph_format.keep_with_next = True
 			paragraph = output.add_paragraph(style="Normal")
-			tutorial_lib.docx_styles.format_formula(paragraph)
+			tutorial_lib.docx_styles.format_formula(paragraph, len(lists) if items else 0, quote_depth)
 			# Keep short source blocks intact; native pagination still splits
 			# paragraphs whose full height exceeds the printable page.
 			paragraph.paragraph_format.keep_together = True
@@ -339,6 +501,7 @@ def render_tokens(output: object, document: tutorial_lib.model.Document) -> None
 			# Markdown fences carry a parser-added final newline, outside the formula.
 			run = paragraph.add_run(token.content.removesuffix("\n"))
 			tutorial_lib.docx_styles.format_run(run, token.meta.get("role", "code"))
+			tutorial_lib.docx_styles.format_formula_display_runs(paragraph)
 			paragraph = None
 		elif kind == "blockquote_open":
 			quote_depth += 1
@@ -347,8 +510,7 @@ def render_tokens(output: object, document: tutorial_lib.model.Document) -> None
 		elif kind == "table_open":
 			table_number += 1
 			caption = output.add_paragraph(style="Normal")
-			caption.paragraph_format.left_indent = docx.shared.Inches(
-				tutorial_lib.docx_styles.BODY_INDENT_INCHES)
+			tutorial_lib.docx_styles.format_content(caption, 0, quote_depth)
 			caption.paragraph_format.keep_with_next = True
 			caption.add_run(f"Table {table_number}. ").bold = True
 			caption.add_run("Workbook reference table")
@@ -403,9 +565,8 @@ def render_tokens(output: object, document: tutorial_lib.model.Document) -> None
 		and body_blocks[-2].tag == docx.oxml.ns.qn("w:p")):
 		# Keep a short closing paragraph from becoming a page by itself.
 		penultimate = output.paragraphs[-2]
-		properties = penultimate._p.find(docx.oxml.ns.qn("w:pPr"))
-		is_formula_display = (properties is not None
-			and properties.find(docx.oxml.ns.qn("w:shd")) is not None)
+		is_formula_display = any(properties.find(docx.oxml.ns.qn("w:bdr")) is not None
+			for properties in penultimate._p.iter(docx.oxml.ns.qn("w:rPr")))
 		if not is_formula_display:
 			penultimate.paragraph_format.keep_with_next = True
 

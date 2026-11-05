@@ -313,8 +313,8 @@ def main() -> None:
 	temporary = pathlib.Path(tempfile.mkdtemp(prefix="readme_capture_"))
 	views = [
 		(pdf, None, "Step 1: Set Up Your Google Sheet", "caffeine_3_illustrated_opening"),
-		(pdf, "Step 3: Create a SQUARED Sleep-Hours Column",
-			"Step 4: Calculate Quadratic Regression", "caffeine_3_fill_down_instructions"),
+		(pdf, "Create a SQUARED Sleep-Hours Column",
+			"Calculate Quadratic Regression", "caffeine_3_fill_down_instructions"),
 		(f_pdf, "Step 4: Calculate the F-Statistic",
 			"Step 5: Calculate the Degrees of Freedom", "microbes_4_formula_instruction"),
 	]

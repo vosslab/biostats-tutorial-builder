@@ -222,6 +222,8 @@ For migration or standalone parts, accept `Part 3:`, `Step 6:`, and `Substep 6.1
 number on the first sibling establishes the start of that sequence; subsequent explicit numbers
 must equal the generated sequence. A first `Step 0:` is allowed for existing introductory steps;
 parts start at 1 or greater, substep suffixes at 1. New authoring examples use unnumbered headings.
+In shared builds, a source containing one Part uses its resolved reflection Part identity for that
+heading and its title-area subtitle as well. Explicit Part numbers preserve identity in standalone builds.
 An explicit substep parent must match its containing step. Invalid hierarchy, numbering gaps, and
 contradictory labels are errors with suggested replacement headings. Do not rewrite sources on build.
 
@@ -235,6 +237,12 @@ Use explicit text for generated heading numbers in DOCX to avoid relying on impo
 updates. Internal Markdown heading links resolve through the same heading map used by rendering;
 duplicate referenced slugs are errors. Literal prose such as "see Step 6" is not automatically
 rewritten; warn on numeric step mentions and recommend an internal heading link where appropriate.
+
+Contents includes all Steps and Substeps, with indented Substep links. A single Part is shown in a
+standard Subtitle beneath the title and retained in the body, rather than repeated in Contents.
+Multi-Part documents include Part entries to group their Steps. The native TOC field selects
+Heading 2-3 for single-Part documents and Heading 1-3 otherwise; its cached entries are immediately
+readable and linked. The Contents label is not an outline heading.
 
 ### Worksheet scope
 
@@ -446,8 +454,10 @@ formula treatment while preserving their text. Keep PT Sans, PT Sans Narrow, and
 available in regular, bold, and italic variants. These font variants are independent of the six
 paragraph styles named above.
 
-Formula blocks use a readable monospace face, light shading, and sufficient padding. Display the
-destination cell beside the instruction. Preserve copyable formula text; do not insert soft hyphens,
+Formula blocks use a readable dark-green monospace face with a compact native border around the
+formula characters and no background fill. Each Enter or Replace formula appears on its own display
+line with its destination immediately above it. Preserve
+copyable formula text; do not insert soft hyphens,
 smart quotes, invisible separators, or manual line breaks into it. Wrap visually where possible;
 report a formula that cannot fit readably. Use text weight/borders in addition to color distinctions.
 Use comfortable page margins and heading spacing; keep headings with following content. Set list
@@ -460,8 +470,17 @@ spreadsheet/tab/range. Encode query/fragment values correctly. Links navigate to
 workbook specified in source, not automatically to a student's personal copy. A document's visible
 worksheet label remains useful without links. Resolve internal heading links to DOCX bookmarks.
 
-Preserve image order, proportions, and alternative text. Resolve local assets relative to the
-Markdown source; decode existing PNG/JPEG data-URI references without treating them as prose.
+Preserve image order, proportions, and alternative text. Render standalone and
+line-break-separated teaching figures centered in a 6.5-inch-wide by 3-inch-tall maximum box, with
+proportional page-height scaling and a numbered native-Normal caption below. Keep genuine sentence
+and linked images inline at their natural size. Resolve local assets relative to the Markdown
+source; decode existing PNG/JPEG data-URI references without treating them as prose.
+Use the DOCX caption rather than a redundant standalone figure title; scientific multi-panel figures
+may retain short panel labels needed to distinguish the compared views.
+An exceptional standalone-image override may follow the image as `{width=5in height=2in}`. Both
+values are required to be positive inch values and further cap the standard figure box; they never
+stretch or crop source pixels. Prefer the standard box unless the image needs a smaller readable
+presentation.
 Local `.webp` assets must have a genuine RIFF/WEBP container and decodable image content. For DOCX,
 embed their decoded pixels losslessly as an in-memory PNG, preserving transparency and proportions.
 Keep source WebP paths and bytes unchanged; build asset fingerprints identify the original WebP.
@@ -530,7 +549,8 @@ manifest, so an old PDF is not carried into a new bundle as if it matched the ne
 With more than one source, every source basename must be unique, compatible worksheet declarations
 are merged into `workbook.xlsx`, and each source receives its own DOCX and PDF. Conflicting seeded
 cell values or worksheet roles stop the build rather than choosing an arbitrary workbook state.
-Each source contributes a distinct reflection tab in source order. A single-source tab is
+Shared data tabs come first; each source's action-target worksheets are followed immediately by
+its distinct reflection tab, in source order. A single-source tab is
 `Reflection Questions`; shared-build tabs use `Part {resolvedpart} Reflection`, such as
 `Part 2 Reflection`. Use the single unique explicit Part identity within each source; use the
 source's one-based build position only when it has no unique explicit Part identity.

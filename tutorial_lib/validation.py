@@ -12,6 +12,9 @@ import tutorial_lib.compiler as compiler
 import tutorial_lib.references as references
 
 
+IMAGE_DIMENSION = re.compile(r"(?:0|[1-9][0-9]*)(?:\.[0-9]+)?in\Z")
+
+
 #============================================
 def is_managed_screenshot_comment(token: object) -> bool:
 	"""Identify complete nonvisible screenshot metadata without accepting adjacent HTML."""
@@ -249,13 +252,18 @@ def _content(document: model.Document, states_before: dict[int, list[dict]]) -> 
 		if re.search(r"\[\^[^]]+\]", semantic_text):
 			compiler.diagnostic(document, "unsupported-content", location, "Footnotes are unsupported",
 				"Use an ordinary paragraph or link")
-		for child in token.children:
+		for child_index, child in enumerate(token.children):
 			if child.type == "html_inline" and not re.fullmatch(
 				r"</?(?:sub|sup)>|<br\s*/?>", child.content, re.IGNORECASE):
 				compiler.diagnostic(document, "unsupported-content", location,
 					f"Unsupported inline HTML {child.content}", "Use sub, sup, br, or Markdown")
 			if child.type == "image":
 				_asset(document, child, location)
+				if child_index + 1 < len(token.children):
+					suffix = token.children[child_index + 1]
+					if suffix.type == "text" and re.match(r"^\{[^}]*\}", suffix.content):
+						compiler.diagnostic(document, "image-size", location,
+							"Malformed image size attributes", "Use width=5in or height=2in")
 			if child.type == "link_open":
 				if "binding_action" in child.meta:
 					continue
@@ -296,6 +304,15 @@ def _content(document: model.Document, states_before: dict[int, list[dict]]) -> 
 
 
 def _asset(document: model.Document, token: object, location: model.SourceSpan) -> None:
+	if "insecure_attrs" in token.meta:
+		compiler.diagnostic(document, "image-size", location,
+			"Image attributes support only width and height", "Use width=5in or height=2in")
+	for name in ("width", "height"):
+		value = token.attrGet(name)
+		if value is not None and (IMAGE_DIMENSION.fullmatch(value) is None
+			or float(value[:-2]) <= 0):
+			compiler.diagnostic(document, "image-size", location,
+				f"Image {name} must be a positive inch value", "Use width=5in or height=2in")
 	source = token.attrGet("src")
 	match = re.fullmatch(r"data:image/(png|jpeg);base64,([A-Za-z0-9+/=\s]+)", source)
 	if match is not None:

@@ -72,7 +72,8 @@ python3 make_tutorial.py build tutorial_data/caffeine/caffeine_1_descriptive_sta
 	--workbook-name Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx
 ```
 
-Each source also gets its own generated reflection tab, kept in source order. The tab name and
+Shared data tabs come first. Each source's work tabs are followed immediately by its generated
+reflection tab, in source order. The tab name and
 question identifiers follow the resolved Part identity; see [TUTORIAL_SPEC.md](TUTORIAL_SPEC.md).
 
 For real local formula execution, generate independent expectations and run the final workbook

@@ -24,6 +24,15 @@ MATH_NAMESPACES = {"m": "http://schemas.openxmlformats.org/officeDocument/2006/m
 
 
 #============================================
+def image_dimension(token: object, name: str) -> int | None:
+	"""Return one validated author maximum bound in DOCX English Metric Units."""
+	value = token.attrGet(name)
+	if value is None:
+		return None
+	return docx.shared.Inches(float(value[:-2]))
+
+
+#============================================
 def add_math(paragraph: object, source: str) -> None:
 	"""Insert Pandoc's editable Office Math for one author-written TeX expression."""
 	with tempfile.TemporaryDirectory(prefix="tutorial-math-") as temporary:
@@ -78,7 +87,7 @@ def add_text(paragraph: object, text: str, state: dict, role: str | None = None,
 	parent: object | None = None) -> object:
 	"""Write a native run and optionally place it inside a hyperlink."""
 	run = paragraph.add_run(text)
-	run.bold = state["bold"]
+	run.bold = True if state["bold"] else None
 	run.italic = state["italic"]
 	run.font.subscript = state["sub"]
 	run.font.superscript = state["sup"]
@@ -92,7 +101,7 @@ def add_text(paragraph: object, text: str, state: dict, role: str | None = None,
 
 #============================================
 def add_image(paragraph: object, token: object, document: object,
-	parent: object | None = None) -> None:
+	parent: object | None = None, block: bool = False) -> None:
 	"""Embed local PNG/JPEG/WebP or PNG/JPEG data URIs at their original aspect ratio."""
 	source = token.attrGet("src")
 	if source.startswith("data:"):
@@ -118,26 +127,39 @@ def add_image(paragraph: object, token: object, document: object,
 	if parent is not None:
 		parent.append(run._r)
 	section = paragraph.part.document.sections[-1]
-	maximum_width = min(docx.shared.Inches(tutorial_lib.docx_styles.IMAGE_WIDTH),
+	maximum_width = min(docx.shared.Inches(tutorial_lib.docx_styles.FIGURE_MAX_WIDTH_INCHES),
 		section.page_width - section.left_margin - section.right_margin)
-	maximum_height = section.page_height - section.top_margin - section.bottom_margin
-	# Inline drawings occupy a paragraph line box, including baseline clearance
-	# and inherited paragraph spacing. Leave that room inside the body margins.
-	spacing = 0
-	for name in ("space_before", "space_after"):
-		value = getattr(paragraph.paragraph_format, name)
-		if value is None:
-			value = getattr(paragraph.style.paragraph_format, name)
-		if value is not None:
-			spacing += value
-	line_spacing = paragraph.paragraph_format.line_spacing
-	if line_spacing is None:
-		line_spacing = paragraph.style.paragraph_format.line_spacing
-	line_multiple = max(1.0, line_spacing) if isinstance(line_spacing, float) else 1.0
-	maximum_height = (maximum_height - spacing
-		- docx.shared.Pt(tutorial_lib.docx_styles.BODY_SIZE)) / line_multiple
-	scale = min(1.0, maximum_width / shape.width, maximum_height / shape.height)
-	if scale < 1.0:
+	maximum_height = min(docx.shared.Inches(tutorial_lib.docx_styles.FIGURE_MAX_HEIGHT_INCHES),
+		section.page_height - section.top_margin - section.bottom_margin)
+	if block:
+		# Reserve space for the caption and its paragraph spacing so a tall figure
+		# remains whole with the caption on one printable page.
+		maximum_height = min(maximum_height, section.page_height - section.top_margin
+			- section.bottom_margin - docx.shared.Pt(tutorial_lib.docx_styles.BODY_SIZE * 3 + 20))
+		width = image_dimension(token, "width")
+		height = image_dimension(token, "height")
+		if width is not None:
+			maximum_width = min(maximum_width, width)
+		if height is not None:
+			maximum_height = min(maximum_height, height)
+	else:
+		# Inline drawings occupy a paragraph line box, including baseline clearance
+		# and inherited paragraph spacing. Leave that room inside the body margins.
+		spacing = 0
+		for name in ("space_before", "space_after"):
+			value = getattr(paragraph.paragraph_format, name)
+			if value is None:
+				value = getattr(paragraph.style.paragraph_format, name)
+			if value is not None:
+				spacing += value
+		line_spacing = paragraph.paragraph_format.line_spacing
+		if line_spacing is None:
+			line_spacing = paragraph.style.paragraph_format.line_spacing
+		line_multiple = max(1.0, line_spacing) if isinstance(line_spacing, float) else 1.0
+		maximum_height = (maximum_height - spacing
+			- docx.shared.Pt(tutorial_lib.docx_styles.BODY_SIZE)) / line_multiple
+	scale = min(maximum_width / shape.width, maximum_height / shape.height)
+	if block or scale < 1.0:
 		width, height = round(shape.width * scale), round(shape.height * scale)
 		shape.width = width
 		shape.height = height
@@ -153,7 +175,7 @@ def has_binding(tokens: list) -> bool:
 
 #============================================
 def render(paragraph: object, tokens: list, document: object, action: object = None,
-	font_name: str | None = None) -> None:
+	font_name: str | None = None, block_images: bool = False) -> None:
 	"""Preserve inline emphasis, HTML scripts, formula bytes, images and links."""
 	state = {"bold": False, "italic": False, "sub": False, "sup": False, "font": font_name}
 	links = []
@@ -173,7 +195,8 @@ def render(paragraph: object, tokens: list, document: object, action: object = N
 		elif kind == "link_close":
 			links.pop()
 		elif kind == "image":
-			add_image(paragraph, token, document, parent=links[-1] if links else None)
+			add_image(paragraph, token, document, parent=links[-1] if links else None,
+				block=block_images)
 		elif kind == "math_inline":
 			add_math(paragraph, token.content)
 		elif kind in ("softbreak", "hardbreak"):
@@ -190,6 +213,10 @@ def render(paragraph: object, tokens: list, document: object, action: object = N
 		elif kind in ("text", "code_inline"):
 			role = token.meta.get("role", "code" if kind == "code_inline" else None)
 			text = token.content
+			if role in (None, "code") and (state["bold"] or kind == "code_inline"):
+				if re.fullmatch(r"[A-Z][A-Za-z ]*(?:\s+(?:->|>)\s+[A-Za-z][A-Za-z 0-9-]*)+", text):
+					role = "menu"
+					text = " > ".join(re.split(r"\s*(?:->|>)\s*", text))
 			parent = links[-1] if links else None
 			if (action is not None and action.kind.lower() == "choose"
 				and not has_binding(tokens) and not state["bold"]):

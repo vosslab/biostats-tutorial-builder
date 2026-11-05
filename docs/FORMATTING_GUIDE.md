@@ -114,6 +114,14 @@ This image comes from the instructor's Microbes z-test tutorial.
 
 Keep the descriptive text inside `![...]` so the image has alternative text. Local PNG, JPEG,
 and WebP images are supported. Keep your image files with the source you share.
+Put a teaching figure in its own paragraph, or on a line between Markdown line breaks. DOCX exports
+center these figures in a 6.5-inch-wide by 3-inch-tall maximum box while preserving their
+proportions, then place a numbered caption beneath them. Images embedded within a sentence or link
+remain inline at their natural size.
+
+Use `{width=5in height=2in}` immediately after a standalone image only when its readability needs
+a smaller maximum box. Both values are positive inches and are maximum bounds, not a request to
+stretch or crop the image. The standard figure box is preferred for ordinary teaching figures.
 
 Link to a heading using its Markdown anchor:
 
@@ -230,7 +238,8 @@ multi-source build, every source has its own reflection tab. See
 ```markdown
 #### Step: Enter a formula
 
-1. In cell E2, enter [`=AVERAGE(A2:A6)`](enter:E2).
+1. In cell E2, enter:
+   [`=AVERAGE(A2:A6)`](enter:E2)
 ```
 
 **Source beside actual Word output:**
@@ -243,6 +252,11 @@ and checks supported references; the spreadsheet application calculates it.
 
 Put a formula in a Workbook table when you want it supplied in advance. Put it in a Tutorial
 Enter action when the reader should enter it. Leave that starter cell blank.
+
+Use one entry formula per numbered action. Put the destination in the introduction, then put the
+semantic `enter:` or `replace:` link on its own indented line. The DOCX renderer also promotes a
+legacy inline action formula into its own copyable display, but the explicit source form keeps
+multiple entries and their explanations readable.
 
 The same action-link syntax preserves the wording of an instructor's longer instruction. This
 excerpt is from [../tutorial_data/microbes/microbes_1_z_test.md](../tutorial_data/microbes/microbes_1_z_test.md):

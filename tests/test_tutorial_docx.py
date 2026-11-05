@@ -28,6 +28,16 @@ NAMESPACES = {
 
 
 #============================================
+def assert_formula_display_box(paragraph: object) -> None:
+	"""Formula displays box only their green characters, never a full paragraph."""
+	assert not paragraph._p.findall(".//w:shd", NAMESPACES)
+	assert paragraph._p.find("w:pPr/w:pBdr", NAMESPACES) is None
+	borders = paragraph._p.findall(".//w:rPr/w:bdr", NAMESPACES)
+	assert borders
+	assert all(border.get(docx.oxml.ns.qn("w:color")) == "007A00" for border in borders)
+
+
+#============================================
 def test_managed_screenshot_comments_are_nonvisible_metadata_only(tmp_path: pathlib.Path) -> None:
 	"""Accept screenshot boundaries without allowing HTML or hiding literal examples."""
 	begin = '<!-- screenshots:begin (managed by screenshot-docs) -->'
@@ -137,12 +147,10 @@ def test_automatic_formula_color_and_compact_list_paragraphs() -> None:
 
 
 #============================================
-def test_justification_keeps_deliberate_definition_lines_left_aligned() -> None:
-	"""Hard-break definition lines must not acquire stretched justification spacing."""
+def test_justification_keeps_specialized_display_lines_left_aligned() -> None:
+	"""Every ordinary body paragraph is justified; deliberate displays remain left."""
 	source = '# Definitions\n\n'
-	source += 'This naturally wrapping paragraph explains a calculation in enough detail that it '
-	source += 'will clearly occupy more than two ordinary body lines in the rendered document. '
-	source += 'It should remain comfortable to read as a justified narrative paragraph.\n\n'
+	source += 'Short ordinary prose.\n\n'
 	source += "**Here's the breakdown:**\\\n"
 	source += 'y-hat = predicted exam score\\\n'
 	source += 'b0 = intercept\\\n'
@@ -154,7 +162,7 @@ def test_justification_keeps_deliberate_definition_lines_left_aligned() -> None:
 	tutorial_lib.docx_styles.configure(output)
 	tutorial_lib.docx_renderer.render_tokens(output, document)
 	narrative = next(paragraph for paragraph in output.paragraphs
-		if paragraph.text.startswith('This naturally wrapping'))
+		if paragraph.text == 'Short ordinary prose.')
 	definitions = next(paragraph for paragraph in output.paragraphs
 		if paragraph.text.startswith("Here's the breakdown:"))
 	assert narrative.alignment == docx.enum.text.WD_ALIGN_PARAGRAPH.JUSTIFY
@@ -179,8 +187,7 @@ def test_formula_continuation_becomes_a_copyable_display_without_rewriting_prose
 		if paragraph.text.startswith('In E11,'))
 	display = next(paragraph for paragraph in output.paragraphs if paragraph.text == '=E6^2 / E5^2')
 	assert intro.text == 'In E11, calculate the result using this formula:'
-	assert display._p.find('w:pPr/w:shd', NAMESPACES) is not None
-	assert display._p.find('w:pPr/w:pBdr', NAMESPACES) is not None
+	assert_formula_display_box(display)
 	assert display.runs[0].font.color.rgb == docx.shared.RGBColor.from_string('007A00')
 
 
@@ -207,10 +214,38 @@ def test_formula_display_keeps_its_justified_introduction_without_trapping_follo
 	display = next(paragraph for paragraph in output.paragraphs if paragraph.text == '=E6^2 / E5^2')
 	following = next(paragraph for paragraph in output.paragraphs
 		if paragraph.text.startswith('Then explain'))
-	assert intro.alignment == docx.enum.text.WD_ALIGN_PARAGRAPH.JUSTIFY
+	assert intro.alignment is None
 	assert intro.paragraph_format.keep_with_next is True
 	assert not display.paragraph_format.keep_with_next
 	assert not following.paragraph_format.keep_with_next
+
+
+#============================================
+def test_formula_actions_always_get_destined_display_lines_without_losing_bytes() -> None:
+	"""Inline Enter formulas become individually copyable displays at their cells."""
+	first = '=IF(A2="alpha,beta",SUM(A2:B2),0)'
+	second = '=A2^2'
+	source = '# Formula actions\n\n## Workbook\n\n### Sheet: Data\n\n'
+	source += '| A | B |\n| --- | --- |\n| 1 | 2 |\n\n'
+	source += ('### Reflection Questions\n\n1. How do the results support your conclusion?\n\n'
+		'## Tutorial\n\n### Part: Analysis\n\n#### Step: Calculate\n\n')
+	source += ('1. In E2, enter [' + first + '](enter:E2), then in E3, enter ['
+		+ second + '](enter:E3). Keep both values for the next calculation.\n')
+	document = tutorial_lib.compiler.compile_source(source)
+	assert not document.has_errors
+	output = docx.Document()
+	tutorial_lib.docx_styles.configure(output)
+	tutorial_lib.docx_renderer.render_tokens(output, document)
+	paragraphs = {paragraph.text: paragraph for paragraph in output.paragraphs}
+	assert source == document.source
+	assert paragraphs['In E2, enter:'].paragraph_format.keep_with_next is True
+	assert paragraphs['In E3, enter:'].paragraph_format.keep_with_next is True
+	assert_formula_display_box(paragraphs[first])
+	assert_formula_display_box(paragraphs[second])
+	assert paragraphs[first].paragraph_format.left_indent.inches == pytest.approx(0.3)
+	assert paragraphs[second].paragraph_format.left_indent.inches == pytest.approx(0.3)
+	assert all(sum(run.text == formula for paragraph in output.paragraphs for run in paragraph.runs) == 1
+		for formula in (first, second))
 
 
 #============================================
@@ -279,7 +314,8 @@ def test_standard_styles_and_direct_fonts() -> None:
 	step_heading = output.paragraphs[2]
 	body_paragraph = output.paragraphs[5]
 	assert step_heading.style.name == "Heading 2"
-	assert step_heading.style.paragraph_format.left_indent < body_paragraph.style.paragraph_format.left_indent
+	assert step_heading.style.paragraph_format.left_indent == docx.shared.Inches(0.1)
+	assert body_paragraph.style.paragraph_format.left_indent == docx.shared.Inches(0)
 	assert output.paragraphs[5].runs[0].font.name is None
 	assert output.sections[0].footer.paragraphs[0].style.name == "Normal"
 	table_link = output.tables[0].cell(1, 0)._tc.find(".//w:hyperlink/w:r", NAMESPACES)
@@ -290,14 +326,85 @@ def test_standard_styles_and_direct_fonts() -> None:
 		if paragraph.text == "=SUM(A1:B1)")
 	assert formula.runs[0].font.name == "Roboto Mono"
 	assert formula.paragraph_format.keep_together is True
-	assert formula._p.find("w:pPr/w:shd", NAMESPACES) is not None
-	assert formula._p.find("w:pPr/w:pBdr", NAMESPACES) is not None
+	assert_formula_display_box(formula)
 	assert output.paragraphs[-2].paragraph_format.left_indent is not None
 	runs = output._element.findall(".//w:r", NAMESPACES)
 	assert not any(run.find("w:rPr/w:rStyle", NAMESPACES) is not None for run in runs)
 	link = output._element.find(".//w:hyperlink/w:r", NAMESPACES)
 	assert link.find("w:rPr/w:u", NAMESPACES) is not None
 	assert link.find("w:rPr/w:rFonts", NAMESPACES) is None
+
+
+#============================================
+def test_structural_indentation_uses_shared_list_quote_and_figure_edges(
+	tmp_path: pathlib.Path) -> None:
+	"""Narrative branches retain structural depth without competing DOCX offsets."""
+	asset = tmp_path / "figure.png"
+	PIL.Image.new("RGB", (600, 300), (12, 34, 56)).save(asset)
+	source = ("# Title\n\n### Part: One\n\n#### Step: Two\n\n##### Substep: Three\n\n"
+		"Body.\n\n1. Parent\n\n   Continuation.\n\n   - Nested\n\n"
+		"     Nested continuation.\n\n   ```sheets\n   =A2^2\n   ```\n\n"
+		"> Quote.\n>\n> 1. Quoted item\n\n- ![Centered figure](figure.png)\n")
+	document = tutorial_lib.parser.parse_source(source, tmp_path / "alignment.md")
+	document.content_token_indices = list(range(len(document.tokens)))
+	output = docx.Document()
+	tutorial_lib.docx_styles.configure(output)
+	tutorial_lib.docx_renderer.render_tokens(output, document)
+	assert [output.styles[name].paragraph_format.left_indent for name in
+		("Heading 1", "Heading 2", "Heading 3")] == [
+		docx.shared.Inches(0), docx.shared.Inches(0.1), docx.shared.Inches(0.2),
+	]
+	paragraphs = {paragraph.text: paragraph for paragraph in output.paragraphs}
+	assert paragraphs["Body."].paragraph_format.left_indent == docx.shared.Inches(0.3)
+	assert paragraphs["Body."].alignment == docx.enum.text.WD_ALIGN_PARAGRAPH.JUSTIFY
+	assert paragraphs["Parent"].paragraph_format.left_indent == docx.shared.Inches(0.3)
+	assert paragraphs["Parent"].alignment is None
+	assert paragraphs["Parent"].paragraph_format.first_line_indent == docx.shared.Inches(
+		-tutorial_lib.docx_styles.LIST_HANGING_INCHES)
+	assert paragraphs["Continuation."].paragraph_format.left_indent == docx.shared.Inches(0.3)
+	assert paragraphs["Continuation."].paragraph_format.first_line_indent == docx.shared.Inches(0)
+	assert paragraphs["Nested"].paragraph_format.left_indent == docx.shared.Inches(0.55)
+	assert paragraphs["Nested continuation."].paragraph_format.left_indent == docx.shared.Inches(0.55)
+	list_indents = [item for item in output.part.numbering_part.element.findall(
+		".//w:lvl/w:pPr/w:ind", NAMESPACES)
+		if item.get(docx.oxml.ns.qn("w:left")) in ("432", "792")]
+	assert {item.get(docx.oxml.ns.qn("w:left")) for item in list_indents} == {"432", "792"}
+	assert all(item.get(docx.oxml.ns.qn("w:hanging")) == "240" for item in list_indents)
+	assert paragraphs["=A2^2"].paragraph_format.left_indent == docx.shared.Inches(0.3)
+	assert paragraphs["Quote."].paragraph_format.left_indent == docx.shared.Inches(0.55)
+	assert paragraphs["Quote."].alignment is None
+	assert paragraphs["Quoted item"].paragraph_format.left_indent == docx.shared.Inches(0.55)
+	figure = next(paragraph for paragraph in output.paragraphs
+		if paragraph._p.find(".//w:drawing", NAMESPACES) is not None)
+	assert figure.alignment == docx.enum.text.WD_ALIGN_PARAGRAPH.CENTER
+	assert figure.paragraph_format.left_indent == docx.shared.Inches(0)
+	caption = paragraphs["Figure 1. Centered figure"]
+	assert caption.paragraph_format.left_indent == docx.shared.Inches(0.5)
+	assert caption.paragraph_format.right_indent == docx.shared.Inches(0.2)
+	assert [run.font.size.pt for run in caption.runs] == [10, 10]
+	assert caption.alignment == docx.enum.text.WD_ALIGN_PARAGRAPH.LEFT
+
+
+#============================================
+def test_contextual_reflection_prompt_uses_native_paragraph_callout(tmp_path: pathlib.Path) -> None:
+	"""Only an exact question-and-destination prompt gains the native callout."""
+	source = ("# Reflection\n\n## Workbook\n\n### Sheet: Data\n\n| Value |\n| --- |\n| 1 |\n\n"
+		"### Reflection Questions\n\n1. Explain the result.\n\n## Tutorial\n\n### Part 1: Review\n\n"
+		"#### Step: Interpret\n\nExplain why the result matters before answering.\n\n"
+		"**Reflection 1.1:** Explain the result. Write your answer in the Part 1 Reflection tab.\n")
+	document = tutorial_lib.compiler.compile_source(source, tmp_path / "reflection.md")
+	assert not document.has_errors
+	output = docx.Document()
+	tutorial_lib.docx_styles.configure(output)
+	tutorial_lib.docx_renderer.render_tokens(output, document)
+	prompt = next(paragraph for paragraph in output.paragraphs
+		if paragraph.text == "Reflection 1.1: Explain the result. Write your answer in the Part 1 Reflection tab.")
+	properties = prompt._p.find("w:pPr", NAMESPACES)
+	assert properties.find("w:shd", NAMESPACES).get(docx.oxml.ns.qn("w:fill")) == "F3F7FC"
+	assert properties.find("w:pBdr", NAMESPACES) is not None
+	assert sum("Explain the result." in paragraph.text for paragraph in output.paragraphs) == 1
+	prose = next(paragraph for paragraph in output.paragraphs if paragraph.text.startswith("Explain why"))
+	assert prose._p.find("w:pPr/w:shd", NAMESPACES) is None
 
 
 #============================================
@@ -385,31 +492,32 @@ def test_semantic_bindings_preserve_numbered_caffeine_instruction_text() -> None
 	output = docx.Document()
 	tutorial_lib.docx_styles.configure(output)
 	tutorial_lib.docx_renderer.render_tokens(output, document)
-	paragraph_text = [paragraph.text for paragraph in output.paragraphs]
+	paragraphs = [paragraph for paragraph in output.paragraphs
+		if paragraph.style.name != "Subtitle"
+		and not paragraph._p.xpath("./w:hyperlink[@w:anchor]")]
+	paragraph_text = [paragraph.text for paragraph in paragraphs]
 	assert paragraph_text == [
 		"Caffeine model", "Contents", "Part 1: Build the predictor", "Step 1: Square the predictor",
 		"Add a squared predictor column.", "Set its heading to Sleep hours squared.",
-		"Enter =A2^2 for the first student.",
+		"Enter the formula below for the first student.", "In C2, enter:", "=A2^2",
 		"Copy C2:C26, then select A1:B26.",
 		"See the original class template.",
 	]
-	assert any(run.text == "Build" and run.bold for run in output.paragraphs[2].runs)
-	assert any(run.text == "Square" and run.bold for run in output.paragraphs[3].runs)
-	assert output.paragraphs[5].runs[1].font.color.rgb is None
-	formula_run = next(run for run in output.paragraphs[6].runs if run.text == "=A2^2")
+	assert any(run.text == "Build" and run.bold for run in paragraphs[2].runs)
+	assert any(run.text == "Square" and run.bold for run in paragraphs[3].runs)
+	assert paragraphs[5].runs[1].font.color.rgb is None
+	formula_run = next(run for run in paragraphs[8].runs if run.text == "=A2^2")
 	assert str(formula_run.font.color.rgb) == "007A00"
-	assert [paragraph.style.name for paragraph in output.paragraphs[4:8]] == [
-		"Normal", "Normal", "Normal", "Normal",
-	]
+	assert [paragraph.style.name for paragraph in paragraphs[4:10]] == ["Normal"] * 6
 	assert [paragraph._p.find("w:pPr/w:numPr", NAMESPACES) is not None
-		for paragraph in output.paragraphs[4:8]] == [True, True, True, True]
-	assert output.paragraphs[-1]._p.find(".//w:hyperlink", NAMESPACES) is not None
+		for paragraph in paragraphs[4:10]] == [True, True, True, False, False, True]
+	assert paragraphs[-1]._p.find(".//w:hyperlink", NAMESPACES) is not None
 	relationships = output.part.rels
 	assert not any("label:" in relation.target_ref or "enter:" in relation.target_ref
 		or "fill:" in relation.target_ref or "select:" in relation.target_ref
 		for relation in relationships.values())
-	assert all(paragraph.paragraph_format.space_after.pt == 2
-		for paragraph in output.paragraphs[4:8])
+	assert all(paragraphs[index].paragraph_format.space_after.pt == 2
+		for index in (4, 5, 6, 9))
 	assert output.styles["Heading 1"].font.size.pt == 18
 	assert output.styles["Heading 2"].font.size.pt == 15
 	assert output.styles["Heading 3"].font.size.pt == 12
@@ -609,6 +717,71 @@ def test_tall_images_fit_native_printable_page_without_cropping(tmp_path: pathli
 
 
 #============================================
+def test_block_figures_share_width_centering_and_proportions(tmp_path: pathlib.Path) -> None:
+	"""Standalone and line-break-separated figures ignore source DPI without distortion."""
+	for name, dpi in (("low_dpi.png", 72), ("high_dpi.png", 300)):
+		PIL.Image.new("RGB", (1200, 400), (12, 34, 56)).save(tmp_path / name, dpi=(dpi, dpi))
+	source = ("![Low DPI](low_dpi.png)\n\n"
+		"Before the evidence.  \n![High DPI](high_dpi.png)  \nAfter the evidence.\n")
+	document = tutorial_lib.parser.parse_source(source, tmp_path / "figures.md")
+	document.content_token_indices = list(range(len(document.tokens)))
+	output = docx.Document()
+	tutorial_lib.docx_styles.configure(output)
+	tutorial_lib.docx_renderer.render_tokens(output, document)
+	path = tmp_path / "figures.docx"
+	output.save(path)
+	reopened = docx.Document(path)
+	assert len(reopened.inline_shapes) == 2
+	for shape in reopened.inline_shapes:
+		assert shape.width == docx.shared.Inches(tutorial_lib.docx_styles.FIGURE_MAX_WIDTH_INCHES)
+		assert shape.width / shape.height == pytest.approx(3)
+	figure_paragraphs = [paragraph for paragraph in reopened.paragraphs
+		if paragraph._p.find(".//w:drawing", NAMESPACES) is not None]
+	assert len(figure_paragraphs) == 2
+	for paragraph in figure_paragraphs:
+		assert paragraph.alignment == docx.enum.text.WD_ALIGN_PARAGRAPH.CENTER
+		assert paragraph.paragraph_format.left_indent == docx.shared.Inches(0)
+		assert paragraph.paragraph_format.right_indent == docx.shared.Inches(0)
+	assert [paragraph.text for paragraph in reopened.paragraphs if paragraph.text.startswith("Figure ")] == [
+		"Figure 1. Low DPI", "Figure 2. High DPI",
+	]
+	caption = next(paragraph for paragraph in reopened.paragraphs
+		if paragraph.text == "Figure 2. High DPI")
+	assert caption.alignment == docx.enum.text.WD_ALIGN_PARAGRAPH.LEFT
+	assert caption.paragraph_format.left_indent == docx.shared.Inches(0.5)
+	assert caption.paragraph_format.right_indent == docx.shared.Inches(0.2)
+	assert [run.font.size.pt for run in caption.runs] == [10, 10]
+	assert [paragraph.text for paragraph in reopened.paragraphs if paragraph.text] == [
+		"Figure 1. Low DPI", "Before the evidence.", "Figure 2. High DPI", "After the evidence.",
+	]
+
+
+#============================================
+def test_block_figure_bounds_are_proportional_and_validated(tmp_path: pathlib.Path) -> None:
+	"""Image width and height attributes are optional maximum bounds, never stretching."""
+	asset = tmp_path / "wide.png"
+	PIL.Image.new("RGB", (1200, 400), (12, 34, 56)).save(asset, dpi=(300, 300))
+	source = "![Bounded figure](wide.png){width=5in height=2in}\n"
+	document = tutorial_lib.parser.parse_source(source, tmp_path / "bounds.md")
+	document.content_token_indices = list(range(len(document.tokens)))
+	output = docx.Document()
+	tutorial_lib.docx_styles.configure(output)
+	tutorial_lib.docx_renderer.render_tokens(output, document)
+	shape = output.inline_shapes[0]
+	assert shape.width == docx.shared.Inches(5)
+	assert shape.height == docx.shared.Inches(5 / 3)
+	assert output.paragraphs[0].alignment == docx.enum.text.WD_ALIGN_PARAGRAPH.CENTER
+	assert output.paragraphs[0].paragraph_format.left_indent == docx.shared.Inches(0)
+	assert output.paragraphs[0].paragraph_format.right_indent == docx.shared.Inches(0)
+	for value in ("-5in", "0in", "5cm", "5.5in"):
+		invalid = tutorial_lib.compiler.compile_source(
+			"# Bounds\n\n## Workbook\n\n### Sheet: Data\n\n| A |\n| --- |\n| 1 |\n\n"
+			"### Reflection Questions\n\n1. Explain.\n\n## Tutorial\n\n### Part: Review\n\n"
+			f"#### Step: Observe\n\n![Bounded figure](wide.png){{width={value}}}\n", tmp_path / "bounds.md")
+		assert any(item.category == "image-size" for item in invalid.diagnostics)
+
+
+#============================================
 def test_native_tables_images_and_menu_segments(tmp_path: pathlib.Path) -> None:
 	"""Tables and images retain editable content, embedded data and authored order."""
 	png = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aS1sAAAAASUVORK5CYII="
@@ -632,10 +805,18 @@ def test_native_tables_images_and_menu_segments(tmp_path: pathlib.Path) -> None:
 			)
 	output = tmp_path / "images.docx"
 	tutorial_lib.docx_renderer.write_document(document, output)
+	reopened = docx.Document(output)
+	assert reopened.inline_shapes[0].width == docx.shared.Inches(
+		tutorial_lib.docx_styles.FIGURE_MAX_HEIGHT_INCHES)
+	assert reopened.inline_shapes[0].height == docx.shared.Inches(
+		tutorial_lib.docx_styles.FIGURE_MAX_HEIGHT_INCHES)
 	with zipfile.ZipFile(output) as archive:
 		document_xml = defusedxml.ElementTree.fromstring(archive.read("word/document.xml"))
 		relations = archive.read("word/_rels/document.xml.rels").decode("utf-8")
 		assert any(name.startswith("word/media/") for name in archive.namelist())
+		linked_extent = document_xml.find(".//w:hyperlink//wp:extent", dict(NAMESPACES,
+			wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"))
+		assert int(linked_extent.get("cx")) < docx.shared.Inches(1)
 	texts = "".join(node.text or "" for node in document_xml.findall(".//w:t", NAMESPACES))
 	assert "Before linked before  linked after after" in texts
 	link = document_xml.find(".//w:hyperlink", NAMESPACES)
@@ -668,3 +849,65 @@ def test_native_tables_images_and_menu_segments(tmp_path: pathlib.Path) -> None:
 	assert [["".join(cell.itertext()) for cell in row.findall("w:tc", NAMESPACES)]
 		for row in rows] == [["Group", "Value"], ["native", "12"], ["next", "More"]]
 	assert len(document_xml.findall(".//w:drawing", NAMESPACES)) == 2
+
+
+def test_menu_paths_are_distinct_from_formulas_and_prose() -> None:
+	document = tutorial_lib.parser.parse_source(
+		"Use **File > Make a copy**. Compare **p > 0** and `=IF(A1>0,1,0)`.\n", "menu.md")
+	document.content_token_indices = list(range(len(document.tokens)))
+	output = docx.Document()
+	tutorial_lib.docx_styles.configure(output)
+	tutorial_lib.docx_renderer.render_tokens(output, document)
+	runs = output.paragraphs[0].runs
+	menu = next(run for run in runs if run.text == "File > Make a copy")
+	assert menu.bold and menu.font.name == "Roboto Mono"
+	assert menu._r.find("w:rPr/w:shd", NAMESPACES) is not None
+	assert all(run._r.find("w:rPr/w:shd", NAMESPACES) is None
+		for run in runs if run.text in ("p > 0", "=IF(A1>0,1,0)"))
+
+
+def test_plain_and_emphasized_headings_inherit_consistent_weight() -> None:
+	document = tutorial_lib.parser.parse_source(
+		"# Title\n\n### Part: Plain\n\n#### Step: Plain\n\n"
+		"#### Step: **Emphasized**\n\n##### Substep: Plain\n", "headings.md")
+	document.content_token_indices = list(range(len(document.tokens)))
+	output = docx.Document()
+	tutorial_lib.docx_styles.configure(output)
+	tutorial_lib.docx_renderer.render_tokens(output, document)
+	for paragraph in output.paragraphs:
+		if paragraph.style.name == "Title" or paragraph.style.name.startswith("Heading"):
+			assert paragraph.style.font.bold
+			assert all(run.bold is not False for run in paragraph.runs)
+
+
+#============================================
+@pytest.mark.parametrize("multiple_parts", [False, True])
+def test_contents_links_every_step_and_substep(multiple_parts: bool) -> None:
+	"""Contents follows native heading levels and keeps single-Part identity by the title."""
+	source = ("# Lesson\n\n## Workbook\n\n### Sheet: Data\n\n"
+		"| x |\n| --- |\n| 1 |\n\n### Reflection Questions\n\n1. Why?\n\n"
+		"## Tutorial\n\n### Part 2: Analyze\n\n#### Step: Calculate\n\n"
+		"##### Substep: Inspect\n\nObserve.\n\n#### Step: Interpret\n\nExplain.\n")
+	if multiple_parts:
+		source += "\n### Part: Compare\n\n#### Step: Conclude\n\nDiscuss.\n"
+	document = tutorial_lib.compiler.compile_source(source)
+	assert not document.has_errors
+	output = docx.Document()
+	tutorial_lib.docx_styles.configure(output)
+	tutorial_lib.docx_renderer.render_tokens(output, document)
+	entries = [paragraph for paragraph in output.paragraphs
+		if paragraph._p.xpath("./w:hyperlink[@w:anchor]")]
+	expected = [heading for heading in document.headings
+		if heading.kind in ("step", "substep") or multiple_parts and heading.kind == "part"]
+	assert [paragraph.text for paragraph in entries] == [heading.display for heading in expected]
+	for paragraph, heading in zip(entries, expected):
+		assert paragraph._p.xpath("./w:hyperlink/@w:anchor") == [
+			tutorial_lib.docx_inline.bookmark_name(heading.slug)]
+	step = next(p for p in entries if p.text.startswith("Step 1: Calculate"))
+	substep = next(p for p in entries if p.text.startswith("1.1:"))
+	assert substep.paragraph_format.left_indent > step.paragraph_format.left_indent
+	assert "Contents" not in [p.text for p in output.paragraphs if p.style.name.startswith("Heading")]
+	assert [p.text for p in output.paragraphs if p.style.name == "Subtitle"] == (
+		[] if multiple_parts else ["Part 2: Analyze"])
+	instructions = output._element.xpath(".//w:instrText/text()")
+	assert any(('"1-3"' if multiple_parts else '"2-3"') in text for text in instructions)

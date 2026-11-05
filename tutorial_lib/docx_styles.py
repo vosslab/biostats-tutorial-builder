@@ -4,9 +4,6 @@ import docx.enum.text
 import docx.oxml
 import docx.oxml.ns
 import docx.shared
-import pathlib
-
-from PIL import ImageFont
 
 
 BODY_FONT = "PT Sans"
@@ -14,23 +11,22 @@ NARROW_FONT = "PT Sans Narrow"
 CODE_FONT = "Roboto Mono"
 BODY_SIZE = 11
 CODE_SIZE = 9
-PAGE_MARGIN = 0.8
-IMAGE_WIDTH = 6.8
-LIST_INDENT_TWIPS = 360
+PAGE_MARGIN = 0.6
+FIGURE_MAX_WIDTH_INCHES = 6.5
+FIGURE_MAX_HEIGHT_INCHES = 3
+BODY_INDENT_INCHES = 0.3
+BODY_INDENT_TWIPS = round(BODY_INDENT_INCHES * 1440)
+LIST_INCREMENT_TWIPS = 360
 LIST_HANGING_TWIPS = 240
-LIST_INDENT_INCHES = 0.25
+LIST_HANGING_INCHES = LIST_HANGING_TWIPS / 1440
+QUOTE_INDENT_INCHES = 0.25
+CAPTION_INSET_INCHES = 0.2
 TABLE_HEADER_FILL = "0067CC"
 TABLE_STRIPE_FILL = "EEF5FC"
 FORMULA_COLOR = "007A00"
-FORMULA_FILL = "E7F4EA"
 FORMULA_BORDER = "007A00"
-BODY_INDENT_INCHES = 0.35
-USABLE_PAGE_WIDTH_INCHES = 6.9
-FONT_PATHS = (
-	pathlib.Path("/System/Library/Fonts/Supplemental/PTSans.ttc"),
-	pathlib.Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
-)
-FONT_CACHE = {}
+REFLECTION_FILL = "F3F7FC"
+REFLECTION_BORDER = "174F91"
 
 
 #============================================
@@ -56,6 +52,9 @@ def format_run(run: object, role: str | None = None, linked: bool = False,
 		_set_explicit_font(run, font_name)
 	if role in ("cell", "menu"):
 		run.bold = True
+	if role == "menu":
+		run.font.color.rgb = docx.shared.RGBColor.from_string("202124")
+		shade(run._r.get_or_add_rPr(), "EEEEEE")
 	if linked:
 		run.font.underline = True
 		run.font.color.rgb = docx.shared.RGBColor.from_string("174F91")
@@ -69,6 +68,84 @@ def format_list(paragraph: object) -> None:
 	paragraph.paragraph_format.space_before = docx.shared.Pt(0)
 	paragraph.paragraph_format.space_after = docx.shared.Pt(2)
 	paragraph.paragraph_format.line_spacing = 1.0
+
+
+#============================================
+def content_indent(list_depth: int = 0, quote_depth: int = 0) -> float:
+	"""Return the hierarchical text edge for body, lists, and quotations."""
+	list_increment = (LIST_INCREMENT_TWIPS / 1440) * max(0, list_depth - 1)
+	return BODY_INDENT_INCHES + list_increment + QUOTE_INDENT_INCHES * quote_depth
+
+
+#============================================
+def list_text_indent_twips(depth: int) -> int:
+	"""Return a native list text edge for zero-based numbering depth."""
+	return BODY_INDENT_TWIPS + LIST_INCREMENT_TWIPS * depth
+
+
+#============================================
+def format_content(paragraph: object, list_depth: int = 0, quote_depth: int = 0,
+	list_item: bool = False) -> None:
+	"""Align each narrative branch to its structural teaching edge."""
+	paragraph.paragraph_format.left_indent = docx.shared.Inches(
+		content_indent(list_depth, quote_depth))
+	paragraph.paragraph_format.right_indent = docx.shared.Inches(0)
+	paragraph.paragraph_format.first_line_indent = docx.shared.Inches(
+		-LIST_HANGING_INCHES if list_item else 0)
+
+
+#============================================
+def usable_width(paragraph: object) -> float:
+	"""Measure the current paragraph width from its real section and indents."""
+	section = paragraph.part.document.sections[-1]
+	left = paragraph.paragraph_format.left_indent or 0
+	right = paragraph.paragraph_format.right_indent or 0
+	width = section.page_width - section.left_margin - section.right_margin - left - right
+	return max(1, width / docx.shared.Inches(1))
+
+
+#============================================
+def format_figure(paragraph: object) -> None:
+	"""Center a standalone figure independently of the Normal body indent."""
+	paragraph.alignment = docx.enum.text.WD_ALIGN_PARAGRAPH.CENTER
+	paragraph.paragraph_format.left_indent = docx.shared.Inches(0)
+	paragraph.paragraph_format.right_indent = docx.shared.Inches(0)
+	paragraph.paragraph_format.first_line_indent = docx.shared.Inches(0)
+	paragraph.paragraph_format.space_after = docx.shared.Pt(0)
+
+
+#============================================
+def format_figure_caption(paragraph: object, list_depth: int = 0, quote_depth: int = 0) -> None:
+	"""Align figure captions to the main body edge below centered figures."""
+	paragraph.alignment = docx.enum.text.WD_ALIGN_PARAGRAPH.LEFT
+	paragraph.paragraph_format.left_indent = docx.shared.Inches(
+		content_indent(0, quote_depth) + CAPTION_INSET_INCHES)
+	paragraph.paragraph_format.right_indent = docx.shared.Inches(CAPTION_INSET_INCHES)
+	paragraph.paragraph_format.first_line_indent = docx.shared.Inches(0)
+	paragraph.paragraph_format.space_after = docx.shared.Pt(8)
+
+
+#============================================
+def format_figure_caption_runs(paragraph: object) -> None:
+	"""Use a compact caption size without replacing the native Normal style."""
+	for run in paragraph.runs:
+		run.font.size = docx.shared.Pt(BODY_SIZE - 1)
+
+
+#============================================
+def format_reflection_prompt(paragraph: object) -> None:
+	"""Give a contextual reflection prompt a quiet, native paragraph callout."""
+	paragraph.paragraph_format.space_before = docx.shared.Pt(4)
+	paragraph.paragraph_format.space_after = docx.shared.Pt(6)
+	properties = paragraph._p.get_or_add_pPr()
+	shade(properties, REFLECTION_FILL)
+	borders = docx.oxml.OxmlElement("w:pBdr")
+	for edge in ("top", "left", "bottom", "right"):
+		border = docx.oxml.OxmlElement(f"w:{edge}")
+		for key, value in {"val": "single", "sz": "4", "space": "4", "color": REFLECTION_BORDER}.items():
+			border.set(docx.oxml.ns.qn(f"w:{key}"), value)
+		borders.append(border)
+	properties.append(borders)
 
 
 #============================================
@@ -90,48 +167,14 @@ def format_table_stripe(row: object) -> None:
 
 
 #============================================
-def estimated_line_count(text: str, width_inches: float, size: int = BODY_SIZE) -> int:
-	"""Estimate editable Word line wrapping with installed body-font metrics.
+def justify_narrative(paragraph: object) -> None:
+	"""Justify every ordinary prose paragraph, never authored display lines.
 
-	Word and Google Docs choose their own final line breaks.  This estimate deliberately
-	only selects justification for clearly long prose, where a one-line difference does
-	not change readability.
+	Word and Google Docs determine final wrapping themselves. Alignment must not depend
+	on a local font-metric guess. Callers exclude lists, formulas, figures, quotes, and
+	paragraphs with intentional hard breaks.
 	"""
-	key = size
-	if key not in FONT_CACHE:
-		path = next((item for item in FONT_PATHS if item.exists()), None)
-		FONT_CACHE[key] = (ImageFont.truetype(str(path), size)
-			if path is not None else ImageFont.load_default())
-	font = FONT_CACHE[key]
-	limit = max(1, width_inches * 72)
-	lines = 0
-	for source_line in text.splitlines() or [text]:
-		words = source_line.split()
-		if not words:
-			lines += 1
-			continue
-		current = ""
-		for word in words:
-			candidate = word if not current else current + " " + word
-			if current and font.getlength(candidate) > limit:
-				lines += 1
-				current = word
-			else:
-				current = candidate
-		lines += 1
-	return lines
-
-
-#============================================
-def justify_narrative(paragraph: object, width_inches: float) -> None:
-	"""Justify naturally wrapping prose, while preserving deliberate display lines.
-
-	A Markdown hard break becomes a native line break in the editable document.  Those
-	breaks are used for equation definitions and compact term-by-term explanations;
-	LibreOffice expands the spaces on every such line when the paragraph is justified.
-	They are display content rather than prose that merely happened to wrap.
-	"""
-	if "\n" not in paragraph.text and estimated_line_count(paragraph.text, width_inches) > 2:
+	if "\n" not in paragraph.text:
 		paragraph.alignment = docx.enum.text.WD_ALIGN_PARAGRAPH.JUSTIFY
 
 
@@ -174,7 +217,7 @@ def configure(document: object) -> None:
 	normal.font.size = docx.shared.Pt(BODY_SIZE)
 	normal.paragraph_format.space_after = docx.shared.Pt(6)
 	normal.paragraph_format.line_spacing = 1.08
-	normal.paragraph_format.left_indent = docx.shared.Inches(BODY_INDENT_INCHES)
+	normal.paragraph_format.left_indent = docx.shared.Inches(0)
 	for name in ("Title", "Subtitle", "Heading 1", "Heading 2", "Heading 3"):
 		style = styles[name]
 		_set_explicit_font(style, BODY_FONT)
@@ -186,10 +229,8 @@ def configure(document: object) -> None:
 			style.paragraph_format.keep_with_next = True
 			style.paragraph_format.space_before = docx.shared.Pt(14)
 			style.paragraph_format.space_after = docx.shared.Pt(6)
-			# Heading depth must read from the left edge inward.  The body begins
-			# after every heading level, so the structure survives Google import.
 			style.paragraph_format.left_indent = docx.shared.Inches(
-				{"Heading 1": 0, "Heading 2": 0.12, "Heading 3": 0.24}[name])
+				{"Heading 1": 0, "Heading 2": 0.1, "Heading 3": 0.2}[name])
 			style.font.color.rgb = docx.shared.RGBColor.from_string(
 				{"Heading 1": "003FFF", "Heading 2": "007576", "Heading 3": "B74300"}[name])
 	title = styles["Title"]
@@ -201,19 +242,27 @@ def configure(document: object) -> None:
 
 
 #============================================
-def format_formula(paragraph: object) -> None:
-	"""Keep editable formula blocks visually distinct using direct formatting."""
-	paragraph.paragraph_format.left_indent = docx.shared.Inches(BODY_INDENT_INCHES)
-	paragraph.paragraph_format.right_indent = docx.shared.Inches(0.12)
+def format_formula(paragraph: object, list_depth: int = 0, quote_depth: int = 0) -> None:
+	"""Reserve compact display space for an editable formula."""
+	format_content(paragraph, list_depth, quote_depth)
 	paragraph.paragraph_format.space_before = docx.shared.Pt(5)
 	paragraph.paragraph_format.space_after = docx.shared.Pt(8)
-	properties = paragraph._p.get_or_add_pPr()
-	shade(properties, FORMULA_FILL)
-	# Word paragraph borders provide visible padding and a non-color cue.
-	borders = docx.oxml.OxmlElement("w:pBdr")
-	for edge in ("top", "left", "bottom", "right"):
-		border = docx.oxml.OxmlElement(f"w:{edge}")
-		for key, value in {"val": "single", "sz": "5", "space": "5", "color": FORMULA_BORDER}.items():
+	paragraph.paragraph_format.keep_with_next = None
+
+
+#============================================
+def format_formula_display_runs(paragraph: object) -> None:
+	"""Box only formula-display characters, keeping surrounding page space unfilled."""
+	for run in paragraph._p.findall(".//w:r", {"w": docx.oxml.ns.nsmap["w"]}):
+		properties = run.get_or_add_rPr()
+		for previous in properties.findall("w:color", {"w": docx.oxml.ns.nsmap["w"]}):
+			properties.remove(previous)
+		color = docx.oxml.OxmlElement("w:color")
+		color.set(docx.oxml.ns.qn("w:val"), FORMULA_COLOR)
+		properties.append(color)
+		for previous in properties.findall("w:bdr", {"w": docx.oxml.ns.nsmap["w"]}):
+			properties.remove(previous)
+		border = docx.oxml.OxmlElement("w:bdr")
+		for key, value in {"val": "single", "sz": "5", "space": "2", "color": FORMULA_BORDER}.items():
 			border.set(docx.oxml.ns.qn(f"w:{key}"), value)
-		borders.append(border)
-	properties.append(borders)
+		properties.append(border)

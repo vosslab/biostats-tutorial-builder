@@ -131,3 +131,9 @@ placeholder with your own content before building.
 The compiler standardizes the formatting. It cannot decide whether a scenario, explanation, or
 question is scientifically appropriate. See [../TUTORIAL_SPEC.md](../TUTORIAL_SPEC.md) for the
 complete supported source contract.
+
+## Show spreadsheet menus
+
+Write a menu path as `**File > Make a copy**` or a code span. Generated documents use bold
+Roboto Mono on a light gray background. Keep the sentence punctuation outside the path.
+Menu paths in Choose actions use the same style. Spreadsheet formulas retain their own styling.

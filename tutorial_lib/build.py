@@ -200,7 +200,19 @@ def merge_documents(documents: list[tutorial_lib.model.Document]) -> tutorial_li
 				if not any(item.role == region.role and _reference_key(item.reference)
 					== _reference_key(region.reference) for item in target.role_regions):
 					target.role_regions.append(region)
-	return dataclasses.replace(documents[0], worksheets=worksheets, actions=actions)
+	# Shared data leads; each lesson's action targets precede its reflection tab.
+	work_sheets = [{action.target.sheet.casefold() for action in document.actions
+		if action.target is not None} for document in documents]
+	owned = set().union(*work_sheets)
+	ordered = [sheet for sheet in worksheets
+		if not sheet.is_reflection and sheet.name.casefold() not in owned]
+	for document, names in zip(documents, work_sheets):
+		for sheet in document.worksheets:
+			if sheet.is_reflection or sheet.name.casefold() in names:
+				target = by_name[sheet.name.casefold()]
+				if target not in ordered:
+					ordered.append(target)
+	return dataclasses.replace(documents[0], worksheets=ordered, actions=actions)
 
 
 #============================================

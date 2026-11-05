@@ -1,8 +1,12 @@
 # Dr. Caffeine's All-Nighter Academy: descriptive statistics
 
-This is tutorial 1 of 3. No previous tutorial is required. The **Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx** workbook contains all 25 observations from the [original class template](https://docs.google.com/spreadsheets/d/1mhOQhC_1hqnbvYItPT3y-V-_9l9q3pN7MtZDcOevaA0/edit?gid=0#gid=0); formula answers are blank. Record your written responses in the reflection tab.
+This is tutorial 1 of 3. No previous tutorial is required. The supplied workbook contains all 25 observations from the [original class template](https://docs.google.com/spreadsheets/d/1mhOQhC_1hqnbvYItPT3y-V-_9l9q3pN7MtZDcOevaA0/edit?gid=0#gid=0); formula answers are blank.
 
-![All-Nighter Academy introduction](assets/caffeine_art_01.jpg)
+`Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx`
+
+Record your written responses in the reflection tab.
+
+![Dr. Caffeine welcomes students to his late-night lab, where coffee cups outnumber well-rested students.](assets/caffeine_art_01.jpg)
 
 ## Workbook
 
@@ -234,7 +238,7 @@ This is tutorial 1 of 3. No previous tutorial is required. The **Dr_Caffeines_Al
 
 ## Tutorial
 
-### Part: **Warm up - Tania + Roohana**
+### Part 1: **Warm up**
 
 - **Worksheet:** Sample Mean
 
@@ -271,7 +275,7 @@ Let's start by examining the amount of sleep students are getting in our dataset
 
 2. For exam scores, enter [=AVERAGE(B2:B26)](enter:F2) in F2. Record the corresponding exam-score statistic; its unit is %.
 
-3. In the reflection tab, answer **Reflection 1.1: Based on your result, do students appear to be getting enough sleep? Is the average higher or lower than you expected?**
+**Reflection 1.1:** Based on your result, do students appear to be getting enough sleep? Is the average higher or lower than you expected? Write your answer in the Part 1 Reflection tab.
 
 ##### Substep: Calculate the median
 
@@ -282,7 +286,7 @@ Unlike the mean, the median is less affected by unusually high or low scores. Th
 
 2. For exam scores, enter [=MEDIAN(B2:B26)](enter:F3) in F3. Record the corresponding exam-score statistic; its unit is %.
 
-3. In the reflection tab, answer **Reflection 1.2: Is the median similar to your mean?**
+**Reflection 1.2:** Is the median similar to your mean? Write your answer in the Part 1 Reflection tab.
 
 ##### Substep: Calculate the sample standard deviation
 
@@ -297,7 +301,8 @@ A small standard deviation indicates that the sleep durations are clustered clos
 
 ##### Substep: Summarize your results
 
-1. In the reflection tab, answer **Reflection 1.3: Write two sentences for Dr. Caffeine: one about typical sleep and its variability, and one about typical exam performance and its variability. Include the six calculated values and their units.**
-2. Keep the formulas in your workbook for submission.
+**Reflection 1.3:** Write two sentences for Dr. Caffeine: one about typical sleep and its variability, and one about typical exam performance and its variability. Include the six calculated values and their units. Write your answer in the Part 1 Reflection tab.
+
+1. Keep the formulas in your workbook for submission.
 
 Congratulations! You are now ready for your first day at All-Nighter Academy. You have successfully used Google Sheets to calculate descriptive statistics. Next, we'll use a set of data to investigate whether hours of sleep can predict final exam scores.

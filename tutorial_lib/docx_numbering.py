@@ -33,10 +33,17 @@ def create_list(document: object, ordered: bool, start: int, depth: int) -> int:
 	properties = docx.oxml.OxmlElement("w:pPr")
 	indent = docx.oxml.OxmlElement("w:ind")
 	indent.set(docx.oxml.ns.qn("w:left"),
-		str(tutorial_lib.docx_styles.LIST_INDENT_TWIPS * (depth + 1)))
+		str(tutorial_lib.docx_styles.list_text_indent_twips(depth)))
 	indent.set(docx.oxml.ns.qn("w:hanging"),
 		str(tutorial_lib.docx_styles.LIST_HANGING_TWIPS))
 	properties.append(indent)
+	tabs = docx.oxml.OxmlElement("w:tabs")
+	tab = docx.oxml.OxmlElement("w:tab")
+	tab.set(docx.oxml.ns.qn("w:val"), "num")
+	tab.set(docx.oxml.ns.qn("w:pos"),
+		str(tutorial_lib.docx_styles.list_text_indent_twips(depth)))
+	tabs.append(tab)
+	properties.append(tabs)
 	level.append(properties)
 	abstract.append(level)
 	root.append(abstract)

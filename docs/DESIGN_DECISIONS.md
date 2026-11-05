@@ -7,6 +7,69 @@ the reasoning a later reader needs. Guidance Neil Voss states belongs in
 `docs/active_plans/decisions/`. [PROPAGATED HEADER - ENTRIES BELOW ARE YOURS]
 <!-- VENDORED HEADER: END -->
 
+### Shared standalone figure layout
+
+**Decision.** Render standalone and line-break-separated tutorial images as centered DOCX figures
+inside a 6.5-inch-wide by 3-inch-tall maximum box with proportional page-height scaling, then
+place native-Normal captions beneath them.
+
+**Why.** Image DPI should not make otherwise comparable teaching figures look arbitrarily small or
+large, and prose needs to retain its ordinary instructional alignment.
+
+**Consequence.** Genuine inline and linked images keep their natural size. Figure captions use
+body size minus one point with a larger inset, without custom Word styles. Exceptional author `width` and `height` inch
+attributes further cap the figure box without changing its aspect ratio.
+
+**Owner.** [docx_renderer.py](../tutorial_lib/docx_renderer.py) and
+[docx_styles.py](../tutorial_lib/docx_styles.py).
+
+### Narrative alignment and reflection scope
+
+**Decision.** Justify every ordinary native body paragraph without estimating its rendered line
+count. Keep list items, quoted text, equations, formula displays, captions, and reflection
+callouts left aligned; center figures. Render a reflection callout only when its whole source paragraph is the
+matching workbook identifier and question plus a brief Part Reflection destination.
+
+**Why.** Word and Google Docs determine line wrapping independently, so local font metrics cannot
+reliably decide alignment. Exact prompt-only paragraphs keep teaching explanation out of a response
+prompt box while preserving the workbook's question text as the source of truth.
+
+**Consequence.** Authors split surrounding explanation into ordinary prose and use the visible
+workbook filename on its own ordinary code line when a long name needs a stable printable boundary;
+no invisible characters or Word-only break controls alter copyable text.
+
+**Owner.** [docx_renderer.py](../tutorial_lib/docx_renderer.py),
+[docx_styles.py](../tutorial_lib/docx_styles.py), and [TUTORIAL_SPEC.md](TUTORIAL_SPEC.md).
+
+### Formula display run borders
+
+**Decision.** Format standalone formula displays with dark-green monospace text and a compact
+native OOXML run border around the formula characters. Keep the containing paragraph unfilled and
+unbordered; reflection prompts retain their separate shaded paragraph callout.
+
+**Why.** A character-level border distinguishes a copyable entry without making a short formula
+look like a full-width card or adding visual background noise.
+
+**Consequence.** Formula runs receive the native Word `w:bdr` property after inline rendering,
+including fenced formulas. The local DOCX/PDF build verifies this native representation; how a
+future Google Docs import renders character borders remains unverified.
+
+**Owner.** [docx_styles.py](../tutorial_lib/docx_styles.py) and
+[docx_renderer.py](../tutorial_lib/docx_renderer.py).
+
+### Topic-scoped tutorial sources
+
+**Decision.** Store each authored lesson in its topic folder beneath `tutorial_data/`, with that
+topic's assets in a sibling `assets/` folder.
+
+**Why.** Topic grouping keeps a lesson beside all of its active and legacy artwork without changing
+the lesson or asset filenames.
+
+**Consequence.** Source discovery is recursive. Consumers use topic-qualified paths and released
+files keep their existing names.
+
+**Owner.** [tutorial_data](../tutorial_data/) and [devel/check_tutorial_calculations.py](../devel/check_tutorial_calculations.py).
+
 ### Default spreadsheet numerical display
 
 **Decision.** Apply `0.000` to numerical content and blank work cells in generated spreadsheets.
@@ -346,18 +409,36 @@ blank and treat dimensions as estimates, not font measurements or calculated for
 **Owner.** [TUTORIAL_SPEC.md](TUTORIAL_SPEC.md), [compiler.py](../tutorial_lib/compiler.py), and
 [workbook.py](../tutorial_lib/workbook.py).
 
-### Standalone lesson numbering
+### Shared and standalone lesson numbering
 
-**Decision.** Number each independently usable Caffeine lesson from Part 1. Caffeine 1 uses Steps 1-5;
-Caffeine 2 uses Steps 1-7 with substeps 3.1-3.2 and 6.1-6.4; Caffeine 3 uses Steps 1-7.
+**Decision.** Caffeine sources explicitly declare Parts 1, 2, and 3, preserving those identities
+when built separately. Shared builds give a source with one Part the same resolved number in its
+heading, title-area subtitle, reflection identifiers, and reflection tab.
 
-**Why.** The three lessons are separate classroom materials, not sequential parts of one document.
+**Why.** Separate documents remain parts of one tutorial sequence; repeating Part 1 obscures that
+sequence and disagrees with the shared workbook.
 
-**Consequence.** Preserve semantic Part, Step, and Substep markers in each source and render numbering
-from that source structure; do not number the lessons as Parts 1, 2, and 3.
+**Consequence.** Explicit identities take precedence; otherwise shared-build source order supplies
+the identity. Preserve local Steps and Substeps and multi-Part source structure. Resolve copies
+without mutating compiled source models.
 
 **Owner.** [TUTORIAL_SPEC.md](TUTORIAL_SPEC.md) and
-[docx_numbering.py](../tutorial_lib/docx_numbering.py).
+[reflections.py](../tutorial_lib/reflections.py).
+
+### Complete navigable contents
+
+**Decision.** Show every Step and Substep as linked native TOC entries, with Substeps indented
+beneath Steps. A single Part appears as a standard Subtitle beneath the document title and retains
+its body Heading 1; omit it from Contents. Multiple Parts retain grouped Part entries.
+
+**Why.** Students need the full instructional sequence for navigation without a redundant single
+Part entry or changes to the body hierarchy.
+
+**Consequence.** Use a native TOC field over Heading 2-3 for single-Part documents and Heading 1-3
+for multi-Part documents. Seed linked, hanging-indented paragraphs for immediate local readability.
+The Contents label is ordinary formatted text, so it cannot include itself when refreshed.
+
+**Owner.** [docx_renderer.py](../tutorial_lib/docx_renderer.py).
 
 ### DOCX Google Docs style mapping
 
@@ -456,20 +537,23 @@ and the existing tutorial source and compiler contracts.
 
 ### Native DOCX alignment and indentation
 
-**Decision.** Use native DOCX paragraph styles for heading indentation and paragraph alignment,
-including step headings with zero left indent and a 0.2-inch body indent. Estimate natural wrapped line counts from
-font metrics and usable paragraph width; justify prose estimated to exceed two lines. Keep headings,
-formula displays, hard-break paragraphs, and table entries left aligned, except the corrected formula
-introduction, which remains justified.
+**Decision.** Use a stepped instructional geometry: Part, Step, and Substep headings begin at
+0, 0.1, and 0.2 inches; ordinary body and first-level task text begin at 0.3 inches. Each deeper
+list adds 0.25 inches. Native list markers hang 0.167 inches from the text edge, and the tab stop
+matches that edge. Continuations, formulas, and reflection prompts retain their item's text edge;
+quotes add their actual depth; captions use a 0.2-inch inset from the main body edge at 10 points;
+figures remain centered at their shared proportional maximum.
 
-**Why.** Native paragraph formatting survives Google Docs import and supports both relative heading
-placement and full justification without relying on fixed spaces or direct-run alignment.
+**Why.** The lesson structure needs visible progression from Part through learner task without
+mechanically flattening meaningful nested actions. This supersedes the earlier common-edge approach
+that was based on quoted review advice rather than a human formatting preference.
 
-**Consequence.** Step headings sit left of body paragraphs, with varied heading indentation. Exact
-wrapping can change after import, so the estimate is not a claim of live Google Docs verification.
+**Consequence.** Renderer paths calculate prose width from the current section and paragraph
+indents. Native DOCX styles and ordinary paragraphs remain compatible with Google Docs; exact
+import layout is not claimed without an observed import.
 
 **Owner.** [DOCX styles](../tutorial_lib/docx_styles.py), [DOCX renderer](../tutorial_lib/docx_renderer.py),
-and the [student publishing implementation ledger](active_plans/student_publishing_implementation.md).
+and [DOCX numbering](../tutorial_lib/docx_numbering.py).
 
 ### Proportional figures and editable mathematics
 
@@ -484,6 +568,20 @@ styles for the native table of contents. Workbook formulas remain literal spread
 
 **Owner.** [DOCX renderer](../tutorial_lib/docx_renderer.py) and
 [inline renderer](../tutorial_lib/docx_inline.py).
+
+### Contextual reflection prompts
+
+**Decision.** Style an instructional paragraph containing a compiled full reflection prompt and its
+qualified identifier as a modest native DOCX paragraph callout.
+
+**Why.** Students need to notice the point to switch to their reflection tab without receiving a
+duplicate question section or an author-only syntax.
+
+**Consequence.** The Workbook reflection list remains authoritative. The renderer derives callouts
+from that compiled list and uses ordinary paragraph shading and borders compatible with Google Docs.
+
+**Owner.** [docx_renderer.py](../tutorial_lib/docx_renderer.py) and
+[docx_styles.py](../tutorial_lib/docx_styles.py).
 
 
 
@@ -605,3 +703,14 @@ existing compile-before-write and unchanged-source checks. This applies ASVS 2.2
 validation and 2.2.3 consistency of related values without introducing a new workflow.
 
 **Owner.** [worksheet_edit.py](../tutorial_lib/worksheet_edit.py).
+
+### Workbook lesson tab order
+
+**Decision.** Put shared data tabs first, then each lesson's action-target worksheets and reflection
+tab together in source order. A work tab used by multiple lessons appears only once.
+
+**Why.** Students should reach reflection answers immediately after the corresponding work.
+
+**Consequence.** Reorder the merged model before export; preserve tab names and cell contents.
+
+**Owner.** [build.py](../tutorial_lib/build.py).

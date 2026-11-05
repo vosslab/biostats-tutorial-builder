@@ -1,6 +1,8 @@
 # Dr. Caffeine's All-Nighter Academy: linear regression
 
-This is tutorial 2 of 3. Familiarity with spreadsheet entry and descriptive statistics is helpful. The **Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx** workbook repeats all 25 observations, so no completed previous workbook is required.
+This is tutorial 2 of 3. Familiarity with spreadsheet entry and descriptive statistics is helpful. The supplied workbook repeats all 25 observations, so no completed previous workbook is required.
+
+`Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx`
 
 **Does Sleep Affect Exam Scores?**
 
@@ -240,19 +242,19 @@ This is tutorial 2 of 3. Familiarity with spreadsheet entry and descriptive stat
 
 ## Tutorial
 
-### Part: **Scenario:**
+### Part 2: **Scenario:**
 
 - **Worksheet:** Linear Regression
 
 Welcome to the **All-Nighter Academy**, where the coffee is strong, the students are exhausted, and the final exams are approaching!
 
-![All-Nighter Academy illustration](assets/caffeine_art_02.png)
+![Students doze over their textbooks during exam week, setting the scene for a study of sleep and exam performance.](assets/caffeine_art_02.png)
 
 Dr. Caffeine has noticed that some students stay up late studying while others prioritize getting a full night's sleep. He suspects that the amount of sleep students get may be related to their final exam scores.
 
 But is there ***actually*** a relationship between sleep and exam performance, or is Dr. Caffeine just running on too much caffeine? In this tutorial, you will use Google Sheets to explore the relationship between students' hours of sleep and their final exam scores. We'll start by using linear regression to fit a straight line to the data. But what happens when students who get *too much* sleep start scoring lower on their exams? A straight line might not tell the whole story! We'll then explore quadratic regression to see if a curved model might better describe the relationship. Grab your coffee, let's get into it.
 
-![All-Nighter Academy illustration](assets/caffeine_art_03.png)
+![Surrounded by coffee and textbooks, Dr. Caffeine wonders whether sleep and exam scores are related.](assets/caffeine_art_03.png)
 
 #### Research question
 
@@ -267,7 +269,7 @@ But is there ***actually*** a relationship between sleep and exam performance, o
 
 Basically, we're testing whether there is evidence of a straight-line relationship between sleep and exam scores. Dr. Caffeine wants answers, and we have statistics!
 
-![All-Nighter Academy illustration](assets/caffeine_art_05.png)
+![Dr. Caffeine opens a spreadsheet amid towers of coffee cups; your first task is to organize a personal workbook.](assets/caffeine_art_05.png)
 
 #### Step: **Set Up Your Google Sheet**
 
@@ -315,11 +317,15 @@ Before running any calculations, look at the dots you have created. Are they sho
 * **Weak relationship:** the points show a general upward or downward trend, but they are widely scattered instead of closely following a straight line\
 * **No apparent linear relationship:** the points do not show a clear upward or downward trend. However, they may still show a pattern, like a curve
 
-![All-Nighter Academy illustration](assets/caffeine_art_07.png)
+![Dr. Caffeine compares sketches of positive, negative, weak, and no apparent linear relationships before fitting a model.](assets/caffeine_art_07.png)
 
-**Pause and predict:** In the reflection tab, answer **Reflection 2.1: Predict the scatterplot pattern before calculating.** Don't worry about getting it right just yet; we're about to put this data to work.
+**Pause and predict.**
 
-![All-Nighter Academy illustration](assets/caffeine_art_08.png)
+**Reflection 2.1:** Predict the scatterplot pattern before calculating. Write your answer in the Part 2 Reflection tab.
+
+Don't worry about getting it right just yet; we're about to put this data to work.
+
+![Dr. Caffeine confronts his spreadsheet and linear-regression notes, ready to turn the scatterplot into an equation.](assets/caffeine_art_08.png)
 
 #### Step: **Calculate linear regression**
 
@@ -332,13 +338,21 @@ Now that you have visualized the data, you can use linear regression to describe
 **A simple linear regression equation is:**\
 **Predicted exam score =** intercept + slope x hours of sleep\
 
+In familiar algebra, the predicted exam score follows:
+
+$y = mx + b$
+
+Here, $y$ is the predicted exam score, $x$ is hours of sleep, $m$ is the slope, and $b$ is the intercept. The workbook uses the equivalent regression notation:
+
 $\hat{y} = b_0 + b_1x$
 
-**Don't let the symbols scare you. Here's what they actually mean**:
+For workbook results, $b_1 = m$ and $b_0 = b$.
 
-$\hat{y}$ = predicted exam score\
-$b_0$ = intercept: predicted score at 0 hours of sleep\
-$b_1$ = slope: predicted change in score for each additional hour of sleep\
+**Here's the familiar algebra translation:**
+
+$y$ = predicted exam score\
+$m$ = slope: predicted change in score for each additional hour of sleep\
+$b$ = intercept: predicted score at 0 hours of sleep\
 $x$ = hours of sleep
 
 ##### Substep: Calculate the slope
@@ -381,7 +395,11 @@ These values are hypothetical examples! Use actual values from your own spreadsh
 
 ##### Substep: **Interpret the calculated slope and intercept**
 
-In the reflection tab, answer these using your calculated slope and intercept: **Reflection 2.2: Interpret the slope with units and state whether it proves causation.** **Reflection 2.3: Interpret the intercept. Is 0 hours of sleep within the observed range?**
+Use your calculated slope and intercept for these two reflections.
+
+**Reflection 2.2:** Interpret the slope with units and state whether it proves causation. Write your answer in the Part 2 Reflection tab.
+
+**Reflection 2.3:** Interpret the intercept. Is 0 hours of sleep within the observed range? Write your answer in the Part 2 Reflection tab.
 
 1. **Slope (E2):** As hours of sleep increase by one hour, the predicted final score changes by approximately [insert your slope] points, on average.
    - A positive slope indicates an upward linear trend, while a negative slope indicates a downward linear trend. Compare the trend with your prediction from reflection question 1.
@@ -390,10 +408,10 @@ In the reflection tab, answer these using your calculated slope and intercept: *
 
 ##### Substep: Predict a score at seven hours
 
-1. Use the simple linear regression equation $\hat{y} = b_0 + b_1x$ to predict the score for a student who gets 7 hours of sleep.
-2. Substitute $x = 7$: $\hat{y} = b_0 + b_1(7)$.
+1. Use the familiar linear equation $y = mx + b$ to predict the score for a student who gets 7 hours of sleep; here $y$ is the predicted exam score.
+2. Substitute $x = 7$: $y = m(7) + b$. In the workbook, use $m = b_1$ and $b = b_0$.
 3. Use your own slope and intercept to calculate the predicted score. In the supplied **Predicted score at 7 hours** row, enter [=E6+E2*7](enter:E14) in E14. Remember that this is a model-based prediction, not a guarantee of what a student would actually score.
-4. In the reflection tab, answer **Reflection 2.4: State the prediction for 7 hours of sleep and why it is not a guarantee.**
+**Reflection 2.4:** State the prediction for 7 hours of sleep and why it is not a guarantee. Write your answer in the Part 2 Reflection tab.
 
 #### Step: **Evaluate regression**
 
@@ -403,11 +421,11 @@ A regression equation can describe a pattern, but we also need to see how well i
 
 1. R<sup>2</sup> describes the proportion of variation in the exam scores that is accounted for by the linear regression model using hours of sleep.\
 2. For example, if R<sup>2</sup> = 0.60, then 60% of the variation in the exam scores is accounted for by the fitted linear regression model. However, R<sup>2</sup> alone does not tell us whether a straight line is the best way to describe the relationship.\
-3. In the reflection tab, answer **Reflection 2.5: Interpret R-squared for the linear model.**
+**Reflection 2.5:** Interpret R-squared for the linear model. Write your answer in the Part 2 Reflection tab.
 
 ##### Substep: **To determine whether there is actual statistical evidence of a linear relationship, we need to test the regression slope!**
 
-We can test whether the population slope differs from zero with the following hypotheses:
+In plain language, we test whether the population relationship has a nonzero slope. The formal hypotheses use the population slope coefficient $\beta_1$:
 
 * **H<sub>0</sub>: &beta;<sub>1</sub> = 0** -- There is no linear relationship between sleep hours and exam scores in the population.\
 * **H<sub>1</sub>: &beta;<sub>1</sub> &ne; 0** -- There is a linear relationship between sleep hours and exam scores in the population.
@@ -450,13 +468,14 @@ Compare the p-value in **K10** with the significance level of **&alpha; = 0.05**
 
 * **If p < 0.05:** Reject the null hypothesis! We have statistically significant evidence of a linear relationship between hours of sleep and exam scores. Dr. Caffeine might be onto something!\
 * **If p &ge; 0.05:** Fail to reject the null hypothesis. We don't have enough evidence to conclude that a linear relationship exists. Sorry, Dr. Caffeine, we can't blame the all-nighters just yet!\
-* In the reflection tab, answer **Reflection 2.6: State the p-value, decision at alpha = 0.05, and conclusion about a linear slope.**\
-  \* Just an Important note! *A p-value doesn't tell us how strong the relationship is, and it doesn't tell us the probability that the null hypothesis is true. It just helps us decide whether our data provide enough evidence against the null hypothesis. Statistics: humbling us one coffee at a time.*
+**Reflection 2.6:** State the p-value, decision at alpha = 0.05, and conclusion about a linear slope. Write your answer in the Part 2 Reflection tab.
+
+*A p-value doesn't tell us how strong the relationship is, and it doesn't tell us the probability that the null hypothesis is true. It just helps us decide whether our data provide enough evidence against the null hypothesis. Statistics: humbling us one coffee at a time.*
 
 #### Step: **Interpret results**
 
 We've made our chart, calculated our regression equation AND tested our hypothesis. Now it's time to take a step back and look at the bigger picture!
 
-In the reflection tab, answer **Reflection 2.7: Does a straight line capture the overall pattern? Explain.**
+**Reflection 2.7:** Does a straight line capture the overall pattern? Explain. Write your answer in the Part 2 Reflection tab.
 
 Your slope should be about 3.18 percentage points per hour and R-squared about 0.347. A significant positive slope can coexist with curvature that a straight line misses. Include your labeled scatterplot, regression calculations, seven-hour prediction, two-tailed slope-test decision, and reflection notes for submission. Continue to the quadratic regression tutorial to investigate the curve.
