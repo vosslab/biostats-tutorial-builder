@@ -205,16 +205,22 @@ This is tutorial 2 of 3. Familiarity with spreadsheet entry and descriptive stat
 
 | Quadratic statistic | Value |
 | --- | --- |
-| Quadratic coefficient b2 | |
-| Linear coefficient b1 | |
-| Intercept b0 | |
+| Quadratic coefficient a | |
+| Linear coefficient b | |
+| Intercept c | |
 | Quadratic R-squared | |
-| Standard error of b2 | |
+| Standard error of a | |
 | Residual degrees of freedom | |
 | Predicted score at 7 hours | |
 | | |
 | t-statistic for quadratic term | |
 | Two-tailed p-value | |
+
+#### At: H13
+
+| Model equation | y = ax^2 + bx + c |
+| --- | --- |
+| At 7 hours of sleep | `a*7^2 + b*7 + c` |
 
 #### At: M1
 
@@ -263,9 +269,9 @@ But is there ***actually*** a relationship between sleep and exam performance, o
 
 #### Hypotheses: What are we actually testing?
 
-**Null Hypothesis H0:** There is no linear relationship between hours of sleep and final exam scores in the population. (the regression slope is zero)
+**null hypothesis, H<sub>0</sub>:** There is no linear relationship between hours of sleep and final exam scores in the population. (the regression slope is zero)
 
-**Alternative Hypothesis H1:** There is a linear relationship between hours of sleep and final exam scores in the population. (the regression slope is not zero)
+**alternative hypothesis, H<sub>a</sub>:** There is a linear relationship between hours of sleep and final exam scores in the population. (the regression slope is not zero)
 
 Basically, we're testing whether there is evidence of a straight-line relationship between sleep and exam scores. Dr. Caffeine wants answers, and we have statistics!
 
@@ -425,10 +431,10 @@ A regression equation can describe a pattern, but we also need to see how well i
 
 ##### Substep: **To determine whether there is actual statistical evidence of a linear relationship, we need to test the regression slope!**
 
-In plain language, we test whether the population relationship has a nonzero slope. The formal hypotheses use the population slope coefficient $\beta_1$:
+In plain language, we test whether the population relationship has a nonzero slope. Using $m$ for the population slope, the hypotheses are:
 
-* **H<sub>0</sub>: &beta;<sub>1</sub> = 0** -- There is no linear relationship between sleep hours and exam scores in the population.\
-* **H<sub>1</sub>: &beta;<sub>1</sub> &ne; 0** -- There is a linear relationship between sleep hours and exam scores in the population.
+* **null hypothesis, H<sub>0</sub>: $m$ = 0** -- There is no linear relationship between sleep hours and exam scores in the population.\
+* **alternative hypothesis, H<sub>a</sub>: $m$ &ne; 0** -- There is a linear relationship between sleep hours and exam scores in the population.
 
 ##### Substep: **Calculate the regression statistics in Google Sheets**
 

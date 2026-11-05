@@ -128,8 +128,8 @@ his spreadsheet once again. This time, he must:
 - Perform a one-sample T-test to determine if his babies' weights are significantly larger than
    the national average of 7.5 lbs.
 
-For the one-tailed right-tail claim, H0: the hospital mean is at most 7.5 lbs and H1: it is
-greater than 7.5 lbs. For the two-tailed comparison, H0: it equals 7.5 lbs and H1: it differs.
+For the one-tailed right-tail claim, null hypothesis, H<sub>0</sub>: the hospital mean is at most 7.5 lbs and alternative hypothesis, H<sub>a</sub>: it is
+greater than 7.5 lbs. For the two-tailed comparison, null hypothesis, H<sub>0</sub>: it equals 7.5 lbs and alternative hypothesis, H<sub>a</sub>: it differs.
 Choose the alternative before examining results. The national value is a fictional teaching
 benchmark, not a verified current public-health estimate.
 

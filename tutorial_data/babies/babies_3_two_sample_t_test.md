@@ -95,9 +95,9 @@ if not heavier, than Joe's fried-food babies.
 Before calculating or comparing the group means, standard deviations, or sample sizes, use the
 research question to choose and record your alternative in your notes. Use a two-tailed test when
 the question asks whether the means differ in either direction. Use a right-tailed test only for a
-clear, justified prediction that Joe's mean is greater. For any difference, record H0: the hospital
-population means are equal; H1: they differ. For Joe-greater, record H0: Joe's mean is less than or
-equal to Green Veggies' mean; H1: Joe's mean is greater. Keep this choice for the final
+clear, justified prediction that Joe's mean is greater. For any difference, record null hypothesis, H<sub>0</sub>: the hospital
+population means are equal; alternative hypothesis, H<sub>a</sub>: they differ. For Joe-greater, record null hypothesis, H<sub>0</sub>: Joe's mean is less than or
+equal to Green Veggies' mean; alternative hypothesis, H<sub>a</sub>: Joe's mean is greater. Keep this choice for the final
 interpretation, regardless of which result the summaries or p-values suggest.
 
 #### Step: Set Up the Statistical Calculations
@@ -142,9 +142,9 @@ Center,"** you need to decide on the direction of your hypothesis:
   in the average weights between the two hospitals, regardless of direction. This means you're
   checking if the weights at one hospital are **either higher or lower** than the other.
   * **Example Hypothesis:**
-    * **Null Hypothesis (H0):** The average weights at Joe's Hospital are equal to those at Green
+    * **null hypothesis, H<sub>0</sub>:** The average weights at Joe's Hospital are equal to those at Green
       Veggies.
-    * **Alternative Hypothesis (H1):** The average weights at Joe's Hospital are **different** from
+    * **alternative hypothesis, H<sub>a</sub>:** The average weights at Joe's Hospital are **different** from
       those at Green Veggies (either higher or lower).
   * Use a **two-tailed test** if you **do not have a specific expectation** about which hospital's
     average weight is higher.
@@ -152,9 +152,9 @@ Center,"** you need to decide on the direction of your hypothesis:
   you specifically want to test if the babies at **Joe's Hospital** are **heavier** than those at
   **Green Veggies**, you would use a **one-tailed test**.
   * **Example Hypothesis:**
-    * **Null Hypothesis (H0):** The average weights at Joe's Hospital are **less than or equal to**
+    * **null hypothesis, H<sub>0</sub>:** The average weights at Joe's Hospital are **less than or equal to**
       those at Green Veggies.
-    * **Alternative Hypothesis (H1):** The average weights at Joe's Hospital are **greater** than
+    * **alternative hypothesis, H<sub>a</sub>:** The average weights at Joe's Hospital are **greater** than
       those at Green Veggies.
   * Use a **one-tailed test** if you have a **specific hypothesis** about which hospital has heavier
     babies.

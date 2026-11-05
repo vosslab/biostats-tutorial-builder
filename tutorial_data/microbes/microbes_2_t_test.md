@@ -124,7 +124,7 @@ When calculating the **sample standard deviation**, the deviations from the esti
 
 #### Step: Determine the Type of Test (One-Tailed or Two-Tailed)
 
-Main lower-tail question: H0: mean >= 4.0; H1: mean < 4.0. The two-tailed comparison uses H0: mean = 4.0 versus H1: mean != 4.0; the higher-tail comparison uses H0: mean <= 4.0 versus H1: mean > 4.0.
+Main lower-tail question: null hypothesis, H<sub>0</sub>: mean >= 4.0; alternative hypothesis, H<sub>a</sub>: mean < 4.0. The two-tailed comparison uses null hypothesis, H<sub>0</sub>: mean = 4.0 versus alternative hypothesis, H<sub>a</sub>: mean != 4.0; the higher-tail comparison uses null hypothesis, H<sub>0</sub>: mean <= 4.0 versus alternative hypothesis, H<sub>a</sub>: mean > 4.0.
 
 For the **T-test** on **microbial diversity** data from **Busse Woods**, you need to decide whether you are testing for any **significant difference** or a specific **directional difference** from the benchmark (**Shannon Index** of 4.0).
 

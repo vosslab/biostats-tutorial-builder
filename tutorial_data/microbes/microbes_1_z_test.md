@@ -58,8 +58,8 @@ The primary goal of this exercise is to determine whether microbial diversity (m
 
 In this tutorial, you will use **Google Sheets** to conduct a **Z-test** using the sample data to investigate whether microbial diversity at **Busse Woods** is lower than the benchmark.
 
-* **Null Hypothesis H<sub>0</sub>**: The population mean microbial diversity in the forest preserve is at least the benchmark (Shannon Index >= 4.0).
-* **Alternative Hypothesis H<sub>1</sub>**: The population mean microbial diversity in the forest preserve is lower than the benchmark (Shannon Index < 4.0).
+* **null hypothesis, H<sub>0</sub>**: The population mean microbial diversity in the forest preserve is at least the benchmark (Shannon Index >= 4.0).
+* **alternative hypothesis, H<sub>a</sub>**: The population mean microbial diversity in the forest preserve is lower than the benchmark (Shannon Index < 4.0).
 
 #### Step: Find Your Copy of the Spreadsheet
 
@@ -104,7 +104,7 @@ The Z-statistic standardizes the difference between the **sample mean** and the 
 
 #### Step: Determine the Type of Test (One-Tailed or Two-Tailed)
 
-Main lower-tail question: H0: mean >= 4.0; H1: mean < 4.0. The two-tailed comparison uses H0: mean = 4.0 versus H1: mean != 4.0; the higher-tail comparison uses H0: mean <= 4.0 versus H1: mean > 4.0.
+Main lower-tail question: null hypothesis, H<sub>0</sub>: mean >= 4.0; alternative hypothesis, H<sub>a</sub>: mean < 4.0. The two-tailed comparison uses null hypothesis, H<sub>0</sub>: mean = 4.0 versus alternative hypothesis, H<sub>a</sub>: mean != 4.0; the higher-tail comparison uses null hypothesis, H<sub>0</sub>: mean <= 4.0 versus alternative hypothesis, H<sub>a</sub>: mean > 4.0.
 
 When performing a Z-test on microbial diversity data from Busse Woods, you need to decide whether you are testing for **any significant difference** or a **specific directional difference** from the known benchmark (Shannon Index of 4.0).
 
@@ -114,9 +114,9 @@ This is used when you want to test if there is any **significant difference** in
 
 * **Example Hypothesis**:
 
-  * **Null Hypothesis (H<sub>0</sub>)**: The average microbial diversity in the forest preserve is equal to the benchmark (Shannon Index \= 4.0).
+  * **null hypothesis, H<sub>0</sub>**: The average microbial diversity in the forest preserve is equal to the benchmark (Shannon Index \= 4.0).
 
-  * **Alternative Hypothesis (H<sub>1</sub>)**: The average microbial diversity in the forest preserve is different from the benchmark (either higher or lower).
+  * **alternative hypothesis, H<sub>a</sub>**: The average microbial diversity in the forest preserve is different from the benchmark (either higher or lower).
 
 Use a **two-tailed test** if you do not have a specific expectation about whether the microbial diversity is **higher or lower** than the benchmark. You're testing for any difference.
 
@@ -126,9 +126,9 @@ This is used when you have a **specific direction** in mind. For example, if you
 
 * **Example Hypothesis**:
 
-  * **Null Hypothesis (H<sub>0</sub>)**: The microbial diversity in the forest preserve is less than or equal to the benchmark (Shannon Index <= 4.0).
+  * **null hypothesis, H<sub>0</sub>**: The microbial diversity in the forest preserve is less than or equal to the benchmark (Shannon Index <= 4.0).
 
-  * **Alternative Hypothesis (H<sub>1</sub>)**: The microbial diversity in the forest preserve is **greater** than the benchmark (Shannon Index \> 4.0).
+  * **alternative hypothesis, H<sub>a</sub>**: The microbial diversity in the forest preserve is **greater** than the benchmark (Shannon Index \> 4.0).
 
 Use a **one-tailed test** if you have a specific hypothesis about whether the microbial diversity is **higher** (or lower, if reversed) than the benchmark. This allows you to test for a **directional** difference.
 

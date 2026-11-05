@@ -20,6 +20,16 @@ run `source .venv/bin/activate` after `source source_me.sh` and before any Pytho
 
 Run subsequent commands in this same Bash shell.
 
+To regenerate the two Caffeine data figures from the canonical observations, install the
+development requirements and run:
+
+```bash
+python3 devel/render_caffeine_figures.py
+```
+
+The command uses NumPy least-squares polynomial fits and Matplotlib, with larger axis text and
+gridlines drawn behind the points. Rebuild the release afterward to embed the updated images.
+
 Choose a lesson from [TUTORIAL_CATALOG.md](TUTORIAL_CATALOG.md), including the explicitly
 synthetic PETase calibration example.
 

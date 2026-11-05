@@ -101,10 +101,10 @@ this fictional teaching scenario, assume a national average newborn weight of 7.
 population standard deviation of 1.5 lbs. In this tutorial, you'll use Google Sheets to conduct a
 z-test using the sample data provided.
 
-For the right-tailed claim, H0: the hospital population mean is at most 7.5 lbs; H1: it is greater
+For the right-tailed claim, null hypothesis, H<sub>0</sub>: the hospital population mean is at most 7.5 lbs; alternative hypothesis, H<sub>a</sub>: it is greater
 than 7.5 lbs. The test is calculated at the null boundary of 7.5 lbs.
 
-For the two-tailed comparison, H0: the hospital population mean equals 7.5 lbs; H1: it differs from
+For the two-tailed comparison, null hypothesis, H<sub>0</sub>: the hospital population mean equals 7.5 lbs; alternative hypothesis, H<sub>a</sub>: it differs from
 7.5 lbs. Choose the alternative before examining results. A hospital comparison does not establish
 that fried foods cause a change in birth weight.
 

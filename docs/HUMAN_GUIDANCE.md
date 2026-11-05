@@ -20,14 +20,30 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
 
 ## Tutorial converter
 
+- Use `y = ax^2 + bx + c` throughout Part 3 and its workbook. Keep beta notation in one brief
+  note about later statistics study, rather than using it throughout the lesson.
+
+- Pair hypothesis symbols with their names: "null hypothesis, H0" and "alternative hypothesis,
+  Ha", using proper subscripts. Follow the hypothesis-testing terminology examples in my
+  biology-problems matching set; do not use H0 as an unexplained standalone label.
+
+- Make data-figure axis labels readable at their displayed document size. Draw gridlines behind
+  points, so the grid does not obscure observations.
+
+- Keep the code that generates data figures in a Git-tracked repository location so it can be
+  reused when the figures need updating.
+
+- Explain `!` when showing cross-sheet formulas. Prefer copying numbers between sheets when that
+  is easier for general biology students to understand.
+
 - Contents should include every Step and Substep, with Substeps indented beneath their parent
   Steps. Omit the usually single Part from Contents while preserving its body heading.
 
 - Put the supplied workbook filename on its own line, as shown in the Caffeine introductions.
   Use the exact filename `Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx`.
 
-- Label the Caffeine lessons Part 1, Part 2, and Part 3, including standalone builds, contents,
-  headings, reflection identifiers, and workbook tabs.
+- Label the Caffeine lessons Part 1, Part 2, and Part 3, including standalone builds, title-area
+  subtitles, body headings, reflection identifiers, and workbook tabs.
 
 - Keep figures within default maximum bounds of 6.5 inches wide and 3 inches tall, preserving
   proportions. Discourage size overrides; use them only when readability requires one.
@@ -147,7 +163,7 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
 - Use clearly defined Part and Step headings, then add real Substeps for distinct instructional
   tasks below a Step. Keep related ordered actions together instead of making each action a heading.
 - Introduce regression with familiar `y = mx + b` and `y = ax^2 + bx + c` equations, defining y
-  as predicted exam score. Map to workbook coefficient notation only where students need it.
+  as predicted exam score. Keep Part 3 workbook labels consistent with a, b, and c.
 - Keep standalone figures consistently sized and horizontally centered; preserve every image's
   proportions, and keep captions readable beneath the figure.
 - Prefer the standard standalone-figure size. Use per-image maximum bounds only for exceptional

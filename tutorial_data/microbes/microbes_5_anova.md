@@ -64,7 +64,7 @@ To analyze how microbial diversity has shifted over time, you decide to use **AN
 **ANOVA** is ideal for comparing more than two groups, making it the perfect tool for analyzing microbial diversity across multiple years. This test will help determine whether the **diversity values** have changed significantly over time by comparing the **variance** within each year to the **variance** between the years. By doing so, you can assess evidence for differences among year means. ANOVA alone does not establish a **decline**, **homogenization**, or a long-term trend.
 
 Choose the hypothesis and **alpha = 0.05** before inspecting results. This one-way ANOVA tests
-**H0: all five population mean Shannon indices are equal**, against **H1: at least one differs**.
+**null hypothesis, H<sub>0</sub>: all five population mean Shannon indices are equal**, against **alternative hypothesis, H<sub>a</sub>: at least one differs**.
 It uses a **right-tailed F test**; it is not a lower-tail or two-tail variance comparison.
 
 The model assumes independent observations, approximately normal residuals within groups, and

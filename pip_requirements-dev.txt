@@ -10,6 +10,7 @@ tree-sitter-rust  # Rust grammar for the Graphify cfg(test) prune step
 
 # === LOCAL DEVELOPMENT DEPENDENCIES === [ADD REPOSITORY-SPECIFIC DEPENDENCIES HERE]
 numpy  # independent tutorial regression and descriptive-statistics validation
+matplotlib  # regenerate canonical tutorial data figures
 scipy  # independent tutorial test statistics and probability distributions
 google-auth  # Application Default Credentials for optional live Sheets validation
 google-api-python-client  # Optional live Google Sheets formula validation

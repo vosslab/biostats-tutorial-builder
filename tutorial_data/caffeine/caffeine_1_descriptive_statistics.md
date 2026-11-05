@@ -205,16 +205,22 @@ Record your written responses in the reflection tab.
 
 | Quadratic statistic | Value |
 | --- | --- |
-| Quadratic coefficient b2 | |
-| Linear coefficient b1 | |
-| Intercept b0 | |
+| Quadratic coefficient a | |
+| Linear coefficient b | |
+| Intercept c | |
 | Quadratic R-squared | |
-| Standard error of b2 | |
+| Standard error of a | |
 | Residual degrees of freedom | |
 | Predicted score at 7 hours | |
 | | |
 | t-statistic for quadratic term | |
 | Two-tailed p-value | |
+
+#### At: H13
+
+| Model equation | y = ax^2 + bx + c |
+| --- | --- |
+| At 7 hours of sleep | `a*7^2 + b*7 + c` |
 
 #### At: M1
 

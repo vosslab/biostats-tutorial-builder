@@ -10,6 +10,7 @@ import docx.oxml.ns
 import docx.shared
 
 import tutorial_lib.model
+import tutorial_lib.parser
 import tutorial_lib.validation
 import tutorial_lib.docx_inline
 import tutorial_lib.docx_styles
@@ -62,10 +63,14 @@ def add_table_of_contents(output: object, document: tutorial_lib.model.Document)
 		paragraph.paragraph_format.left_indent = docx.shared.Inches(depth * 0.2 + 0.15)
 		paragraph.paragraph_format.first_line_indent = docx.shared.Inches(-0.15)
 		paragraph.paragraph_format.space_after = docx.shared.Pt(2)
+		children = tutorial_lib.parser.markdown_parser().parseInline(heading.display)[0].children
+		tutorial_lib.docx_inline.render(paragraph, children, document)
+		for run in paragraph.runs:
+			tutorial_lib.docx_styles.format_run(run, None, linked=True)
 		link = tutorial_lib.docx_inline.link_element(paragraph, "#" + heading.slug)
-		run = paragraph.add_run(heading.display)
-		tutorial_lib.docx_styles.format_run(run, None, linked=True)
-		link.append(run._r)
+		for child in list(paragraph._p):
+			if child.tag != docx.oxml.ns.qn("w:pPr") and child is not link:
+				link.append(child)
 	end = docx.oxml.OxmlElement("w:fldChar")
 	end.set(docx.oxml.ns.qn("w:fldCharType"), "end")
 	paragraph.add_run()._r.append(end)

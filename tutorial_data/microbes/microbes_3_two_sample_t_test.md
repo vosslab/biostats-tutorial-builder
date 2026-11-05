@@ -150,7 +150,7 @@ In biological studies, this is important since sample sizes are often small. Low
 
 #### Step: Determine the Type of Test (One-Tailed or Two-Tailed)
 
-Main lower-tail question: H0: mean2024 >= mean2014; H1: mean2024 < mean2014. The two-tailed comparison uses equality versus inequality; the higher-tail comparison uses H0: mean2024 <= mean2014 versus H1: mean2024 > mean2014.
+Main lower-tail question: null hypothesis, H<sub>0</sub>: mean2024 >= mean2014; alternative hypothesis, H<sub>a</sub>: mean2024 < mean2014. The two-tailed comparison uses equality versus inequality; the higher-tail comparison uses null hypothesis, H<sub>0</sub>: mean2024 <= mean2014 versus alternative hypothesis, H<sub>a</sub>: mean2024 > mean2014.
 
 In the **Two Sample T-test** comparing microbial diversity between 2014 and 2024, you need to decide if you are testing for any significant difference between the two years (a **two-tailed test**) or for a specific directional change (a **one-tailed test**).
 

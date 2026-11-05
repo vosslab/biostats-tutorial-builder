@@ -23,6 +23,24 @@ attributes further cap the figure box without changing its aspect ratio.
 **Owner.** [docx_renderer.py](../tutorial_lib/docx_renderer.py) and
 [docx_styles.py](../tutorial_lib/docx_styles.py).
 
+### Accessible Caffeine model notation and plots
+
+**Decision.** Use a, b, and c for the quadratic coefficients in every shared worksheet declaration,
+the Part 3 prose, hypotheses, and prediction instructions. Reserve population beta notation for one
+later-study note. Name null and alternative hypotheses beside their symbols throughout tutorials.
+
+**Why.** General biology students already know the quadratic equation; switching notation during
+the worksheet workflow adds unnecessary interpretation work.
+
+**Consequence.** Keep the LINEST coefficient order and cell addresses unchanged. Show the quadratic
+model in the workbook and write its prediction formula in a, b, c order. Teach values-only copying
+of linear results first, with explicitly explained cross-sheet links as an optional route.
+Generate both data plots from the canonical observations with larger type and gridlines behind
+points; verify their appearance at the proportional document size.
+
+**Owner.** [Caffeine sources](../tutorial_data/caffeine/) and
+[render_caffeine_figures.py](../devel/render_caffeine_figures.py).
+
 ### Narrative alignment and reflection scope
 
 **Decision.** Justify every ordinary native body paragraph without estimating its rendered line

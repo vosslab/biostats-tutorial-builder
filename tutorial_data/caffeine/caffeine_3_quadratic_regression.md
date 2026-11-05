@@ -201,16 +201,22 @@ This is tutorial 3 of 3. Complete the linear regression tutorial first or bring 
 
 | Quadratic statistic | Value |
 | --- | --- |
-| Quadratic coefficient b2 | |
-| Linear coefficient b1 | |
-| Intercept b0 | |
+| Quadratic coefficient a | |
+| Linear coefficient b | |
+| Intercept c | |
 | Quadratic R-squared | |
-| Standard error of b2 | |
+| Standard error of a | |
 | Residual degrees of freedom | |
 | Predicted score at 7 hours | |
 | | |
 | t-statistic for quadratic term | |
 | Two-tailed p-value | |
+
+#### At: H13
+
+| Model equation | y = ax^2 + bx + c |
+| --- | --- |
+| At 7 hours of sleep | `a*7^2 + b*7 + c` |
 
 #### At: M1
 
@@ -229,7 +235,7 @@ This is tutorial 3 of 3. Complete the linear regression tutorial first or bring 
 ### Reflection Questions
 
 1. What pattern does the scatterplot show that a straight line misses?
-2. What does the sign of the quadratic coefficient a (b2 in the workbook) say about the curve?
+2. What does the sign of the quadratic coefficient a say about the curve?
 3. State the quadratic R-squared and compare it with the linear R-squared.
 4. State the quadratic-term p-value and your decision at alpha = 0.05.
 5. Why is this p-value exploratory after choosing the curve from the same data?
@@ -261,7 +267,15 @@ Now that we've officially run our linear regression, Dr. Caffeine is staring at 
 
 ##### Substep: Bring forward the linear results
 
-The linear comparison labels are already present. These formulas use your Part 2 results.
+The linear comparison labels are already present. Copy the numbers from Part 2 into this sheet:
+
+1. Copy E2 (slope) from **Linear Regression** and paste into N2 on **Quadratic Regression** using **Edit > Paste special > Values only**.
+2. Copy E6 (intercept) from **Linear Regression** and paste values only into N3 on **Quadratic Regression**.
+3. Copy E10 (linear R-squared) from **Linear Regression** and paste values only into N4 on **Quadratic Regression**.
+
+Copy the cell values rather than retyping rounded numbers from the screen. Values-only pasting keeps the calculated numbers without copying formulas whose cell references could change.
+
+**Optional: link the results instead.** A link updates automatically when its source changes. In `='Linear Regression'!E2`, the exclamation mark `!` separates the sheet name from the cell address: read it as "cell E2 on the Linear Regression sheet." The single quotes keep the sheet name's space together. The opening `=` makes this a formula. If you prefer links, use these instead of copying values:
 
 1. In N2, enter:
    [='Linear Regression'!E2](enter:N2)
@@ -302,10 +316,10 @@ Does the quadratic regression model better describe the relationship between hou
 
 ##### Substep: Hypotheses for the quadratic term
 
-In plain language, we ask whether the relationship needs a curve instead of a straight line. Formally, we test whether the population quadratic coefficient $\beta_2$ differs from zero.
+In plain language, we ask whether the relationship needs a curve instead of a straight line. We test whether the population value of the quadratic coefficient $a$ differs from zero. If $a = 0$, the squared term drops out and the model is a straight line.
 
-* **H<sub>0</sub>: &beta;<sub>2</sub> = 0** -- There is no quadratic term in the population model.\
-* **H<sub>1</sub>: &beta;<sub>2</sub> &ne; 0** -- There is evidence of a quadratic term in the population model
+* **null hypothesis, H<sub>0</sub>: $a$ = 0** -- There is no quadratic term in the population model.\
+* **alternative hypothesis, H<sub>a</sub>: $a$ &ne; 0** -- There is evidence of a quadratic term in the population model
 
 **Basically, we're asking whether the relationship needs a curve instead of a straight line.**
 
@@ -334,17 +348,15 @@ Our familiar equation for predicted exam score is:
 
 $y = ax^2 + bx + c$
 
-The square stays with $x$: it is what allows the model to curve. The workbook uses equivalent regression notation:
+The square stays with $x$: it is what allows the model to curve. The workbook uses the same $a$, $b$, and $c$ labels.
 
-$\hat{y} = b_0 + b_1x + b_2x^2$
-
-For workbook results, $a = b_2$, $b = b_1$, and $c = b_0$.
+For later statistics courses: you may see the population model written as $y = \beta_0 + \beta_1x + \beta_2x^2 + \varepsilon$, where $\varepsilon$ represents unexplained variation. Its fitted prediction uses $c$, $b$, and $a$ in those respective positions. You do not need beta notation for this tutorial.
 
 **Here's the breakdown:**\
 $y$ = predicted exam score\
-$a$ = quadratic coefficient (workbook $b_2$)\
-$b$ = linear coefficient (workbook $b_1$)\
-$c$ = intercept (workbook $b_0$)\
+$a$ = quadratic coefficient\
+$b$ = linear coefficient\
+$c$ = intercept\
 $x$ = hours of sleep
 
 *That extra x^2 term is what gives the model its curve.  Now that we know what all these symbols mean, let's get into Google Sheets and see whether or not your data actually is giving us a curve.*
@@ -380,41 +392,41 @@ Once we have the coefficients, we can plug them into our quadratic equation and 
 
 The supplied **Quadratic statistic** and **Value** headers identify the result table. Calculate:
 
-1. In the supplied **Quadratic coefficient b2** row,\
+1. In the supplied **Quadratic coefficient a** row,\
    in I2, enter:
    [=INDEX(LINEST(B2:B26,E2:F26,TRUE,TRUE),1,1)](enter:I2)
-2. In the supplied **Linear coefficient b1** row,\
+2. In the supplied **Linear coefficient b** row,\
    in I3, enter:
    [=INDEX(LINEST(B2:B26,E2:F26,TRUE,TRUE),1,2)](enter:I3)
-3. In the supplied **Intercept b0** row,\
+3. In the supplied **Intercept c** row,\
    in I4, enter:
    [=INDEX(LINEST(B2:B26,E2:F26,TRUE,TRUE),1,3)](enter:I4)
 4. In the supplied **Quadratic R-squared** row,\
    in I5, enter:
    [=INDEX(LINEST(B2:B26,E2:F26,TRUE,TRUE),3,1)](enter:I5)
-5. In the supplied **Standard error of b2** row,\
+5. In the supplied **Standard error of a** row,\
    in I6, enter:
    [=INDEX(LINEST(B2:B26,E2:F26,TRUE,TRUE),2,1)](enter:I6)
 6. In the supplied **Residual degrees of freedom** row,\
    in I7, enter:
    [=INDEX(LINEST(B2:B26,E2:F26,TRUE,TRUE),4,2)](enter:I7)
    The result should be 25 - 3 = 22.
-7. Write your fitted equation using I2:I4. Unlike the straight-line slope, $b_1$ alone is not the score change for every extra hour; the change also depends on sleep through the squared term. The label at H8 is already present. In I8, enter:
-   [=I4+I3*7+I2*7^2](enter:I8)
+7. Write your fitted equation using I2:I4. Unlike the straight-line slope, $b$ alone is not the score change for every extra hour; the change also depends on sleep through the squared term. The label at H8 is already present. With $a$ in I2, $b$ in I3, and $c$ in I4, substitute 7 for $x$ in $ax^2 + bx + c$. In I8, enter:
+   [=I2*7^2+I3*7+I4](enter:I8)
    Compare with the linear prediction N3 + N2 * 7; neither guarantees an individual student's score.
 
-**Reflection 3.2:** What does the sign of the quadratic coefficient a (b2 in the workbook) say about the curve? Write your answer in the Part 3 Reflection tab.
+**Reflection 3.2:** What does the sign of the quadratic coefficient a say about the curve? Write your answer in the Part 3 Reflection tab.
 
 ##### Substep: Test the quadratic term
 
-For a **two-tailed** test, H0: beta2 = 0 versus H1: beta2 differs from zero in either direction, with the linear term retained. Use alpha = 0.05. Inference assumes a suitable quadratic mean model with independent normal errors of constant variance.
+For a **two-tailed** test, null hypothesis, H<sub>0</sub>: $a = 0$ versus alternative hypothesis, H<sub>a</sub>: $a \ne 0$ (curvature in either direction), with the linear term retained. Use alpha = 0.05. Inference assumes a suitable quadratic mean model with independent normal errors of constant variance.
 
 1. In the supplied **t-statistic for quadratic term** row, in I10, enter:
    [=I2/I6](enter:I10)
 2. Use the labeled two-tailed p-value row at H11. In I11, enter:
    [=T.DIST.2T(ABS(I10),I7)](enter:I11)
    Record the **two-tailed p-value for a nonzero quadratic term in either direction = _____**.
-3. If p < 0.05, reject H0; otherwise fail to reject it. Interpret this conditionally on the model assumptions.
+3. If p < 0.05, reject the null hypothesis, H<sub>0</sub>; otherwise fail to reject it. Interpret this conditionally on the model assumptions.
 
 **Reflection 3.4:** State the quadratic-term p-value and your decision at alpha = 0.05. Write your answer in the Part 3 Reflection tab.
 

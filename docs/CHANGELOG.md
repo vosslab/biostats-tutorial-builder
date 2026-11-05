@@ -2,6 +2,17 @@
 
 ## 2026-11-04
 
+### Accessible regression notation and figures
+
+- Use a, b, c and the familiar quadratic equation throughout Part 3 and all shared workbook
+  declarations; retain beta notation only in one later-study note.
+- Pair hypothesis names with their subscripted symbols in active tutorial sources, matching the
+  human's null/alternative terminology example.
+- Make values-only copying the first route for transferring linear results and explain the sheet
+  separator `!` in the optional linked-formula route.
+- Add a reproducible Matplotlib figure command using canonical observations, readable label sizes,
+  and gridlines behind data points. Record the corresponding human guidance.
+
 ### Complete contents navigation
 
 - Include every Step and Substep in a native linked TOC with subordinate indentation and hanging

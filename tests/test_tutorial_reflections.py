@@ -125,6 +125,7 @@ def test_shared_lesson_work_precedes_its_reflection() -> None:
 	root = pathlib.Path(__file__).resolve().parents[1]
 	paths = sorted((root / "tutorial_data/caffeine").glob("*.md"))
 	documents = [tutorial_lib.compiler.compile_document(path) for path in paths]
+	assert all(not document.has_errors for document in documents)
 	merged = tutorial_lib.build.merge_documents(documents)
 	assert [sheet.name for sheet in merged.worksheets] == [
 		"Data", "Sample Mean", "Part 1 Reflection", "Linear Regression",
