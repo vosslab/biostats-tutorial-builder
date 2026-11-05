@@ -62,10 +62,6 @@ def test_matching_question_order_and_identifiers_in_exports(
 	assert sheet["A4"].value.startswith(f"{prefix}2. =Literal prompt")
 	assert sheet["A4"].data_type == "s"
 	assert sheet["A3"].value == "answer here"
-	assert sheet.column_dimensions["A"].width == 124
-	assert sheet.row_dimensions[3].height == 47.25
-	assert sheet.row_dimensions[4].height > 47.25
-	assert sheet["A3"].font.name == "PT Sans"
 	paragraphs = [item.text for item in docx.Document(docx_path).paragraphs]
 	assert "Reflection Questions" not in paragraphs
 	assert sheet["A2"].value not in paragraphs

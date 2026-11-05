@@ -1,5 +1,8 @@
 # Readiness test report
 
+Historical snapshot: the Google runner was removed on 2026-11-05. Use
+[LOCAL_VALIDATION.md](../../LOCAL_VALIDATION.md) for the current local-only workflow.
+
 ## New Python source checks
 
 The tracked-only repository discovery gates did not include the untracked

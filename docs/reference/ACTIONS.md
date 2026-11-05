@@ -66,9 +66,11 @@ Type this Markdown:
 Choose one of these demonstration formulas for E3.
 
 - **Alternative: Minimum**
-  - In cell E3, enter [`=MIN(A2:A6)`](enter:E3).
+  - In cell E3, enter:
+    [`=MIN(A2:A6)`](enter:E3)
 - **Alternative: Maximum**
-  - In cell E3, enter [`=MAX(A2:A6)`](enter:E3).
+  - In cell E3, enter:
+    [`=MAX(A2:A6)`](enter:E3)
 ```
 
 <!-- screenshots:begin (managed by screenshot-docs) -->
@@ -99,7 +101,8 @@ Some instructor sources use a bold action opening. These two fragments express t
 use one, not both, in a tutorial:
 
 ```markdown
-1. In cell E2, enter [`=AVERAGE(A2:A6)`](enter:E2).
+1. In cell E2, enter:
+   [`=AVERAGE(A2:A6)`](enter:E2)
 ```
 
 ```markdown
@@ -109,3 +112,11 @@ use one, not both, in a tutorial:
 Ordinary instructions do not need bold action labels. The link form lets you keep your wording.
 A legacy menu instruction such as `- **Choose:** Insert > Chart` receives menu-path styling;
 it describes what the reader clicks rather than creating the chart.
+
+## Carry a value between sheets
+
+For a result students need on another sheet, first teach copying the calculated number and using
+**Edit > Paste special > Values only**. This avoids asking readers to interpret a cross-sheet formula.
+When an updating link is genuinely useful, `='Results Sheet'!E2` means "cell E2 on the Results
+Sheet." The `!` separates the quoted sheet name from the cell address, and the opening `=` makes
+the expression a formula.

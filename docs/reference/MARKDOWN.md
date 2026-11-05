@@ -45,7 +45,7 @@ with one Part, the Part appears as a subtitle under the document title and remai
 it is not repeated in Contents. Ordinary body prose is fully justified when it wraps, while lists,
 equations, captions, and callouts remain purposefully left aligned.
 
-![Generated Contents with linked Steps and indented Substeps, followed by the Part body heading](../screenshots/authoring_contents.webp)
+![Generated Contents with linked Parts, Steps, and indented Substeps](../screenshots/authoring_contents.webp)
 
 ## Format scientific text
 

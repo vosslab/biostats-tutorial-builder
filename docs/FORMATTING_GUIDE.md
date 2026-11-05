@@ -27,7 +27,8 @@ snippets below when copying a specific feature. Each fragment belongs in the ind
 
 ## Headings and lists
 
-The document title and opening paragraph come directly from the beginning of the file:
+The document title and opening paragraph come directly from the beginning of the file. Generated
+Contents appears between the title and opening paragraph:
 
 ```markdown
 # Roots formatting examples
@@ -35,7 +36,7 @@ The document title and opening paragraph come directly from the beginning of the
 Five invented root lengths provide small tables for demonstrating document and workbook formatting.
 ```
 
-![The title and introductory paragraph formatted in the generated Word document](screenshots/authoring_title.webp)
+![Document title followed by generated Contents in the Word output](screenshots/authoring_title.webp)
 
 **You type in Tutorial:**
 
@@ -69,7 +70,7 @@ content from document content.
 Contents lists every Step and Substep, with Substeps indented beneath their Step. A document with
 one Part shows that Part as a subtitle beneath the title and keeps its Heading 1 in the body.
 
-![Generated Contents with linked Steps and indented Substeps, followed by the Part body heading](screenshots/authoring_contents.webp)
+![Generated Contents with linked Parts, Steps, and indented Substeps](screenshots/authoring_contents.webp)
 
 ## Text and symbols
 
@@ -305,7 +306,8 @@ labels in your Workbook tables.
 ```markdown
 #### Step: Fill a column
 
-1. In cell B2, enter [`=A2^2`](enter:B2).
+1. In cell B2, enter:
+   [`=A2^2`](enter:B2)
 2. [Fill B2:B6](fill:B2:B6) down.
 ```
 

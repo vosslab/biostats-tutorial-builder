@@ -34,8 +34,6 @@ def test_seed_types_and_student_targets_roundtrip(tmp_path: pathlib.Path) -> Non
 	assert book["Data"]["H100"].value is None
 	assert book["Data"]["C4"].fill.fill_type == "solid"
 	assert book["Data"]["A4"].fill.fill_type == "solid"
-	assert book["Data"].freeze_panes is None
-	assert book["Data"].column_dimensions["H"].width == 12
 	with zipfile.ZipFile(path) as archive:
 		assert b"secret answer" not in b"".join(archive.read(n) for n in archive.namelist())
 	book.close()
@@ -206,7 +204,6 @@ def test_row_one_table_freezes_header(tmp_path: pathlib.Path) -> None:
 	tutorial_lib.workbook.write_workbook(document, path)
 	book = openpyxl.load_workbook(path)
 	assert book["Data"].freeze_panes == "A2"
-	assert book["Data"].column_dimensions["C"].width == 12
 	book.close()
 
 

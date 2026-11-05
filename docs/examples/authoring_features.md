@@ -89,11 +89,13 @@ Return to the [instruction example](#step-organize-instructions).
 
 #### Step: Enter a formula
 
-1. In cell E2, enter [`=AVERAGE(A2:A6)`](enter:E2).
+1. In cell E2, enter:
+   [`=AVERAGE(A2:A6)`](enter:E2)
 
 #### Step: Fill a column
 
-1. In cell B2, enter [`=A2^2`](enter:B2).
+1. In cell B2, enter:
+   [`=A2^2`](enter:B2)
 2. [Fill B2:B6](fill:B2:B6) down.
 
 #### Step: Select a range
@@ -118,6 +120,8 @@ The instruction appears in the document; the reader creates the chart.
 Choose one of these demonstration formulas for E3.
 
 - **Alternative: Minimum**
-  - In cell E3, enter [`=MIN(A2:A6)`](enter:E3).
+  - In cell E3, enter:
+    [`=MIN(A2:A6)`](enter:E3)
 - **Alternative: Maximum**
-  - In cell E3, enter [`=MAX(A2:A6)`](enter:E3).
+  - In cell E3, enter:
+    [`=MAX(A2:A6)`](enter:E3)

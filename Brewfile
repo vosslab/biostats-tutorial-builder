@@ -2,6 +2,7 @@
 # Python 3.12 is the pinned interpreter for macOS tooling.
 # this is for macOS installs only
 brew "python@3.12"
+brew "pandoc"
 
 # Optional documentation screenshot refresh dependencies.
 brew "poppler"

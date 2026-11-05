@@ -103,9 +103,12 @@ at least one question about the results and their meaning.
 ```
 
 The compiler adds a reflection worksheet with blank answer space. Repeat each full question in the
-relevant Tutorial prose so the document tells students exactly when to answer it; the DOCX does not
-append a duplicate reflection section. Keep questions in this section so the workbook remains
-authoritative.
+relevant Tutorial prose so the document tells students exactly when to answer it. Use
+`**Reflection 1:** <exact question> Write your answer in the Reflection Questions tab.` The DOCX
+renders this matching prompt as a shaded callout and does not append a duplicate reflection section.
+Keep questions in this section so the workbook remains authoritative.
+
+![Generated inline reflection callout with its identifier, exact question, and answer destination](../screenshots/authoring_reflection_prompt.webp)
 See [descriptive_statistics_reflection.md](../examples/descriptive_statistics_reflection.md)
 for a runnable example with five questions from the original exam-score workbook.
 
@@ -115,7 +118,8 @@ Semantic links keep the words a student sees and the compiler's cell target toge
 inside the parentheses is hidden in the generated document.
 
 ```markdown
-1. In cell E2, enter [`=AVERAGE(A2:A6)`](enter:E2).
+1. In cell E2, enter:
+   [`=AVERAGE(A2:A6)`](enter:E2)
 ```
 
 <!-- screenshots:begin (managed by screenshot-docs) -->
@@ -132,7 +136,8 @@ Enter one formula, then use `fill:` to identify the range the reader fills down.
 the fill range must already receive a formula.
 
 ```markdown
-1. In cell B2, enter [`=A2^2`](enter:B2).
+1. In cell B2, enter:
+   [`=A2^2`](enter:B2)
 2. [Fill B2:B6](fill:B2:B6) down.
 ```
 
@@ -172,6 +177,14 @@ The instruction appears in the document; the reader creates the chart.
 Use `label:` only if entering a label is part of the reader's task. Normally, supply worksheet
 labels in Workbook tables. See [ACTIONS.md](../reference/ACTIONS.md) for every action and
 [WORKSHEETS.md](../reference/WORKSHEETS.md) for cell types, regions, and placement.
+
+#### Step: Carry a value between sheets
+
+For general readers, copy the calculated number and use **Edit > Paste special > Values only** in
+the destination sheet. This preserves the number without adding a formula that may be harder to
+inspect. If an automatically updating link is useful, `='Results Sheet'!E2` means "cell E2 on the
+Results Sheet": `!` separates the quoted sheet name from the cell address, and the opening `=`
+makes it a formula.
 
 #### Step: Leave room for your lesson
 

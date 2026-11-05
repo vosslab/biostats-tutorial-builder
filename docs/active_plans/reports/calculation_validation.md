@@ -1,5 +1,8 @@
 # Independent calculation validation
 
+Historical snapshot: the Google runner was removed on 2026-11-05. Use
+[LOCAL_VALIDATION.md](../../LOCAL_VALIDATION.md) for the current local-only workflow.
+
 Path note (2026-10-22): paths and command examples below use the current repository layout.
 Recorded observations belong to their stated snapshots; renamed output manifests retain their
 original contents until the final rebuild and verification refresh.

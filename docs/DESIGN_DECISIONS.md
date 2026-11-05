@@ -34,7 +34,8 @@ the worksheet workflow adds unnecessary interpretation work.
 
 **Consequence.** Keep the LINEST coefficient order and cell addresses unchanged. Show the quadratic
 model in the workbook and write its prediction formula in a, b, c order. Teach values-only copying
-of linear results first, with explicitly explained cross-sheet links as an optional route.
+of completed linear results, and supply same-sheet SLOPE, INTERCEPT, and RSQ calculations when
+Part 3 starts from a fresh workbook. Do not depend on completed Part 2 cells.
 Generate both data plots from the canonical observations with larger type and gridlines behind
 points; verify their appearance at the proportional document size.
 
@@ -281,17 +282,18 @@ This check does not claim rendered layout or visual review.
 ### Independent scientific expectations
 
 **Decision.** Keep numerical curriculum checks in developer tooling using SciPy and NumPy,
-separate from static source validation and the optional real Google Sheets runner.
+separate from static source validation. Execute spreadsheet formulas locally with LibreOffice Calc;
+remove the Google runner and its API-only helpers, tests, and dependencies.
 
 **Why.** Formula syntax and reference consistency cannot establish the statistical model,
 tail direction, or numerical answer. A locally computed expectation also cannot establish
 Google Sheets compatibility.
 
-**Consequence.** Compare live calculated values against independent expectations when credentials
-exist. Report dry runs, unavailable credentials, and actual Google execution separately.
+**Consequence.** Compare locally calculated values against independent expectations. Preserve shared
+case preparation and typed comparison helpers, without a Google execution mode or credentials.
 
 **Owner.** [tutorial_oracles.py](../devel/tutorial_oracles.py) and
-[GOOGLE_SHEETS_VALIDATION.md](GOOGLE_SHEETS_VALIDATION.md).
+[LOCAL_VALIDATION.md](LOCAL_VALIDATION.md).
 
 ### Shared workbook releases
 

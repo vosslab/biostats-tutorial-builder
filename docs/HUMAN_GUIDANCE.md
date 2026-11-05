@@ -20,6 +20,11 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
 
 ## Tutorial converter
 
+- Deliver working tutorials. Correct discovered calculation failures instead of accepting them as
+  documented limitations.
+
+- Delete the Google runner to avoid future confusion. Keep calculation validation local.
+
 - Introduce the project as: "Create a biology tutorial for classmates in one plain-text file. Write
   the lesson and design the spreadsheet; the compiler formats your work as editable Word, PDF, and
   Excel files." Keep guides and screenshots current with the refined syntax.
@@ -140,7 +145,7 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
 - Complete milestones without waiting for human milestone signoff.
 - Repair PETase with a clearly labeled synthetic Bradford dataset when original measurements
   cannot be recovered.
-- Keep Google Sheets calculation checks local or dry-run only; do not upload files to run them.
+- Keep calculation checks local; the Google runner is removed. Do not upload files to run checks.
 - Use the final layout `make_tutorial.py`, `tutorial_lib/`, `tutorial_data/`, and
   `tutorial_output/`; this supersedes the earlier distinct-prefix naming request.
 - Apply the selected names consistently without old-name aliases or legacy compatibility stubs.

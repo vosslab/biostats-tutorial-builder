@@ -17,7 +17,8 @@ neutral formatting example. They are not a lesson you must reproduce.
 
 #### Step: Create a visible structure
 
-The title and opening paragraph are ordinary authored text at the start of the file:
+The title and opening paragraph are ordinary authored text at the start of the file. Generated
+Contents appears between the title and opening paragraph:
 
 ```markdown
 # Roots formatting examples
@@ -25,7 +26,7 @@ The title and opening paragraph are ordinary authored text at the start of the f
 Five invented root lengths provide small tables for demonstrating document and workbook formatting.
 ```
 
-![Title and opening paragraph from the generated document](../screenshots/authoring_title.webp)
+![Document title followed by generated Contents](../screenshots/authoring_title.webp)
 
 Start your file with a `#` title. Under `## Tutorial`, use Parts and Steps as shown here.
 The compiler numbers them in the finished document. Use a Substep when a Step needs a smaller task.
@@ -53,6 +54,12 @@ This paragraph belongs to the substep.
 
 The headings tell the compiler what each section does. `- **Worksheet:**` selects the workbook tab
 for the Part. Use the exact sheet name from your Workbook section.
+
+Contents links every Step and Substep. In a one-Part tutorial, the Part appears beneath the title as
+a subtitle and remains a Heading 1 in the document body. Keep body paragraphs and task text aligned
+at one shared edge; heading depth does not indent ordinary prose.
+
+![Generated Contents with linked Parts, Steps, and indented Substeps](../screenshots/authoring_contents.webp)
 
 #### Step: Put your content in the structure
 
@@ -88,7 +95,7 @@ without asking you to choose fonts or colors.
 ##### Explanation: Mark up scientific text
 
 Use **bold** for emphasis, *italics* for a distinction, and `A2` for a literal cell address.
-Scientific text can include &alpha;, H<sub>0</sub>, and mm<sup>2</sup>.
+Scientific text can include &alpha;, null hypothesis, H<sub>0</sub>, and mm<sup>2</sup>.
 
 > A short note appears as a separate block.
 ```
@@ -99,6 +106,10 @@ Scientific text can include &alpha;, H<sub>0</sub>, and mm<sup>2</sup>.
 
 Keep source ASCII: use straight quotes and ordinary hyphens. Use named entities such as `&alpha;`
 for scientific symbols. A backtick makes literal text; it does not make a formula calculate.
+Use dollar-delimited TeX for explanatory mathematics, such as `$y = ax^2 + bx + c$`; use a code
+span for a spreadsheet formula students enter, such as `=A2^2`.
+
+![Generated mathematical equation distinct from a literal spreadsheet formula](../screenshots/authoring_math.webp)
 
 #### Step: Add a document table
 
@@ -150,6 +161,10 @@ This image path is relative to the complete example in `docs/examples/`. Adjust 
 source file's location. A link target can be a web address, a
 nearby file, or a heading in the same document. See [MARKDOWN.md](../reference/MARKDOWN.md) for the
 full set of document patterns.
+
+Standalone figures are centered and constrained proportionally to 6.5 inches wide by 3 inches
+tall. Their numbered captions are smaller and inset; do not add a separate figure title. Use a
+table title above a table. Image-size overrides are exceptional readability fixes, not routine style.
 
 Use [authoring_features.md](../examples/authoring_features.md) when you want one complete runnable
 source that produces these examples. Continue to [PART_2_STATISTICS.md](PART_2_STATISTICS.md) to

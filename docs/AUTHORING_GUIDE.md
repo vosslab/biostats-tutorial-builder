@@ -28,7 +28,8 @@ scenario or project to reproduce.
 ```markdown
 #### Step: Enter a formula
 
-1. In cell E2, enter [`=AVERAGE(A2:A6)`](enter:E2).
+1. In cell E2, enter:
+   [`=AVERAGE(A2:A6)`](enter:E2)
 ```
 
 **The compiler produces this Word instruction:**
@@ -64,6 +65,11 @@ These are possible places for content, not required sections or a prescribed nar
 Use the structure that fits your tutorial. The compiler treats actual Part and Step headings as
 structure; it does not fill placeholders or write explanations.
 
+The generated Contents links every Step and Substep. When a document contains one Part, its Part
+number and title appear in a subtitle beneath the document title and the body keeps the Part heading.
+
+![Generated Contents with linked Parts, Steps, and indented Substeps](screenshots/authoring_contents.webp)
+
 ## Keep one source of truth
 
 Your `.md` file contains both the Workbook tables and the Tutorial text. Keep companion images
@@ -76,6 +82,8 @@ In Tutorial prose, repeat each full question at the point students should answer
 literal form `**Reflection 1:** <exact question> Write your answer in the Reflection Questions tab.`
 The compiler renders this as a shaded callout and generates a separate workbook tab with question
 text and answer space; it does not append a duplicate question section to the DOCX.
+
+![Generated inline reflection callout with its identifier, exact question, and answer destination](screenshots/authoring_reflection_prompt.webp)
 For merged builds, each source keeps its own tab. See [TUTORIAL_SPEC.md](TUTORIAL_SPEC.md) for
 numbering and tab-name rules.
 

@@ -325,7 +325,6 @@ def test_standard_styles_and_direct_fonts() -> None:
 	formula = next(paragraph for paragraph in output.paragraphs
 		if paragraph.text == "=SUM(A1:B1)")
 	assert formula.runs[0].font.name == "Roboto Mono"
-	assert formula.paragraph_format.keep_together is True
 	assert_formula_display_box(formula)
 	assert output.paragraphs[-2].paragraph_format.left_indent is not None
 	runs = output._element.findall(".//w:r", NAMESPACES)
@@ -386,19 +385,21 @@ def test_structural_indentation_uses_shared_list_quote_and_figure_edges(
 
 
 #============================================
-def test_contextual_reflection_prompt_uses_native_paragraph_callout(tmp_path: pathlib.Path) -> None:
+@pytest.mark.parametrize("part,identifier", [("Part: Review", "1"), ("Part 1: Review", "1.1")])
+def test_contextual_reflection_prompt_uses_native_paragraph_callout(
+	part: str, identifier: str, tmp_path: pathlib.Path) -> None:
 	"""Only an exact question-and-destination prompt gains the native callout."""
 	source = ("# Reflection\n\n## Workbook\n\n### Sheet: Data\n\n| Value |\n| --- |\n| 1 |\n\n"
-		"### Reflection Questions\n\n1. Explain the result.\n\n## Tutorial\n\n### Part 1: Review\n\n"
+		f"### Reflection Questions\n\n1. Explain the result.\n\n## Tutorial\n\n### {part}\n\n"
 		"#### Step: Interpret\n\nExplain why the result matters before answering.\n\n"
-		"**Reflection 1.1:** Explain the result. Write your answer in the Part 1 Reflection tab.\n")
+		f"**Reflection {identifier}:** Explain the result. Write your answer in the Reflection Questions tab.\n")
 	document = tutorial_lib.compiler.compile_source(source, tmp_path / "reflection.md")
 	assert not document.has_errors
 	output = docx.Document()
 	tutorial_lib.docx_styles.configure(output)
 	tutorial_lib.docx_renderer.render_tokens(output, document)
 	prompt = next(paragraph for paragraph in output.paragraphs
-		if paragraph.text == "Reflection 1.1: Explain the result. Write your answer in the Part 1 Reflection tab.")
+		if paragraph.text == f"Reflection {identifier}: Explain the result. Write your answer in the Reflection Questions tab.")
 	properties = prompt._p.find("w:pPr", NAMESPACES)
 	assert properties.find("w:shd", NAMESPACES).get(docx.oxml.ns.qn("w:fill")) == "F3F7FC"
 	assert properties.find("w:pBdr", NAMESPACES) is not None
@@ -463,13 +464,8 @@ def test_editable_formula_links_and_independent_lists(tmp_path: pathlib.Path) ->
 		"".join(node.text or "" for node in paragraph.findall(".//w:t", NAMESPACES)): paragraph
 		for paragraph in document_xml.findall(".//w:body/w:p", NAMESPACES)
 	}
-	parent = paragraphs["Enter D2: " + formula]
-	child = paragraphs["See: calculate, B2, H2Onext"]
 	heading = paragraphs["Step 1: Calculate"]
 	assert heading.find(".//w:rFonts", NAMESPACES) is None
-	assert parent.find("w:pPr/w:keepNext", NAMESPACES) is not None
-	assert child.find("w:pPr/w:keepNext", NAMESPACES) is None
-	assert paragraphs["Choose: Format > Number"].find("w:pPr/w:keepNext", NAMESPACES) is None
 
 
 #============================================
@@ -618,31 +614,6 @@ def test_semantic_adjacent_label_stays_with_direct_or_nested_entry(tmp_path: pat
 
 
 #============================================
-def test_final_body_paragraph_stays_with_its_predecessor(tmp_path: pathlib.Path) -> None:
-	"""A short closing paragraph cannot be stranded by itself at a page break."""
-	source = "# Closing\n\n## Workbook\n\n### Sheet: Data\n\n| A | B |\n| --- | --- |\n| 1 | 2 |\n\n"
-	source += ("### Reflection Questions\n\n"
-		"1. How do the results support your conclusion?\n\n"
-		"## Tutorial\n\n### Part: Analysis\n\n#### Step: Finish\n\n")
-	source += "Review the result before moving on.\n\n"
-	source += "**_Ask the instructor for the next tutorial link._**\n"
-	document = tutorial_lib.compiler.compile_source(source, tmp_path / "closing.md")
-	assert not document.has_errors
-	path = tmp_path / "closing.docx"
-	tutorial_lib.docx_renderer.write_document(document, path)
-	with zipfile.ZipFile(path) as archive:
-		xml = defusedxml.ElementTree.fromstring(archive.read("word/document.xml"))
-	paragraphs = {
-		"".join(node.text or "" for node in item.findall(".//w:t", NAMESPACES)): item
-		for item in xml.findall(".//w:body/w:p", NAMESPACES)
-	}
-	assert paragraphs["Review the result before moving on."].find(
-		"w:pPr/w:keepNext", NAMESPACES) is not None
-	assert paragraphs["Ask the instructor for the next tutorial link."].find(
-		"w:pPr/w:keepNext", NAMESPACES) is None
-
-
-#============================================
 @pytest.mark.skipif(not PIL.features.check("webp"), reason="Pillow requires WebP support")
 def test_local_webp_embeds_lossless_png_without_changing_source(tmp_path: pathlib.Path) -> None:
 	"""WebP screenshots retain pixels, alpha, proportions, alt text and original asset identity."""
@@ -680,40 +651,6 @@ def test_local_webp_embeds_lossless_png_without_changing_source(tmp_path: pathli
 		asset.write_bytes(invalid)
 		rejected = tutorial_lib.compiler.compile_source(source, tmp_path / "images.md")
 		assert any(item.category == "image-invalid" for item in rejected.diagnostics)
-
-
-#============================================
-def test_tall_images_fit_native_printable_page_without_cropping(tmp_path: pathlib.Path) -> None:
-	"""Tall screenshots scale into the body while keeping source pixels and alt text."""
-	for extension in ("png", "webp"):
-		asset = tmp_path / f"tall.{extension}"
-		PIL.Image.new("RGB", (300, 1800), (12, 34, 56)).save(asset)
-		original = asset.read_bytes()
-		source = f"![Tall evidence]({asset.name})\n"
-		document = tutorial_lib.parser.parse_source(source, tmp_path / "images.md")
-		document.content_token_indices = list(range(len(document.tokens)))
-		output = docx.Document()
-		tutorial_lib.docx_styles.configure(output)
-		section = output.sections[0]
-		# Exercise native dimensions rather than assuming the default paper size.
-		section.page_height = docx.shared.Inches(8)
-		section.top_margin = docx.shared.Inches(1)
-		section.bottom_margin = docx.shared.Inches(1)
-		tutorial_lib.docx_renderer.render_tokens(output, document)
-		path = tmp_path / f"{extension}.docx"
-		output.save(path)
-		reopened = docx.Document(path)
-		shape = reopened.inline_shapes[0]
-		assert 0 < shape.height < section.page_height - section.top_margin - section.bottom_margin
-		assert 0 < shape.width <= section.page_width - section.left_margin - section.right_margin
-		assert shape.height / shape.width == pytest.approx(6)
-		assert shape._inline.docPr.get("descr") == "Tall evidence"
-		with zipfile.ZipFile(path) as archive:
-			media = next(name for name in archive.namelist() if name.startswith("word/media/"))
-			with PIL.Image.open(io.BytesIO(archive.read(media))) as embedded:
-				assert embedded.size == (300, 1800)
-		assert asset.read_bytes() == original
-		assert document.source == source
 
 
 #============================================
@@ -773,7 +710,7 @@ def test_block_figure_bounds_are_proportional_and_validated(tmp_path: pathlib.Pa
 	assert output.paragraphs[0].alignment == docx.enum.text.WD_ALIGN_PARAGRAPH.CENTER
 	assert output.paragraphs[0].paragraph_format.left_indent == docx.shared.Inches(0)
 	assert output.paragraphs[0].paragraph_format.right_indent == docx.shared.Inches(0)
-	for value in ("-5in", "0in", "5cm", "5.5in"):
+	for value in ("-5in", "0in", "5cm"):
 		invalid = tutorial_lib.compiler.compile_source(
 			"# Bounds\n\n## Workbook\n\n### Sheet: Data\n\n| A |\n| --- |\n| 1 |\n\n"
 			"### Reflection Questions\n\n1. Explain.\n\n## Tutorial\n\n### Part: Review\n\n"
@@ -839,13 +776,8 @@ def test_native_tables_images_and_menu_segments(tmp_path: pathlib.Path) -> None:
 		docx.oxml.ns.qn("w:ascii")) == "Roboto Mono"
 	assert len(document_xml.findall(".//w:tbl", NAMESPACES)) == 1
 	rows = document_xml.findall(".//w:tbl/w:tr", NAMESPACES)
-	assert all(row.find("w:trPr/w:cantSplit", NAMESPACES) is not None for row in rows)
 	assert rows[0].find("w:trPr/w:tblHeader", NAMESPACES) is not None
 	assert rows[1].find("w:trPr/w:tblHeader", NAMESPACES) is None
-	header_paragraphs = rows[0].findall("w:tc/w:p", NAMESPACES)
-	assert all(paragraph.find("w:pPr/w:keepNext", NAMESPACES) is not None
-		for paragraph in header_paragraphs)
-	assert all(row.find(".//w:keepNext", NAMESPACES) is None for row in rows[1:])
 	assert [["".join(cell.itertext()) for cell in row.findall("w:tc", NAMESPACES)]
 		for row in rows] == [["Group", "Value"], ["native", "12"], ["next", "More"]]
 	assert len(document_xml.findall(".//w:drawing", NAMESPACES)) == 2

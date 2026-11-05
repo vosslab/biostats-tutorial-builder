@@ -168,9 +168,9 @@ dates, currency, or thousands separators. Put units in headings so measurements 
 
 ## Add Google links optionally
 
-After importing your workbook into Google Sheets, you can add a `Google Sheets` declaration
-before a sheet's first table. The following URL is a placeholder; substitute your actual URL
-and the sheet's numeric `gid`:
+For an already-existing, externally managed Google Sheet, you can add a `Google Sheets` declaration
+before a sheet's first table. Uploading and importing files remain outside this workflow. The
+following URL is a placeholder; substitute the existing sheet's URL and numeric `gid`:
 
 ```text
 - **Google Sheets:** https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit#gid=TAB_ID

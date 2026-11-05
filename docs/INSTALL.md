@@ -2,6 +2,7 @@
 
 The converter runs on Python 3 with the packages in `pip_requirements.txt`. The default build also
 uses LibreOffice Writer to export PDF; the `docx,xlsx` build does not need LibreOffice.
+Dollar-delimited TeX equations use Pandoc to create editable mathematics in Word output.
 
 Generated DOCX files use Google Docs paragraph styles and PT Sans, PT Sans Narrow, and Roboto Mono.
 PDF export requires these fonts to be installed locally and visible to LibreOffice. Setup does not
@@ -28,10 +29,10 @@ after installing the fonts. On other systems, install these same families with y
    Git to follow these commands. Run the setup commands below from this folder; it contains
    `make_tutorial.py`, `source_me.sh`, and `pip_requirements.txt`.
 
-Install Python 3.12, LibreOffice, and the Python packages:
+Install Python 3.12, Pandoc, LibreOffice, and the Python packages:
 
 ```bash
-brew install python@3.12
+brew install python@3.12 pandoc
 brew install --cask libreoffice
 python3 --version
 ```
@@ -61,7 +62,7 @@ python3 -m pip install -r pip_requirements.txt
 In each new Bash shell, run `source source_me.sh` first, then `source .venv/bin/activate` before
 running Python commands. Keep using this same shell after installation.
 
-For other systems, install Python 3, LibreOffice, and the same Python requirements with that
+For other systems, install Python 3, Pandoc, LibreOffice, and the same Python requirements with that
 system's package tools. Keep LibreOffice available on `PATH` for PDF builds.
 
 Before running a repository command, start Bash and load the shell environment. The setup script
@@ -75,6 +76,15 @@ source source_me.sh
 If you created `.venv` above, also run `source .venv/bin/activate` in this shell.
 
 Run subsequent repository commands in this same Bash shell.
+
+## Verify install
+
+```bash
+python3 make_tutorial.py lint docs/examples/authoring_features.md
+```
+
+The command should finish without errors. Building this example additionally verifies the local
+Pandoc, fonts, and LibreOffice setup.
 
 See [USAGE.md](USAGE.md) for lint, build, and import commands. See
 [AUTHORING_GUIDE.md](AUTHORING_GUIDE.md) for the Markdown format.

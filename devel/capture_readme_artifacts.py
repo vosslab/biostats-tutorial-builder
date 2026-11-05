@@ -312,14 +312,16 @@ def main() -> None:
 	before = {str(path.relative_to(root)): digest(path) for path in protected}
 	temporary = pathlib.Path(tempfile.mkdtemp(prefix="readme_capture_"))
 	views = [
-		(pdf, None, "Step 1: Set Up Your Google Sheet", "caffeine_3_illustrated_opening"),
+		(pdf, "Part 3: Why Straight Lines Fail", "Step 1: Set Up Your Google Sheet",
+			"caffeine_3_illustrated_opening", 2, 2),
 		(pdf, "Create a SQUARED Sleep-Hours Column",
-			"Calculate Quadratic Regression", "caffeine_3_fill_down_instructions"),
+			"Calculate Quadratic Regression", "caffeine_3_fill_down_instructions", 2, 2),
 		(f_pdf, "Step 4: Calculate the F-Statistic",
-			"Step 5: Calculate the Degrees of Freedom", "microbes_4_formula_instruction"),
+			"Step 5: Calculate the Degrees of Freedom", "microbes_4_formula_instruction", 2, 2),
 	]
 	metadata = [capture_pdf(source, start, end, name,
-		temporary, destination) for source, start, end, name in views]
+		temporary, destination, occurrence, end_occurrence)
+		for source, start, end, name, occurrence, end_occurrence in views]
 	completed_source = temporary / "microbes_5_completed_anova_source.xlsx"
 	completed_workbook(anova_xlsx, root / "tutorial_data" / "microbes" / f"{microbes_anova}.md",
 		completed_source)

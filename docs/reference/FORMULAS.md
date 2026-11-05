@@ -13,7 +13,8 @@ Type this Markdown:
 ```markdown
 #### Step: Enter a formula
 
-1. In cell E2, enter [`=AVERAGE(A2:A6)`](enter:E2).
+1. In cell E2, enter:
+   [`=AVERAGE(A2:A6)`](enter:E2)
 ```
 
 The reader sees the cell and formula. The `enter:E2` target connects the visible instruction to
@@ -23,7 +24,8 @@ the blank workbook cell. It does not appear as a separate link in the document.
 ![Generated instruction to enter an AVERAGE formula in cell E2](../screenshots/authoring_enter.webp)
 <!-- screenshots:end -->
 
-A formula begins with `=`. The formula input range and the action target do different jobs:
+A formula begins with `=`. Put one entry or replacement formula on its own line below its named
+destination. The formula input range and the action target do different jobs:
 `A2:A6` supplies values and `E2` receives the result.
 
 ## Fill a repeated formula
@@ -33,7 +35,8 @@ Type this Markdown:
 ```markdown
 #### Step: Fill a column
 
-1. In cell B2, enter [`=A2^2`](enter:B2).
+1. In cell B2, enter:
+   [`=A2^2`](enter:B2)
 2. [Fill B2:B6](fill:B2:B6) down.
 ```
 
@@ -84,11 +87,14 @@ Tutorial prose do not invoke the Workbook's JSON scalar rules.
 Use dollar-delimited TeX for an equation that students read rather than enter into a spreadsheet:
 
 ```markdown
-$\hat{y} = b_0 + b_1x$
+$y = ax^2 + bx + c$
 ```
 
 The DOCX contains editable Office Math. Keep spreadsheet formulas such as `=SLOPE(B2:B26,A2:A26)`
 as ordinary formula text; dollar-delimited mathematics is for explanatory notation.
+
+For example, `$y = ax^2 + bx + c$` explains a quadratic model, while
+`=I2*7^2+I3*7+I4` is the literal spreadsheet formula for a prediction.
 
 ## Read validation limits
 

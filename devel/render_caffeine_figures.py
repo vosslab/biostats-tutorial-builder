@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """Regenerate the Caffeine data figures from the canonical paired observations."""
 
+# Standard Library
 import pathlib
 import subprocess
 
+# PIP3 modules
 import numpy
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot
 
+# Local modules
 import tutorial_lib.compiler
 
 
@@ -19,11 +22,13 @@ def main() -> None:
 		["git", "rev-parse", "--show-toplevel"], text=True).strip())
 	root = repository / "tutorial_data" / "caffeine"
 	document = tutorial_lib.compiler.compile_document(root / "caffeine_3_quadratic_regression.md")
-	assert not document.has_errors, document.diagnostics
+	if document.has_errors:
+		raise ValueError(f"Cannot plot invalid tutorial: {document.diagnostics}")
 	sheet = next(sheet for sheet in document.worksheets if sheet.name == "Quadratic Regression")
 	x = numpy.array([sheet.cells[(row, 1)].scalar.value for row in range(2, 27)], dtype=float)
 	y = numpy.array([sheet.cells[(row, 2)].scalar.value for row in range(2, 27)], dtype=float)
-	assert numpy.isfinite(x).all() and numpy.isfinite(y).all()
+	if not (numpy.isfinite(x).all() and numpy.isfinite(y).all()):
+		raise ValueError("Caffeine observations must be finite numbers")
 	curve_x = numpy.linspace(x.min(), x.max(), 300)
 	matplotlib.pyplot.rcParams.update({"font.size": 15, "axes.labelsize": 17,
 		"xtick.labelsize": 14, "ytick.labelsize": 14})
@@ -45,7 +50,8 @@ def main() -> None:
 				coefficients = numpy.polyfit(x, y, index + 1)
 				predicted = numpy.polyval(coefficients, x)
 				r_squared = 1 - numpy.sum((y - predicted) ** 2) / numpy.sum((y - y.mean()) ** 2)
-				assert 0 <= r_squared <= 1
+				if not 0 <= r_squared <= 1:
+					raise ValueError(f"Fitted R-squared is outside 0 to 1: {r_squared}")
 				axis.plot(curve_x, numpy.polyval(coefficients, curve_x),
 					color="#b74300", linewidth=2.2, zorder=2)
 				label = "Linear fit" if index == 0 else "Quadratic fit"

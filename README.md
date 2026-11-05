@@ -45,7 +45,8 @@ Write this inside a Tutorial Part and Step:
 ```markdown
 #### Step: Enter a formula
 
-1. In cell E2, enter [`=AVERAGE(A2:A6)`](enter:E2).
+1. In cell E2, enter:
+   [`=AVERAGE(A2:A6)`](enter:E2)
 ```
 
 The Word document shows the numbered step and formatted formula:

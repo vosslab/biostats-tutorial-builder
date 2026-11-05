@@ -33,9 +33,11 @@ The instructor gallery uses [capture_receipt.json](capture_receipt.json). Its co
 image is explicitly a demonstration: the capture applies authored actions to a disposable
 workbook and recalculates it. It is not a blank student starter.
 
-The Roots checkpoint illustrations and published example remain available with
-[course_capture_receipt.json](course_capture_receipt.json). They are retained examples, not the
-current three-part authoring path; the full refresh updates them too. Their standalone command is
+The historical Roots checkpoint illustrations and published example remain available with
+[course_capture_receipt.json](course_capture_receipt.json). Their source retains the earlier bold
+bullet action syntax; use the current guides' numbered tasks and separate formula lines for new
+tutorials. These are historical syntax examples rendered with current styles, not the current
+three-part authoring path; the full refresh updates their rendering too. Their standalone command is
 [../../devel/capture_authoring_course.py](../../devel/capture_authoring_course.py).
 
 ## Refresh the current guides

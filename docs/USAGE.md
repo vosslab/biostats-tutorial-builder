@@ -157,18 +157,17 @@ not compile, the command stops without writing anything.
 
 ## Check numerical expectations
 
-Generate independent SciPy/NumPy expectations for all 12 lessons, then prepare the optional
-Google Sheets execution cases without API requests:
+Generate independent SciPy/NumPy expectations, then execute the calculations locally:
 
 ```bash
 python3 -m devel.check_tutorial_calculations
-python3 -m devel.validate_google_sheets tutorial_data/*/*.md --dry-run \
-  --expectations tutorial_output/validation/tutorial_expectations.json --output tutorial_output/validation/sheets
+python3 -m devel.validate_libreoffice tutorial_data/*/*.md \
+  --expectations tutorial_output/validation/tutorial_expectations.json
 ```
 
-Keep this runner in `--dry-run` mode. Live execution creates Google workbooks, so it is outside
-this repository workflow. For local calculation checks and the report format, see
-[GOOGLE_SHEETS_VALIDATION.md](GOOGLE_SHEETS_VALIDATION.md).
+Run LibreOffice outside the sandbox on this macOS host. The Google runner has been removed;
+uploads and imports remain outside this workflow. For local checks and the report format, see
+[LOCAL_VALIDATION.md](LOCAL_VALIDATION.md).
 
 ## Refresh documentation screenshots
 

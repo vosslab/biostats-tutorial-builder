@@ -73,29 +73,31 @@ scientific claim is accurate, a scenario is engaging, or a student will understa
 
 Use this short review after every meaningful revision:
 
-1. Open the PDF and DOCX. Read the headings in order, check that formulas and images are readable,
-   and look for clipped or split material.
+1. Open the PDF and DOCX. Read the headings in order, check that Contents lists every Step and
+   Substep, formulas and images are readable, and no material is clipped or overlaps.
 2. Open the XLSX. Check that supplied data and labels are present, calculation cells are blank when
    students should work them out, and result or response areas have clear headings.
 3. Work through the instructions in a disposable copy of the XLSX. Check the first and last formula
    destinations and every filled range.
 4. Revise the Markdown source, then lint and build again.
 
-This is a local review. If you later import into Google Docs or Google Sheets, inspect the imported
-files too. Local output does not prove Google formatting or calculations.
+This is a local review. The project delivers local files; Google Drive uploading and importing are
+out of scope. Local output does not prove Google formatting or calculations.
 
 #### Step: Correct a common mismatch
 
 The visible destination and the semantic target must name the same cell:
 
 ```markdown
-1. In cell E2, enter [`=AVERAGE(A2:A6)`](enter:E2).
+1. In cell E2, enter:
+   [`=AVERAGE(A2:A6)`](enter:E2)
 ```
 
 This source has a mismatch:
 
 ```markdown
-1. In cell E2, enter [`=AVERAGE(A2:A6)`](enter:E3).
+1. In cell E2, enter:
+   [`=AVERAGE(A2:A6)`](enter:E3)
 ```
 
 For this mismatch, lint reports:

@@ -445,6 +445,13 @@ tutorial paragraph or character styles. Unused stock styles may remain in the DO
 generated paragraphs reference only the six styles. Keep the style and direct-format values in one
 renderer-owned definition.
 
+Use 0.6-inch page margins. Part, Step, and Substep headings start at 0, 0.1, and 0.2 inches
+relative to that margin. Ordinary body text and first-level task text share the 0.3-inch edge,
+regardless of heading depth. Lists use hanging indents so wrapped lines align with task text;
+true nested lists add 0.25 inches per level. Continuations follow their containing item.
+Fully justify ordinary explanatory paragraphs. Left align lists, equations, captions, and prompt
+callouts; center figures. Review for readability and clipping rather than optimizing print pages.
+
 Use PT Sans for body text and headings, PT Sans Narrow for compact table text, and Roboto Mono for
 formulas, cell references, and menu entries. Apply PT Sans Narrow only where rendered table content
 needs the narrower face. These fonts are available in Google Docs and must also be installed in the
@@ -486,6 +493,9 @@ presentation.
 Local `.webp` assets must have a genuine RIFF/WEBP container and decodable image content. For DOCX,
 embed their decoded pixels losslessly as an in-memory PNG, preserving transparency and proportions.
 Keep source WebP paths and bytes unchanged; build asset fingerprints identify the original WebP.
+Use `$...$` for inline TeX and `$$...$$` for display TeX. Pandoc creates editable Office Math;
+spreadsheet formulas remain literal text and retain dollar-sign anchors. Prefer familiar teaching
+notation such as `$y = ax^2 + bx + c$`; hypothesis symbols accompany their full names.
 No network fetching occurs during build. SVG and mathematical image generation require explicit
 future work; migrate such content to supported assets or report it rather than discarding it.
 
@@ -618,15 +628,14 @@ assessment of generated PDF layout. No human milestone signoff is required. Scie
 questions are resolved against authoritative sources, with corrections and citations recorded in
 the migration records. These checks do not establish Google Docs or Sheets import behavior.
 
-Live Google import is optional when the required access is available. Record observed results
-separately, and claim Google verification only for behavior actually observed. Missing Google access
-does not block local completion or become a milestone dependency.
+Google Drive uploads and Google Docs/Sheets imports are always outside this workflow. Deliver and
+validate local artifacts without making Google access a completion requirement.
 
 The static validator checks formula syntax, references, and authored assignments; it never evaluates
 formulas. For real local execution, `devel/validate_libreoffice.py` applies all authored
 assignments for each scenario, opens and recalculates the final workbook state in LibreOffice Calc,
 and compares saved results with independent SciPy/NumPy expectations. This verifies final states,
 not intermediate steps. On the current snapshot Calc passed 254 expected values across 13
-scenarios. No Google claim follows from that result: all 14 worksheet mappings are absent and live
-Google execution lacked credentials. See [GOOGLE_SHEETS_VALIDATION.md](GOOGLE_SHEETS_VALIDATION.md)
+scenarios. This is local execution evidence only; the Google runner has been removed.
+See [LOCAL_VALIDATION.md](LOCAL_VALIDATION.md)
 and [local_calculation_readiness.md](active_plans/reports/local_calculation_readiness.md).

@@ -310,8 +310,9 @@ def contextual_reflection(document: tutorial_lib.model.Document, source: str) ->
 	clean = source.replace("**", "").strip()
 	for number, question in enumerate(document.reflection_questions, 1):
 		identifier = tutorial_lib.reflections.question_identifier(document, number)
+		destination = next(sheet.name for sheet in document.worksheets if sheet.is_reflection)
 		expected = (f"Reflection {identifier}: {question.text} "
-			f"Write your answer in the Part {identifier.split('.')[0]} Reflection tab.")
+			f"Write your answer in the {destination} tab.")
 		if clean == expected:
 			return True
 	return False

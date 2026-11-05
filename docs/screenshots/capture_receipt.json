@@ -1,36 +1,36 @@
 {
-  "captured_utc": "2026-11-04T22:36:49.936976+00:00",
+  "captured_utc": "2026-11-05T00:40:51.910028+00:00",
   "protected_sha256": {
-    "tutorial_data/babies/babies_1_z_test.md": "075d5379abe8ac5e0d17ca2ee6a916fc41de02fb5aca3280ccc3364aa1470790",
-    "tutorial_data/babies/babies_2_t_test.md": "746606cbebe1dd784cc235c6a54a2783c673daa8339c0803c7dd549f93514b9a",
-    "tutorial_data/babies/babies_3_two_sample_t_test.md": "63941519140acd50fbddf5f501c20aca0468b964b591686a32f5e231d20622f6",
-    "tutorial_data/caffeine/caffeine_1_descriptive_statistics.md": "1ab998e0d4504ed14979cb4d2c572d9a535f83fd834cbcaf3b394e6fe8d811a1",
-    "tutorial_data/caffeine/caffeine_2_linear_regression.md": "dde1d0e65cdb4004ec3ebf5bd5f5fbb49b0456a84ad26622fca017b88e6d78e3",
-    "tutorial_data/caffeine/caffeine_3_quadratic_regression.md": "71ad125cdc872ac5cae10938266ac4c117c8a4cca1c15c8c43ed3f7c9ed0b239",
-    "tutorial_data/microbes/microbes_1_z_test.md": "670a2563a8ac2eb764fa5f61ce7b7de0b4e4912a3e22941bf148dacdd1501bad",
-    "tutorial_data/microbes/microbes_2_t_test.md": "c75ef22a96bcca333b15a65d05caba64c9230936f1ced736d9314479eb78c78f",
-    "tutorial_data/microbes/microbes_3_two_sample_t_test.md": "521e9e7fbc50fe727a0fbc661d0d08a104d7078075a2f7f86e29526a25d324f1",
+    "tutorial_data/babies/babies_1_z_test.md": "db3c6d088a9a3883a6b6787536bf9fae35cb1ec220b4433bf6a4cd1e92c60d3a",
+    "tutorial_data/babies/babies_2_t_test.md": "df56bc4cf19e6914683b74d166ad71772ac5aace1ce57ac3b5568d67155c0532",
+    "tutorial_data/babies/babies_3_two_sample_t_test.md": "3b7a64ff5bf81c02b67ef33d6e7fdd05f84f6ab3968f6b3da6a13f7d67227382",
+    "tutorial_data/caffeine/caffeine_1_descriptive_statistics.md": "604c7a2942e87484644629c8ac45c99612c70d8dcd0c4cb7b9a1cac8ad500c87",
+    "tutorial_data/caffeine/caffeine_2_linear_regression.md": "787ce5da0dad8f91f74b5a7d6b2519bdf278e651eed97db7c742e3cd7a764672",
+    "tutorial_data/caffeine/caffeine_3_quadratic_regression.md": "c8a7efab487831cb4958188a5b1c59db6fff434ee9ef280c78331823dc499ca8",
+    "tutorial_data/microbes/microbes_1_z_test.md": "bdf267e0095002d4a3ecceed2767d4dc9ee4f5ea25bd11fc9b9ddd952a830aef",
+    "tutorial_data/microbes/microbes_2_t_test.md": "14c1437d6c7bb2afc44c785282198ee1c067b43266b40d9b61f9e3a102530401",
+    "tutorial_data/microbes/microbes_3_two_sample_t_test.md": "755d23397d96f19abfb4cff500b3b673d66f171429f691b92542e7b090b42b85",
     "tutorial_data/microbes/microbes_4_f_test.md": "80dcdab9ddbffe95db17df8f8442db7afad5de29f8a0c819f0d68abf9060ef66",
-    "tutorial_data/microbes/microbes_5_anova.md": "e595a157aac95b8cdd26ea37e5465632e809b3eef2db0ce0f6bc01cceb3a130d",
+    "tutorial_data/microbes/microbes_5_anova.md": "1812de60e9e7ad083dc1521bd01d74863ffe317192ab96416e81a4953f303e40",
     "tutorial_data/petase/petase_1_linear_regression.md": "d863e81275b6669bf1b1de3cf71997571c2da01454b147e749c964941411b89b",
-    "tutorial_output/caffeine_release/caffeine_1_descriptive_statistics.docx": "a4f343fd1a37d00fea534bd9d750ff5698f99096a0e1acf9e50248881a4b4a6b",
-    "tutorial_output/caffeine_release/caffeine_1_descriptive_statistics.pdf": "a3e70b79294348b02306820e7ea9f78d186ac0f889c47a256a855f9e3c4e1a12",
-    "tutorial_output/caffeine_release/caffeine_2_linear_regression.docx": "7904744c97286bcde6a35bcafb41c68c925a4dc8ab9e7e2dfa3cfa920242d5e4",
-    "tutorial_output/caffeine_release/caffeine_2_linear_regression.pdf": "5c05279874c17113a25180558e4897a76d71ecb14849ec8d1f61ad72fea4fb39",
-    "tutorial_output/caffeine_release/caffeine_3_quadratic_regression.docx": "34d8356a622fda514495f18e550215067e2280819dd8257c32628f1fbf1cc293",
-    "tutorial_output/caffeine_release/caffeine_3_quadratic_regression.pdf": "a8d50c74df671044a54a8e0317646f2132496830262d8d5f1dd266b62b40327f",
-    "tutorial_output/caffeine_release/Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx": "0554f80b03a4e26758d6b1d8a08c9211612ffea499382a3ea3b76660639a2b87",
-    "tutorial_output/microbes_4_f_test/microbes_4_f_test.docx": "abda5cdf7409c03f6f67aca81b124ade8f7e5041646999ed803b974d0c55b3d4",
-    "tutorial_output/microbes_4_f_test/microbes_4_f_test.pdf": "c5da944cce563b546f61553e8225763bfaff81a4890e705ba6727a540d6951e2",
-    "tutorial_output/microbes_4_f_test/microbes_4_f_test.xlsx": "437fd3c9077751172b3e8b10cbc781f2e9d0f4f547f2a0f184e8049fcd4deb95",
-    "tutorial_output/microbes_5_anova/microbes_5_anova.docx": "f3e8b60970f68f741745445a78b1884edd84ebb6e29b6394ab701769929c7987",
-    "tutorial_output/microbes_5_anova/microbes_5_anova.pdf": "98a3bd9174a8de48ba180715699eebdc56efa02b419f885ddd7bf791dfe53992",
-    "tutorial_output/microbes_5_anova/microbes_5_anova.xlsx": "8c3084649874e2c975823571863232eaa69442a5c605b9c58a3303d99c5a8b1b"
+    "tutorial_output/caffeine_release/caffeine_1_descriptive_statistics.docx": "70fd3b3f1fb5e786c860ffb4379fe2ceaf9d8fc0adcee4927b7619719661defb",
+    "tutorial_output/caffeine_release/caffeine_1_descriptive_statistics.pdf": "de4022a870b4d288b65791b32e133ccb0706bf66645939f8a1d3f7347078b657",
+    "tutorial_output/caffeine_release/caffeine_2_linear_regression.docx": "2c6e4b332a8bb6dc2c6550fa8d5c7b213f11aa0f39598eeaf3d34ec8ccdbfb17",
+    "tutorial_output/caffeine_release/caffeine_2_linear_regression.pdf": "a76e9c866778f246454dcf10de77b07d3ffd9f26aa004fd01898d9376d621848",
+    "tutorial_output/caffeine_release/caffeine_3_quadratic_regression.docx": "1d736e0b4cc5edbad9fbee604433dfed1decbe250f7e43e474aaa20c886f8f8f",
+    "tutorial_output/caffeine_release/caffeine_3_quadratic_regression.pdf": "b4e77c6a8ddec3f8b9a82b2f521ea4a5cdd11376844e5ec4f427338bd42f49da",
+    "tutorial_output/caffeine_release/Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx": "aa3654f370cf905b5add3d44f2b0606c8eed98cc2da23159f3ab84d43dd1b5d8",
+    "tutorial_output/microbes_4_f_test/microbes_4_f_test.docx": "c51b9bc91580392448be333f471b1184448a3ab4dee3fc9d8fab7bfd0d85e347",
+    "tutorial_output/microbes_4_f_test/microbes_4_f_test.pdf": "ee68ef16685ffe0ac9da61a4dd2e22a3647fca9a69398ea0531e1248607c7c3e",
+    "tutorial_output/microbes_4_f_test/microbes_4_f_test.xlsx": "40301f2f318089d7dc7376f90b78ad0bb913b38dd61a09c49c4826e78c1ce203",
+    "tutorial_output/microbes_5_anova/microbes_5_anova.docx": "38f74b2f43acabb6a3d84385264e29e49cbbc8fd42c9edaaa5d2d6a50d5d9284",
+    "tutorial_output/microbes_5_anova/microbes_5_anova.pdf": "570211ec15fd5bd7146bff20665038f1d147f3fc940235d4ca048385034457ae",
+    "tutorial_output/microbes_5_anova/microbes_5_anova.xlsx": "b025aefdd185d83e64d3d3e393fc8f4b2dd44489e01f05b3490680db7af77df3"
   },
   "assets_sha256": {
-    "caffeine_3_illustrated_opening.webp": "93c5dc4e3eaa394eed768711dc4e4e4b467a6784987d6390a70b4c068db45c9b",
-    "caffeine_3_fill_down_instructions.webp": "78610051881619c126d96c87426cd8887451e184aa75bad63e16cf14a9d3a408",
-    "microbes_4_formula_instruction.webp": "bbadcb0ce12918a87f62ca42e44981ed13aa0877a21fdfbe0b1c726f09d97a9b",
+    "caffeine_3_illustrated_opening.webp": "177c7a7e760e604bff1a1fae6bf1d5e45707535b985f7076489380e27cbd3750",
+    "caffeine_3_fill_down_instructions.webp": "bd8269d689f932e07ae116ad54fd87ad15f287b2353b8e30f2e091bf43c287e7",
+    "microbes_4_formula_instruction.webp": "676e23161a3b31dd3b211f5183980f274f20f76d0a4b249b115278482702490f",
     "microbes_5_completed_anova.webp": "a7f6c9345eefc5a26b63762020b02a2eff16b0653735ed3624a3df13e32a8816"
   },
   "renderer": "repository-owned LibreOffice and Poppler",
@@ -38,29 +38,38 @@
     {
       "asset": "/Users/vosslab/nsh/SLIDES/markdown-to-tutorial/docs/screenshots/caffeine_3_illustrated_opening.webp",
       "source": "/Users/vosslab/nsh/SLIDES/markdown-to-tutorial/tutorial_output/caffeine_release/caffeine_3_quadratic_regression.pdf",
-      "start_anchor": null,
+      "start_anchor": "Part 3: Why Straight Lines Fail",
       "end_anchor": "Step 1: Set Up Your Google Sheet",
       "segments": [
         {
           "page": 1,
           "bbox_points": [
-            37.0,
-            41.5,
-            575.0,
-            171.5
+            38.0,
+            656.0,
+            517.0,
+            725.0
+          ]
+        },
+        {
+          "page": 2,
+          "bbox_points": [
+            58.5,
+            39.0,
+            574.0,
+            420.0
           ]
         }
       ],
       "dpi": 144,
       "webp_quality": 90,
-      "page_separator_pixels": 0,
+      "page_separator_pixels": 24,
       "original_dimensions": [
-        1076,
-        260
+        1031,
+        924
       ],
       "dimensions": [
-        1076,
-        260
+        1031,
+        924
       ]
     },
     {
@@ -70,12 +79,12 @@
       "end_anchor": "Calculate Quadratic Regression",
       "segments": [
         {
-          "page": 1,
+          "page": 5,
           "bbox_points": [
-            73.5,
-            217.5,
-            308.0,
-            233.0
+            44.5,
+            176.0,
+            563.5,
+            629.5
           ]
         }
       ],
@@ -83,12 +92,12 @@
       "webp_quality": 90,
       "page_separator_pixels": 0,
       "original_dimensions": [
-        469,
-        31
+        1038,
+        907
       ],
       "dimensions": [
-        469,
-        31
+        1038,
+        907
       ]
     },
     {
@@ -98,30 +107,39 @@
       "end_anchor": "Step 5: Calculate the Degrees of Freedom",
       "segments": [
         {
-          "page": 1,
+          "page": 3,
           "bbox_points": [
-            73.5,
-            233.0,
-            233.0,
-            264.0
+            44.5,
+            532.5,
+            574.5,
+            724.0
+          ]
+        },
+        {
+          "page": 4,
+          "bbox_points": [
+            58.5,
+            39.0,
+            575.0,
+            196.0
           ]
         }
       ],
       "dpi": 144,
       "webp_quality": 90,
-      "page_separator_pixels": 0,
+      "page_separator_pixels": 24,
       "original_dimensions": [
-        319,
-        62
+        1060,
+        721
       ],
       "dimensions": [
-        319,
-        62
+        1060,
+        721
       ]
     },
     {
       "asset": "/Users/vosslab/nsh/SLIDES/markdown-to-tutorial/docs/screenshots/microbes_5_completed_anova.webp",
-      "source": "/var/folders/m7/vq7ll_w13mq43bbbknh7g2gc0000gp/T/readme_capture_ysizdke4/microbes_5_completed_anova.xlsx",
+      "source": "/var/folders/m7/vq7ll_w13mq43bbbknh7g2gc0000gp/T/readme_capture_boi3qiqc/microbes_5_completed_anova.xlsx",
       "print_area": "H1:M16",
       "renderer": "LibreOffice Calc PDF export and Poppler",
       "page": 1,
@@ -133,7 +151,7 @@
       ],
       "dpi": 144,
       "webp_quality": 90,
-      "native_pdf": "/var/folders/m7/vq7ll_w13mq43bbbknh7g2gc0000gp/T/readme_capture_ysizdke4/workbook_2jyiai5p/microbes_5_completed_anova.pdf",
+      "native_pdf": "/var/folders/m7/vq7ll_w13mq43bbbknh7g2gc0000gp/T/readme_capture_boi3qiqc/workbook_8d9b9gsg/microbes_5_completed_anova.pdf",
       "scale": 1.0,
       "original_dimensions": [
         1470,

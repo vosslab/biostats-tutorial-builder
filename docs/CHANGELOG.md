@@ -1,6 +1,35 @@
 # Changelog
 
+## 2026-11-05
+
+### Make Part 3 work from a fresh workbook
+
+- Replace Part 3's cross-sheet comparison links with same-sheet SLOPE, INTERCEPT, and RSQ
+  formulas. Students with completed Part 2 results can still copy values instead.
+- Clarify the fresh-workbook setup and remove the validation dependency on completed prior cells.
+- Verify all 254 existing local calculation expectations across 13 scenarios and rebuild the
+  Caffeine release. Add no new test, gate, configuration, or validation mechanism.
+
+### Remove the Google runner
+
+- Delete the Google Sheets execution command, API-only helpers, fake transport test, and Google
+  authentication/client dependencies. Preserve local case preparation and numerical comparison.
+- Replace Google-runner documentation with [LOCAL_VALIDATION.md](LOCAL_VALIDATION.md) and update
+  active usage and design guidance. Mark the corresponding audit finding resolved.
+- Verify the four retained local helpers are unchanged. Record the isolated Part 3 prerequisite
+  limitation exposed by the extra Calc run; the full pytest suite remains clean.
+
 ## 2026-11-04
+
+### Permanent-test simplicity audit
+
+- Complete six independent review passes against the permanent-test checklist. Remove two
+  redundant print-layout tests, incidental worksheet dimensions, and duplicate pagination
+  assertions; retain semantic grouping, editable output, data integrity, and native navigation.
+- Stop requiring decimal inch bounds to fail. Record the parser limitation and the still-present
+  out-of-scope live Google runner as unresolved findings in [TEST_AUDIT.md](TEST_AUDIT.md).
+- Reconcile remaining Google-import documentation and make figure-generator validation explicit
+  rather than dependent on Python assertions. Add no permanent tests or new gates.
 
 ### Refreshed authoring documentation
 
@@ -10,6 +39,8 @@
 - Refresh all native documentation capture sets and guide exports, including retained checkpoint
   examples. Separate Contents from the title crop and add math and inline-reflection views.
 - Remove live Google upload instructions from the current usage path; retain local-only validation.
+- Document Pandoc installation for editable explanatory mathematics and recognize standalone
+  reflection callouts using the actual generated answer-tab name.
 
 ### Accessible regression notation and figures
 

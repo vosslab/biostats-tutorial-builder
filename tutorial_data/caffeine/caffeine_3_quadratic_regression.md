@@ -256,7 +256,7 @@ Now that we've officially run our linear regression, Dr. Caffeine is staring at 
 
 ##### Substep: Open the workbook
 
-1. Continue with the workbook you used in Parts 1 and 2. Open **Quadratic Regression**, where A1:B26 contains the same paired observations, and record written responses in the reflection tab.
+1. Open the supplied workbook, or continue with your copy from Parts 1 and 2. Open **Quadratic Regression**, where A1:B26 contains all 25 paired observations, and record written responses in the reflection tab. A fresh workbook works for this Part; you do not need completed Part 2 cells.
 
 ##### Substep: Create the comparison scatterplot
 
@@ -267,7 +267,7 @@ Now that we've officially run our linear regression, Dr. Caffeine is staring at 
 
 ##### Substep: Bring forward the linear results
 
-The linear comparison labels are already present. Copy the numbers from Part 2 into this sheet:
+The linear comparison labels are already present. If you completed Part 2 in this workbook, copy its results into this sheet. If you are starting with a fresh workbook, use the three formulas below instead.
 
 1. Copy E2 (slope) from **Linear Regression** and paste into N2 on **Quadratic Regression** using **Edit > Paste special > Values only**.
 2. Copy E6 (intercept) from **Linear Regression** and paste values only into N3 on **Quadratic Regression**.
@@ -275,14 +275,14 @@ The linear comparison labels are already present. Copy the numbers from Part 2 i
 
 Copy the cell values rather than retyping rounded numbers from the screen. Values-only pasting keeps the calculated numbers without copying formulas whose cell references could change.
 
-**Optional: link the results instead.** A link updates automatically when its source changes. In `='Linear Regression'!E2`, the exclamation mark `!` separates the sheet name from the cell address: read it as "cell E2 on the Linear Regression sheet." The single quotes keep the sheet name's space together. The opening `=` makes this a formula. If you prefer links, use these instead of copying values:
+**Starting with a fresh workbook? Calculate the linear results here instead.** These formulas use the observations already on **Quadratic Regression**. They work even when the **Linear Regression** tab has no completed answers. Use these instead of the copying instructions above.
 
-1. In N2, enter:
-   [='Linear Regression'!E2](enter:N2)
-2. In N3, enter:
-   [='Linear Regression'!E6](enter:N3)
-3. In N4, enter:
-   [='Linear Regression'!E10](enter:N4)
+1. In N2, calculate the linear slope:
+   [=SLOPE(B2:B26,A2:A26)](enter:N2)
+2. In N3, calculate the linear intercept:
+   [=INTERCEPT(B2:B26,A2:A26)](enter:N3)
+3. In N4, calculate the linear R-squared:
+   [=RSQ(B2:B26,A2:A26)](enter:N4)
 
 **Let's see why our linear regression is not giving what it needs to give.**
 
