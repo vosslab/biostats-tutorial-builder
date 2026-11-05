@@ -6,17 +6,17 @@ in [tutorial_readiness_plan.md](active_plans/archive/tutorial_readiness_plan.md)
 
 ## Product contract
 
-This repository supports open pedagogy and Student-Generated Content. Its primary authors are
-BIOL 318 students who have completed several tutorials and now write original tutorials for the
-class. The compiler maintains formatting and supported technical standards; authors and instructors
+This repository supports open pedagogy and Student-Generated Content. Its authors write original
+biology tutorials for classmates in one plain-text file, designing both the lesson and the workbook. The compiler maintains formatting and supported technical standards; authors and instructors
 judge the scientific content and instructional quality. Start with [AUTHORING_GUIDE.md](AUTHORING_GUIDE.md)
 for visual examples; this specification defines the technical contract.
 
 One authored Markdown file contains list-authored instructions and table-authored workbook data.
 A single-source build produces a DOCX tutorial, an XLSX student workbook, and a PDF exported from
 that DOCX through LibreOffice. A multi-source build produces one DOCX and PDF for each source plus
-one compatible shared XLSX workbook. Google Docs and Google Sheets import are the primary delivery
-path. HTML output is outside the initial scope.
+one compatible shared XLSX workbook. The editable files target Word, Excel, and Google Docs/Sheets
+presentation. Uploading or importing files to Google services is always outside this workflow.
+HTML output is outside the initial scope.
 
 The Markdown file is the source of truth after migration. DOCX, XLSX, and PDF are generated outputs.
 Local image companions are allowed; single-source means one content specification, not that every
@@ -113,8 +113,9 @@ tables at A1 and F1; F2:H2 remain blank but are visibly identified as student en
   reflection section to the DOCX. A table
   intentionally included in Tutorial is an ordinary document table and does not populate cells.
 - Keep reflection questions in one ordered Workbook list. Authors use ordinary Tutorial prose to
-  indicate when students should answer each question. Do not create activity-local blocks, citation
-  IDs, or automatic associations between questions and Parts, Steps, or Substeps.
+  indicate when students should answer each question. A matching identifier, exact question, and
+  answer-tab destination render as an inline shaded callout. Do not add a new reflection directive
+  or associate questions with headings automatically.
 - Use Markdown syntax parsing, not whole-document regular-expression replacement. Preserve source
   locations, list nesting, inline formatting, and formula text across semantic classification.
 
@@ -472,7 +473,8 @@ worksheet label remains useful without links. Resolve internal heading links to 
 
 Preserve image order, proportions, and alternative text. Render standalone and
 line-break-separated teaching figures centered in a 6.5-inch-wide by 3-inch-tall maximum box, with
-proportional page-height scaling and a numbered native-Normal caption below. Keep genuine sentence
+proportional page-height scaling and a numbered native-Normal caption below. Captions are one
+point smaller than body text, left aligned with an extra 0.2-inch inset beyond the body edge. Keep genuine sentence
 and linked images inline at their natural size. Resolve local assets relative to the Markdown
 source; decode existing PNG/JPEG data-URI references without treating them as prose.
 Use the DOCX caption rather than a redundant standalone figure title; scientific multi-panel figures

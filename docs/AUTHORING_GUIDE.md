@@ -1,13 +1,11 @@
 # Authoring guide
 
-You have worked through several BIOL 318 tutorials. Now you can write one for your classmates.
-This guide teaches the Markdown and compiler features that turn your source into a Word document,
-an Excel workbook, and a PDF. Bring your own scenario, research question, explanations, and approach
-to teaching them.
+Create a biology tutorial for classmates in one plain-text file. Write the lesson and design the
+spreadsheet; the compiler formats your work as editable Word, PDF, and Excel files. Bring your own
+scenario, research question, explanations, and approach to teaching them.
 
-Your tutorial contributes to the class's growing collection of Student-Generated Content (SGC).
-That is the open-pedagogy purpose of this project: students create educational materials that
-others can use. The compiler keeps their presentation consistent while preserving your words.
+Your tutorial can become a useful resource for classmates. The compiler keeps presentation
+consistent while preserving your words, scientific decisions, and instructional approach.
 
 ## Find what you need
 
@@ -74,9 +72,10 @@ Word or Excel files do not flow back into Markdown.
 
 Every source includes one `### Reflection Questions` heading under `## Workbook`, followed by a
 numbered list. The compiler normalizes its numbering to begin at 1. Keep all questions in that list.
-In Tutorial prose, repeat each full question at the point students should answer it and use the
-matching question number. The compiler generates a separate workbook tab with question text and
-answer space; it does not append a duplicate question section to the DOCX.
+In Tutorial prose, repeat each full question at the point students should answer it using the
+literal form `**Reflection 1:** <exact question> Write your answer in the Reflection Questions tab.`
+The compiler renders this as a shaded callout and generates a separate workbook tab with question
+text and answer space; it does not append a duplicate question section to the DOCX.
 For merged builds, each source keeps its own tab. See [TUTORIAL_SPEC.md](TUTORIAL_SPEC.md) for
 numbering and tab-name rules.
 

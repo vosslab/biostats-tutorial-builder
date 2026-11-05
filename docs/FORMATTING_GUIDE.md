@@ -60,9 +60,16 @@ This paragraph belongs to the substep.
 
 ![Numbered Part, Step, and Substep headings with an ordered list and indented supporting bullets](screenshots/authoring_headings.webp)
 
-The compiler numbers Parts and Steps and gives nested instructions their own indentation.
-Use descriptive names from your own tutorial. A `#` title starts the file; `## Workbook`
-and `## Tutorial` separate spreadsheet content from document content.
+The compiler numbers Parts, Steps, and Substeps. Their headings begin at 0, 0.1, and 0.2 inches;
+body paragraphs and first-level task text share the 0.3-inch edge. Use a numbered task for each
+student action, even when it is the only task in a Substep. Use bullets for genuine supporting
+information. A `#` title starts the file; `## Workbook` and `## Tutorial` separate spreadsheet
+content from document content.
+
+Contents lists every Step and Substep, with Substeps indented beneath their Step. A document with
+one Part shows that Part as a subtitle beneath the title and keeps its Heading 1 in the body.
+
+![Generated Contents with linked Steps and indented Substeps, followed by the Part body heading](screenshots/authoring_contents.webp)
 
 ## Text and symbols
 
@@ -72,7 +79,7 @@ and `## Tutorial` separate spreadsheet content from document content.
 ##### Explanation: Mark up scientific text
 
 Use **bold** for emphasis, *italics* for a distinction, and `A2` for a literal cell address.
-Scientific text can include &alpha;, H<sub>0</sub>, and mm<sup>2</sup>.
+Scientific text can include &alpha;, null hypothesis, H<sub>0</sub>, and mm<sup>2</sup>.
 
 > A short note appears as a separate block.
 ```
@@ -83,6 +90,9 @@ Scientific text can include &alpha;, H<sub>0</sub>, and mm<sup>2</sup>.
 
 Keep source characters ASCII. Named entities and the supported `sub` and `sup` tags let you
 write scientific notation. The compiler chooses the fonts and colors; you supply the emphasis.
+Use `$y = ax^2 + bx + c$` for an explanatory equation and `=A2^2` for a formula a reader enters.
+
+![Generated mathematical equation distinct from a literal spreadsheet formula](screenshots/authoring_math.webp)
 
 ## Tables, images, and links
 
@@ -122,6 +132,7 @@ remain inline at their natural size.
 Use `{width=5in height=2in}` immediately after a standalone image only when its readability needs
 a smaller maximum box. Both values are positive inches and are maximum bounds, not a request to
 stretch or crop the image. The standard figure box is preferred for ordinary teaching figures.
+Figures have numbered captions, no titles, and smaller inset caption text. Tables have titles.
 
 Link to a heading using its Markdown anchor:
 
@@ -224,9 +235,17 @@ For the original five-question example, build
 [examples/descriptive_statistics_reflection.md](examples/descriptive_statistics_reflection.md).
 
 Use ordinary Tutorial prose to repeat each full question at the point students should answer it.
-The compiler generates a separate tab with each question stacked above editable answer space in one
-wide column; it does not append a duplicate question section to the DOCX. Question identifiers are
-literal editable text in the workbook.
+Write the exact question and answer destination, for example:
+
+```markdown
+**Reflection 1:** How do the original and squared root lengths differ in units, and why does that distinction matter? Write your answer in the Reflection Questions tab.
+```
+
+The compiler renders this matching prompt as a shaded callout and generates a separate tab with
+each question stacked above editable answer space in one wide column; it does not append a duplicate
+question section to the DOCX. Question identifiers are literal editable text in the workbook.
+
+![Generated inline reflection callout with its identifier, exact question, and answer destination](screenshots/authoring_reflection_prompt.webp)
 It wraps question text and gives question and answer rows at least 47.25 points of height. In a
 multi-source build, every source has its own reflection tab. See
 [TUTORIAL_SPEC.md](TUTORIAL_SPEC.md) for identifier and tab-name rules.
@@ -257,6 +276,9 @@ Use one entry formula per numbered action. Put the destination in the introducti
 semantic `enter:` or `replace:` link on its own indented line. The DOCX renderer also promotes a
 legacy inline action formula into its own copyable display, but the explicit source form keeps
 multiple entries and their explanations readable.
+
+The generated formula display uses green text and a border fitted to the formula, not a full-width
+box. Reflection callouts use their own shaded treatment.
 
 The same action-link syntax preserves the wording of an instructor's longer instruction. This
 excerpt is from [../tutorial_data/microbes/microbes_1_z_test.md](../tutorial_data/microbes/microbes_1_z_test.md):

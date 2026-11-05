@@ -20,6 +20,10 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
 
 ## Tutorial converter
 
+- Introduce the project as: "Create a biology tutorial for classmates in one plain-text file. Write
+  the lesson and design the spreadsheet; the compiler formats your work as editable Word, PDF, and
+  Excel files." Keep guides and screenshots current with the refined syntax.
+
 - Use `y = ax^2 + bx + c` throughout Part 3 and its workbook. Keep beta notation in one brief
   note about later statistics study, rather than using it throughout the lesson.
 
@@ -190,8 +194,8 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
 
 ## Student publishing
 
-- This repo supports open pedagogy and Student-Generated Content. Its authors are BIOL 318 students
-  who have completed several tutorials and now create original tutorials for the class.
+- This repo supports open pedagogy and Student-Generated Content. Authors create original biology
+  tutorials for classmates; introduce the project without a specific course name or number.
 - Teach Markdown and the compiler through copyable source beside tightly cropped actual Word and
   Excel output. Make the guides a practical, comprehensive visual reference.
 - Keep Roots as a simple formatting example without a deeper meaning or prescribed scenario.
@@ -206,7 +210,7 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
   relevant part of a page, and refresh screenshots automatically after style changes.
 - Let the course proceed without human milestone gates.
 
-- BIOL318 tutorial authors should learn spreadsheet formulas, layout, and design; readers should
+- Tutorial authors should learn spreadsheet formulas, layout, and design; readers should
   learn statistics and how to construct spreadsheets.
 - Keep source characters ASCII. Straight quotes and named entities are acceptable; numeric character
   references are unwanted.

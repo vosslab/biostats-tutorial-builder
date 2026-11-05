@@ -150,18 +150,19 @@ def main() -> None:
 	provenance = {}
 	checks = {}
 	document_views = [
-		("root_05_variation", "course_overview_document", "Exploring root lengths", "Reflection Questions"),
-		("root_05_variation", "course_overview_excerpt", "Exploring root lengths", "Part 2: Summarize root lengths"),
-		("root_02_write", "course_markdown", "Exploring root lengths", "Reflection Questions"),
-		("root_04_calculate", "course_count_action", "Step 1: Count the observations", "Step 2: Calculate the mean"),
-		("root_04_calculate", "course_mean_action", "Step 2: Calculate the mean", "Reflection Questions"),
-		("root_05_variation", "course_variation_action", "Step 3: Describe the spread", "Reflection Questions"),
-		("root_06_grow", "course_fixed_formula", "Step 1: Subtract the mean", "Reflection Questions"),
-		("root_07_move", "course_moved_action", "Step 1: Subtract the mean", "Reflection Questions"),
+		("root_05_variation", "course_overview_document", "Exploring root lengths", None, 1, 1),
+		("root_05_variation", "course_overview_excerpt", "Exploring root lengths", "Part 2: Summarize root lengths", 1, 2),
+		("root_02_write", "course_markdown", "Exploring root lengths", None, 1, 1),
+		("root_04_calculate", "course_count_action", "Step 1: Count the observations", "Step 2: Calculate the mean", 2, 2),
+		("root_04_calculate", "course_mean_action", "Step 2: Calculate the mean", None, 2, 1),
+		("root_05_variation", "course_variation_action", "Step 3: Describe the spread", None, 2, 1),
+		("root_06_grow", "course_fixed_formula", "Step 1: Subtract the mean", None, 2, 1),
+		("root_07_move", "course_moved_action", "Step 1: Subtract the mean", None, 2, 1),
 	]
-	for stem, name, start, stop in document_views:
+	for stem, name, start, stop, occurrence, end_occurrence in document_views:
 		provenance[name] = capture_readme_artifacts.capture_pdf(
-			builds[stem] / f"{stem}.pdf", start, stop, name, temporary, destination)
+			builds[stem] / f"{stem}.pdf", start, stop, name, temporary, destination,
+			occurrence, end_occurrence)
 	workbook_views = [
 		("root_05_variation", "course_overview_starter", "A1:E6", False),
 		("root_03_layout", "course_layout", "A1:E6", False),

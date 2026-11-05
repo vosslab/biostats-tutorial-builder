@@ -1,10 +1,10 @@
 # Google Sheets validation
 
-The optional runner executes formulas in actual Google Sheets using fresh test workbooks.
-It reads the compiled tutorial model, seeds typed workbook data, then applies assignments and
-replacements in instruction order. Authored Google mapping URLs are never write targets.
+Prepare local spreadsheet execution cases without uploading files. Google Drive uploads and
+Google Docs/Sheets imports are always out of scope; the existing runner's live mode is outside
+this workflow. Local evidence does not establish Google calculation or import behavior.
 
-## Prepare and execute
+## Prepare local cases
 
 Run from the repository root using the Python bootstrap:
 
@@ -13,32 +13,16 @@ source source_me.sh && python3 -m devel.validate_google_sheets \
   --dry-run --output build/sheets-validation tutorial_data/babies/babies_1_z_test.md
 ```
 
-Use actual tutorial paths such as [the babies z-test](../tutorial_data/babies/babies_1_z_test.md). Dry run writes
-`execution-cases.json` and `report.json` locally and makes no Google requests. The report says
-`not_run` for Google calculation and scientific oracle checks.
-
-Install the [development dependencies](../pip_requirements-dev.txt) for live execution. Configure
-Google Application Default Credentials separately with Sheets API access. The runner uses existing
-ADC, including the standard `GOOGLE_APPLICATION_CREDENTIALS` mechanism; it never starts login or
-prints credential contents. Missing ADC produces `unavailable` and exit code 2.
-
-```bash
-source source_me.sh && python3 -m devel.validate_google_sheets \
-  --live --expectations tutorial_output/validation/tutorial_expectations.json \
-  --output build/sheets-live tutorial_data/babies/babies_1_z_test.md
-```
-
-Each case creates a workbook titled `TUTORIAL VALIDATION - ...` with original worksheet names,
-preserving cross-sheet references. Every created ID and URL is saved immediately in the report.
-Test workbooks remain available for inspection; remove those specific workbooks manually afterward.
-The runner cannot accept an existing spreadsheet ID and does not delete files.
+Dry run writes `execution-cases.json` and `report.json` locally and makes no Google requests.
+The report says `not_run` for Google calculation and scientific oracle checks. See the local
+LibreOffice route below to execute calculations without uploading.
 
 ## Branch coverage
 
 `baseline` selects the lowest numbered branch in each alternative group. Additional cases named
 `group-N-branch-M` change one group to a nonbaseline branch, leaving other groups at baseline.
 This covers every branch independently without constructing an exponential product. It does not
-claim to cover interactions among independent choice groups. Each case starts with a new workbook.
+claim to cover interactions among independent choice groups. Each prepared case describes an independent workbook state.
 
 Assignments use typed `updateCells.userEnteredValue` values: numbers and booleans retain their
 types, literal strings stay literal, and formulas use `formulaValue`. Formula checkpoints capture

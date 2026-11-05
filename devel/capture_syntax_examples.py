@@ -92,16 +92,19 @@ def capture_authoring_features(root: pathlib.Path, temporary: pathlib.Path,
 	pdf = output / "authoring_features.pdf"
 	xlsx = output / "authoring_features.xlsx"
 	views = [
-		("Roots formatting examples", "Part 1: Format the document", "title", 1, 2),
+		("Roots formatting examples", "Contents", "title", 1, 1),
+		("Contents", "Part 1: Format the document", "contents", 1, 2),
 		("Part 1: Format the document", "Explanation: Mark up scientific text", "headings", 2, 1),
-		("Explanation: Mark up scientific text", "Step 2: Show a document table", "text", 1, 2),
+		("Explanation: Mark up scientific text", "Explanation: Write an equation", "text", 1, 1),
+		("Explanation: Write an equation", "Step 2: Show a document table", "math", 1, 2),
 		("Step 2: Show a document table", "Step 3: Include an image", "table", 2, 2),
 		("Step 3: Include an image", "Step 4: Link to a section", "image", 2, 2),
 		("Step 4: Link to a section", "Part 2: Connect a workbook", "links", 2, 2),
 		("Step 1: Enter a formula", "Step 2: Fill a column", "enter", 2, 2),
 		("Step 2: Fill a column", "Step 3: Select a range", "fill", 2, 2),
 		("Step 3: Select a range", "Step 4: Replace a supplied value", "select", 2, 2),
-		("Step 4: Replace a supplied value", "Part 3: Offer alternatives", "replace", 2, 2),
+		("Step 4: Replace a supplied value", "Reflection 1:", "replace", 2, 1),
+		("Reflection 1:", "Part 3: Offer alternatives", "reflection_prompt", 1, 2),
 		("Step 1: Provide a choice", None, "alternatives", 2, 1),
 	]
 	captures = [capture_readme_artifacts.capture_pdf(pdf, start, end,

@@ -1,8 +1,7 @@
 # markdown-to-tutorial
 
-BIOL 318 students use Markdown to create original biostatistics tutorials for classmates and future
-students. The compiler turns your writing into editable Word and Excel files, helping you contribute
-to a shared collection of learning materials.
+Create a biology tutorial for classmates in one plain-text file. Write the lesson and design the
+spreadsheet; the compiler formats your work as editable Word, PDF, and Excel files.
 
 ## Your contribution matters
 

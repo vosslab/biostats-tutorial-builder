@@ -80,7 +80,8 @@ def main() -> None:
 		"Dr_Caffeines_All_Nighter_Academy_Student_Workbook.xlsx")
 	for stem in ("microbes_4_f_test", "microbes_5_anova"):
 		build([root / "tutorial_data" / "microbes" / f"{stem}.md"], root / "tutorial_output" / stem)
-	for script in ("capture_readme_artifacts.py", "capture_syntax_examples.py"):
+	for script in ("capture_readme_artifacts.py", "capture_syntax_examples.py",
+		"capture_authoring_course.py"):
 		print(f"Capture documentation: {script}", flush=True)
 		# ASVS 1.2.5: executable and script paths remain distinct argv values.
 		subprocess.run([sys.executable, str(root / "devel" / script)], cwd=root, check=True)

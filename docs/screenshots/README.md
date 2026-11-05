@@ -10,6 +10,8 @@ example lesson students must complete.
 | Image group | Native source and view |
 | --- | --- |
 | Title, headings, text, table, image, and links | DOCX exported to PDF, cropped at the corresponding headings |
+| Contents and mathematics | Linked Steps/Substeps and editable equations from the same native document |
+| Inline reflection prompt | Shaded prompt at its instructional location, distinct from green formula borders |
 | Enter, Fill, Select, Replace, and alternatives | DOCX instruction crops from the same feature source |
 | Workbook | Generated XLSX, A1:E6; supplied data and blank work cells |
 | Results | Generated XLSX, D1:E3; supplied labels and blank result cells |
@@ -31,9 +33,9 @@ The instructor gallery uses [capture_receipt.json](capture_receipt.json). Its co
 image is explicitly a demonstration: the capture applies authored actions to a disposable
 workbook and recalculates it. It is not a blank student starter.
 
-The earlier Roots checkpoint illustrations and published example remain available with
+The Roots checkpoint illustrations and published example remain available with
 [course_capture_receipt.json](course_capture_receipt.json). They are retained examples, not the
-current three-part authoring path. Their standalone capture command remains available in
+current three-part authoring path; the full refresh updates them too. Their standalone command is
 [../../devel/capture_authoring_course.py](../../devel/capture_authoring_course.py).
 
 ## Refresh the current guides
@@ -44,7 +46,8 @@ From the repository root:
 source source_me.sh && python3 devel/refresh_documentation.py
 ```
 
-The existing command rebuilds the instructor gallery, syntax/feature captures, and three guide
+The existing command rebuilds the instructor gallery, syntax/feature captures, retained checkpoint
+captures, and three guide
 Parts. For guide export it combines the Markdown page with the feature example's workbook;
 fenced snippets stay literal and are never executed. Guide exports are under
 `tutorial_output/authoring_course/parts/`. The source pages remain ordinary GitHub Markdown.

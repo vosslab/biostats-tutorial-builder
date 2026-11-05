@@ -2,6 +2,15 @@
 
 ## 2026-11-04
 
+### Refreshed authoring documentation
+
+- Introduce biology tutorial authoring without a course-specific audience label. Update the guides
+  and runnable examples for the refined heading hierarchy, complete Contents, equations, inline
+  reflections, green formula-entry borders, menu paths, and proportional captioned figures.
+- Refresh all native documentation capture sets and guide exports, including retained checkpoint
+  examples. Separate Contents from the title crop and add math and inline-reflection views.
+- Remove live Google upload instructions from the current usage path; retain local-only validation.
+
 ### Accessible regression notation and figures
 
 - Use a, b, c and the familiar quadratic equation throughout Part 3 and all shared workbook

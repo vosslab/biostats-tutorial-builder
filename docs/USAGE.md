@@ -166,11 +166,9 @@ python3 -m devel.validate_google_sheets tutorial_data/*/*.md --dry-run \
   --expectations tutorial_output/validation/tutorial_expectations.json --output tutorial_output/validation/sheets
 ```
 
-With authorized Application Default Credentials available, replace `--dry-run` with `--live`
-and choose a separate output directory. The live runner creates fresh test workbooks and records
-their IDs; it does not modify linked original spreadsheets. See
-[GOOGLE_SHEETS_VALIDATION.md](GOOGLE_SHEETS_VALIDATION.md) for credentials, evidence, and limits.
-An unavailable-credentials result is not a successful calculation check.
+Keep this runner in `--dry-run` mode. Live execution creates Google workbooks, so it is outside
+this repository workflow. For local calculation checks and the report format, see
+[GOOGLE_SHEETS_VALIDATION.md](GOOGLE_SHEETS_VALIDATION.md).
 
 ## Refresh documentation screenshots
 

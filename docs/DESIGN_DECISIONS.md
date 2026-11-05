@@ -203,7 +203,7 @@ and [compiler.py](../tutorial_lib/compiler.py).
 **Decision.** Lint authored Markdown files as ASCII and reject numeric character references while
 allowing readable named scientific entities and ordinary `sub` and `sup` markup.
 
-**Why.** BIOL 318 authors should be able to write source with an ordinary keyboard and read it
+**Why.** tutorial authors should be able to write source with an ordinary keyboard and read it
 without memorizing numeric encodings. Renderers can still present scientific notation cleanly.
 
 **Consequence.** File compilation reports source locations for pasted Unicode and numeric entities.
@@ -690,7 +690,7 @@ review confirms all five rows together and all 106 cells across six tables are p
 
 ### Visual reference for original student tutorials
 
-**Decision.** Make the authoring guide the entry point for BIOL 318 students who have completed
+**Decision.** Make the authoring guide the entry point for biology tutorial authors who have completed
 several tutorials. Teach document formatting, workbook construction, and build/refine through
 copyable source and native output crops. Retain the six topic references and keep worksheet-edit
 utilities optional.

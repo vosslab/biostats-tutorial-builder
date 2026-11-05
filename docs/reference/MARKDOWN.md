@@ -28,7 +28,10 @@ This paragraph belongs to the substep.
 ```
 
 It becomes numbered Parts, Steps, and Substeps in the document. The `Worksheet` line tells the
-compiler which sheet later actions use. The Roots values are only formatting data.
+compiler which sheet later actions use. The Roots values are only formatting data. Parts, Steps,
+and Substeps use small 0, 0.1, and 0.2 inch indentation changes; body paragraphs and task text
+share the 0.3 inch text edge. Use a numbered task for a student action, even if a Substep has only
+one task. Use a bullet only for genuinely supporting information.
 
 <!-- screenshots:begin (managed by screenshot-docs) -->
 ![Generated document showing a Part, a numbered Step, nested details, and a numbered Substep](../screenshots/authoring_headings.webp)
@@ -36,6 +39,13 @@ compiler which sheet later actions use. The Roots values are only formatting dat
 
 Use `### Part:`, `#### Step:`, and `##### Substep:` exactly. The compiler supplies numbers.
 Use ordinary paragraphs and lists for the rest of the instruction.
+
+The native Contents lists every Step and Substep, with Substeps indented below Steps. In a document
+with one Part, the Part appears as a subtitle under the document title and remains a body heading;
+it is not repeated in Contents. Ordinary body prose is fully justified when it wraps, while lists,
+equations, captions, and callouts remain purposefully left aligned.
+
+![Generated Contents with linked Steps and indented Substeps, followed by the Part body heading](../screenshots/authoring_contents.webp)
 
 ## Format scientific text
 
@@ -45,7 +55,7 @@ Type this Markdown:
 ##### Explanation: Mark up scientific text
 
 Use **bold** for emphasis, *italics* for a distinction, and `A2` for a literal cell address.
-Scientific text can include &alpha;, H<sub>0</sub>, and mm<sup>2</sup>.
+Scientific text can include &alpha;, null hypothesis, H<sub>0</sub>, and mm<sup>2</sup>.
 
 > A short note appears as a separate block.
 ```
@@ -59,6 +69,12 @@ It keeps the distinction between prose, literal spreadsheet text, scientific not
 Use ASCII source: straight quotes and ordinary hyphens. Named entities such as `&alpha;` and
 inline `sub`, `sup`, and `br` are supported. The compiler reports other raw HTML and numeric
 character references.
+
+Use dollar-delimited TeX for equations that students read, such as `$y = ax^2 + bx + c$`. Use a
+code span for a spreadsheet formula students enter, such as `=A2^2`; the two forms have different
+purposes and formatting.
+
+![Generated mathematical equation distinct from a literal spreadsheet formula](../screenshots/authoring_math.webp)
 
 ## Add a document table
 
