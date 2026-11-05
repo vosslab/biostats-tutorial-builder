@@ -2,6 +2,11 @@
 
 ## 2026-11-05
 
+### Repository name update
+
+- Update the README title to `biostats-tutorial-builder`, preserving the student-facing introduction
+  and open-pedagogy guidance. Match the installation clone URL and folder name to the renamed repo.
+
 ### Make Part 3 work from a fresh workbook
 
 - Replace Part 3's cross-sheet comparison links with same-sheet SLOPE, INTERCEPT, and RSQ

@@ -1,4 +1,4 @@
-# markdown-to-tutorial
+# biostats-tutorial-builder
 
 Create a biology tutorial for classmates in one plain-text file. Write the lesson and design the
 spreadsheet; the compiler formats your work as editable Word, PDF, and Excel files.

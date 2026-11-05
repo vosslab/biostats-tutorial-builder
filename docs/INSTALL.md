@@ -21,11 +21,11 @@ after installing the fonts. On other systems, install these same families with y
 2. Open Terminal and download a working project copy with Git:
 
    ```bash
-   git clone https://github.com/vosslab/markdown-to-tutorial.git
-   cd markdown-to-tutorial
+   git clone https://github.com/vosslab/biostats-tutorial-builder.git
+   cd biostats-tutorial-builder
    ```
 
-   This downloads the project into a folder named `markdown-to-tutorial`. You do not need to know
+   This downloads the project into a folder named `biostats-tutorial-builder`. You do not need to know
    Git to follow these commands. Run the setup commands below from this folder; it contains
    `make_tutorial.py`, `source_me.sh`, and `pip_requirements.txt`.
 
