@@ -44,7 +44,7 @@ outliers.
 | 23 | 9.72 |
 | 24 | 7.17 |
 
-- **Region A1:B25:** source
+- **Region A1:B101:** source
 
 ### Sheet: Part 2 National T-Test
 
@@ -80,7 +80,7 @@ outliers.
 | Statistical Names | Statistical Values |
 | --- | --- |
 
-- **Region A1:B25:** source
+- **Region A1:B101:** source
 - **Region D1:E10:** calculation
 - **Region D12:E18:** results
 - **Region D20:E20:** interpretation

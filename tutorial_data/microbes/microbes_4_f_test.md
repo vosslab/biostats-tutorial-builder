@@ -6,7 +6,7 @@ For BIOL 318/418. Continue the Busse Woods teaching scenario using the original 
 
 ### Sheet: Two Sample F-Test
 
-- **Region A1:C25:** source
+- **Region A1:C101:** source
 - **Region D1:G14:** calculation
 - **Region D16:G18:** results
 - **Region D20:E20:** calculation

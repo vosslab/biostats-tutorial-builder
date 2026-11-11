@@ -7,7 +7,7 @@ import openpyxl.formula.tokenizer
 # OOXML stores them with _xlfn.; unknown functions remain explicitly unchecked.
 # https://openpyxl.readthedocs.io/en/3.1/simple_formulae.html
 FUTURE_FUNCTIONS = frozenset({
-	"STDEV.S", "STDEV.P", "VAR.S", "VAR.P", "T.TEST", "F.TEST", "Z.TEST",
+	"FILTER", "STDEV.S", "STDEV.P", "VAR.S", "VAR.P", "T.TEST", "F.TEST", "Z.TEST",
 	"T.DIST", "T.DIST.2T", "T.DIST.RT", "T.INV", "T.INV.2T",
 	"NORM.DIST", "NORM.S.DIST", "NORM.INV", "NORM.S.INV",
 	"F.DIST", "F.DIST.RT", "F.INV", "F.INV.RT", "CHISQ.TEST",
@@ -37,10 +37,10 @@ def _translate(formula: str, serialize: bool) -> str:
 		if token.type == "FUNC" and token.subtype == "OPEN":
 			name = token.value[:-1]
 			if serialize and name.upper() in FUTURE_FUNCTIONS:
-				value = "_xlfn." + value
+				value = ("_xlfn._xlws." if name.upper() == "FILTER" else "_xlfn.") + value
 			elif (not serialize and name.lower().startswith("_xlfn.")
-				and name[6:].upper() in FUTURE_FUNCTIONS):
-				value = value[6:]
+				and name[6:].removeprefix("_xlws.").upper() in FUTURE_FUNCTIONS):
+				value = value[6:].removeprefix("_xlws.")
 		pieces.append(value)
 	if position != len(formula):
 		raise ValueError("Formula tokens do not cover the original formula")

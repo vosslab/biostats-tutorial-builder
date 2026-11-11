@@ -24,14 +24,37 @@ def analysis_sheet(document: tutorial_lib.model.Document) -> tutorial_lib.model.
 
 #============================================
 def observations(sheet: tutorial_lib.model.Worksheet, column: int,
-	start: int = 2, end: int = 101) -> numpy.ndarray:
+	start: int = 2, end: int | None = None) -> numpy.ndarray:
 	"""Read numeric observations, ignoring the workbook's deliberately empty rows."""
+	if end is None:
+		regions = [region.reference for region in sheet.role_regions
+			if region.role == "source" and region.reference.start_column <= column <= region.reference.end_column
+			and region.reference.start_row <= start <= region.reference.end_row]
+		if len(regions) != 1:
+			raise ValueError(f"Expected one source region for {sheet.name}, column {column}")
+		end = regions[0].end_row
 	values = [seed.scalar.value for (row, col), seed in sorted(sheet.cells.items())
 		if col == column and start <= row <= end and seed.scalar.kind == "number"]
 	result = numpy.array(values, dtype=float)
 	if len(result) < 2 or not numpy.isfinite(result).all():
 		raise ValueError(f"Invalid observations in {sheet.name}, column {column}")
 	return result
+
+
+#============================================
+def paired_observations(sheet: tutorial_lib.model.Worksheet) -> tuple[numpy.ndarray, numpy.ndarray]:
+	"""Read complete numeric pairs together, preserving alignment across gaps."""
+	region = next(item.reference for item in sheet.role_regions if item.role == "source"
+		and item.reference.start_column <= 1 and item.reference.end_column >= 2)
+	pairs = []
+	for row in range(max(2, region.start_row), region.end_row + 1):
+		cells = [sheet.cells.get((row, column)) for column in (1, 2)]
+		if all(cell is not None and cell.scalar.kind == "number" for cell in cells):
+			pairs.append([cell.scalar.value for cell in cells])
+	if len(pairs) < 2:
+		raise ValueError(f"Insufficient complete pairs in {sheet.name}")
+	values = numpy.array(pairs, dtype=float)
+	return values[:, 0], values[:, 1]
 
 
 #============================================
@@ -65,7 +88,7 @@ def one_sample(document: tutorial_lib.model.Document) -> dict:
 	alpha_cell = ("E14" if is_z else "E15") if is_baby else "D14"
 	alpha = parameter(document, alpha_cell)
 	sheet = analysis_sheet(document)
-	x = observations(sheet, 2, end=40 if is_baby and is_z else 101)
+	x = observations(sheet, 2)
 	n, mean, sd = len(x), float(numpy.mean(x)), float(numpy.std(x, ddof=1))
 	mu = parameter(document, "E2" if is_baby else "D2")
 	if is_z:
@@ -180,22 +203,21 @@ def regression(x: numpy.ndarray, y: numpy.ndarray, degree: int) -> dict:
 def caffeine(document: tutorial_lib.model.Document) -> dict:
 	shared_sheets = {sheet.name for sheet in document.worksheets}
 	if {"Data", "Sample Mean", "Linear Regression", "Quadratic Regression"} <= shared_sheets:
-		data = next(sheet for sheet in document.worksheets if sheet.name == "Data")
-		x, y = [observations(data, col, end=26) for col in (1, 2)]
-		linear = regression(x, y, 1)
-		intercept, slope = map(float, linear["beta"])
-		linear_se = float(linear["se"][1])
-		linear_statistic = slope / linear_se
-		quadratic = regression(x, y, 2)
-		b0, b1, b2 = map(float, quadratic["beta"])
-		quadratic_se = float(quadratic["se"][2])
-		quadratic_statistic = b2 / quadratic_se
+		name = ("Sample Mean" if "descriptive" in document.path.name else
+			"Linear Regression" if "2_linear" in document.path.name else "Quadratic Regression")
+		data = next(sheet for sheet in document.worksheets if sheet.name == name)
+		x, y = ([observations(data, col) for col in (1, 2)]
+			if "descriptive" in document.path.name else paired_observations(data))
 		if "descriptive" in document.path.name:
 			return {
 			"Sample Mean!E2": float(x.mean()), "Sample Mean!F2": float(y.mean()),
 			"Sample Mean!E3": float(numpy.median(x)), "Sample Mean!F3": float(numpy.median(y)),
 			"Sample Mean!E4": float(x.std(ddof=1)), "Sample Mean!F4": float(y.std(ddof=1)),
 			}
+		linear = regression(x, y, 1)
+		intercept, slope = map(float, linear["beta"])
+		linear_se = float(linear["se"][1])
+		linear_statistic = slope / linear_se
 		if "2_linear" in document.path.name:
 			return {
 			"Linear Regression!E2": slope, "Linear Regression!E6": intercept,
@@ -206,6 +228,10 @@ def caffeine(document: tutorial_lib.model.Document) -> dict:
 			"Linear Regression!K2": linear_statistic, "Linear Regression!K6": linear["df"],
 			"Linear Regression!K10": tails(linear_statistic, linear["df"])[0],
 			}
+		quadratic = regression(x, y, 2)
+		b0, b1, b2 = map(float, quadratic["beta"])
+		quadratic_se = float(quadratic["se"][2])
+		quadratic_statistic = b2 / quadratic_se
 		result = {
 			"Quadratic Regression!N2": slope, "Quadratic Regression!N3": intercept,
 			"Quadratic Regression!N4": linear["r_squared"],
@@ -216,12 +242,16 @@ def caffeine(document: tutorial_lib.model.Document) -> dict:
 			"Quadratic Regression!I10": quadratic_statistic,
 			"Quadratic Regression!I11": tails(quadratic_statistic, quadratic["df"])[0],
 		}
-		for row, value in enumerate(x, 2):
-			result.update({f"Quadratic Regression!C{row}": float(value ** 2),
-				f"Quadratic Regression!E{row}": float(value),
-				f"Quadratic Regression!F{row}": float(value ** 2)})
+		for row in sorted({a.target.start_row for action in document.actions
+			for a in ([action] + action.generated_actions) if a.target is not None
+			and a.target.sheet == "Quadratic Regression" and a.target.start_column == 3}):
+			seed = data.cells.get((row, 1))
+			value = seed.scalar.value if seed is not None and seed.scalar.kind == "number" else None
+			result.update({f"Quadratic Regression!C{row}": float(value ** 2) if value is not None else "",
+				f"Quadratic Regression!E{row}": float(value) if value is not None else "",
+				f"Quadratic Regression!F{row}": float(value ** 2) if value is not None else ""})
 		return result
-	x, y = [observations(analysis_sheet(document), col, end=26) for col in (1, 2)]
+	x, y = paired_observations(analysis_sheet(document))
 	if "descriptive" in document.path.name:
 		result = {"E2": float(x.mean()), "F2": float(y.mean()),
 			"E3": float(numpy.median(x)), "F3": float(numpy.median(y)),

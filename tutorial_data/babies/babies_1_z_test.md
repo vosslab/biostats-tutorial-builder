@@ -45,7 +45,7 @@ sample can justify an approximation. There is no automatic cutoff at 30.
 | 23 | 9.72 |
 | 24 | 7.17 |
 
-- **Region A1:B25:** source
+- **Region A1:B40:** source
 
 ### Sheet: Part 1 National Z-Test
 
@@ -81,7 +81,7 @@ sample can justify an approximation. There is no automatic cutoff at 30.
 | Statistical Names | Statistical Values |
 | --- | --- |
 
-- **Region A1:B25:** source
+- **Region A1:B40:** source
 - **Region D1:E9:** calculation
 - **Region D11:E17:** results
 - **Region D19:E19:** interpretation

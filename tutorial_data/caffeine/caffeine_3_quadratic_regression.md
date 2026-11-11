@@ -36,7 +36,7 @@ This is tutorial 3 of 3. Complete the linear regression tutorial first or bring 
 | 9 | 97 |
 | 8.5 | 100 |
 
-- **Region A1:B26:** source
+- **Region A1:B101:** source
 
 ### Sheet: Sample Mean
 
@@ -76,7 +76,7 @@ This is tutorial 3 of 3. Complete the linear regression tutorial first or bring 
 | Median | | |
 | Sample standard deviation | | |
 
-- **Region A1:B26:** source
+- **Region A1:B101:** source
 - **Region D1:F4:** calculation
 
 ### Sheet: Linear Regression
@@ -150,7 +150,7 @@ This is tutorial 3 of 3. Complete the linear regression tutorial first or bring 
 | | |
 | Two-tailed p-value | |
 
-- **Region A1:B26:** source
+- **Region A1:B101:** source
 - **Region D1:E14:** calculation
 - **Region G1:H5:** results
 - **Region J1:K10:** results
@@ -226,9 +226,9 @@ This is tutorial 3 of 3. Complete the linear regression tutorial first or bring 
 | Intercept | |
 | Linear R-squared | |
 
-- **Region A1:B26:** source
-- **Region C1:C26:** calculation
-- **Region E1:F26:** calculation
+- **Region A1:B101:** source
+- **Region C1:C101:** calculation
+- **Region E1:F101:** calculation
 - **Region H1:I11:** results
 - **Region M1:N4:** results
 
@@ -260,7 +260,7 @@ Now that we've officially run our linear regression, Dr. Caffeine is staring at 
 
 ##### Substep: Create the comparison scatterplot
 
-1. [Select A1:B26](select:A1:B26).
+1. [Select A1:B101](select:A1:B101).
 2. Choose **Insert -> Chart**.
 3. Choose **Scatter chart**.
 4. Label the x-axis Hours of Sleep and the y-axis Final Exam Score (%), and add an informative title.
@@ -278,11 +278,11 @@ Copy the cell values rather than retyping rounded numbers from the screen. Value
 **Starting with a fresh workbook? Calculate the linear results here instead.** These formulas use the observations already on **Quadratic Regression**. They work even when the **Linear Regression** tab has no completed answers. Use these instead of the copying instructions above.
 
 1. In N2, calculate the linear slope:
-   [=SLOPE(B2:B26,A2:A26)](enter:N2)
+   [=SLOPE(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(A2:A101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)))](enter:N2)
 2. In N3, calculate the linear intercept:
-   [=INTERCEPT(B2:B26,A2:A26)](enter:N3)
+   [=INTERCEPT(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(A2:A101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)))](enter:N3)
 3. In N4, calculate the linear R-squared:
-   [=RSQ(B2:B26,A2:A26)](enter:N4)
+   [=RSQ(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(A2:A101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)))](enter:N4)
 
 **Let's see why our linear regression is not giving what it needs to give.**
 
@@ -332,8 +332,8 @@ To let our regression model curve, we need to square our predictor variable (x).
 1. Use blank column C in your spreadsheet.\
 2. Column C already has the supplied header **Sleep Hours Squared (x^2)**.\
 3. In C2, enter:
-   [=A2^2](enter:C2)
-4. Press Enter, then [drag the little blue square all the way down to the bottom](fill:C2:C26) to make sure it applies to all students! Basically, we're taking each student's hours of sleep and multiplying that number by itself. If someone slept 6 hours, their squared sleep value is 36! Don't worry, they didn't sleep for 36 hours!
+   [=IF(ISNUMBER(A2),A2^2,"")](enter:C2)
+4. Press Enter, then [drag the little blue square all the way down to the bottom](fill:C2:C101) to make sure it applies to all students! Basically, we're taking each student's hours of sleep and multiplying that number by itself. If someone slept 6 hours, their squared sleep value is 36! Don't worry, they didn't sleep for 36 hours!
 
 ![Even while brushing his teeth, Dr. Caffeine is thinking about the squared term that lets a regression model curve. The sketched plots are illustrative, not fitted results.](assets/caffeine_art_12.png)
 
@@ -368,10 +368,10 @@ This remains linear regression in its coefficients; the squared predictor lets t
 Use the supplied adjacent predictor headers **Sleep Hours** (E1) and **Sleep Hours Squared** (F1).
 
 1. In E2, enter:
-   [=A2](enter:E2)
+   [=IF(ISNUMBER(A2),A2,"")](enter:E2)
 2. In F2, enter:
-   [=C2](enter:F2)
-3. [Fill both predictor columns down to row 26](fill:E2:F26).
+   [=IF(ISNUMBER(A2),C2,"")](enter:F2)
+3. [Fill both predictor columns down to row 101](fill:E2:F101).
 4. Keep both predictors aligned with the same student in column B; E26 should show 8.5 and F26 should show 72.25.
 
 #### Step: **Run Quadratic Regression in Google Sheets**
@@ -394,22 +394,22 @@ The supplied **Quadratic statistic** and **Value** headers identify the result t
 
 1. In the supplied **Quadratic coefficient a** row,\
    in I2, enter:
-   [=INDEX(LINEST(B2:B26,E2:F26,TRUE,TRUE),1,1)](enter:I2)
+   [=INDEX(LINEST(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(E2:F101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),TRUE,TRUE),1,1)](enter:I2)
 2. In the supplied **Linear coefficient b** row,\
    in I3, enter:
-   [=INDEX(LINEST(B2:B26,E2:F26,TRUE,TRUE),1,2)](enter:I3)
+   [=INDEX(LINEST(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(E2:F101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),TRUE,TRUE),1,2)](enter:I3)
 3. In the supplied **Intercept c** row,\
    in I4, enter:
-   [=INDEX(LINEST(B2:B26,E2:F26,TRUE,TRUE),1,3)](enter:I4)
+   [=INDEX(LINEST(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(E2:F101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),TRUE,TRUE),1,3)](enter:I4)
 4. In the supplied **Quadratic R-squared** row,\
    in I5, enter:
-   [=INDEX(LINEST(B2:B26,E2:F26,TRUE,TRUE),3,1)](enter:I5)
+   [=INDEX(LINEST(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(E2:F101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),TRUE,TRUE),3,1)](enter:I5)
 5. In the supplied **Standard error of a** row,\
    in I6, enter:
-   [=INDEX(LINEST(B2:B26,E2:F26,TRUE,TRUE),2,1)](enter:I6)
+   [=INDEX(LINEST(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(E2:F101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),TRUE,TRUE),2,1)](enter:I6)
 6. In the supplied **Residual degrees of freedom** row,\
    in I7, enter:
-   [=INDEX(LINEST(B2:B26,E2:F26,TRUE,TRUE),4,2)](enter:I7)
+   [=INDEX(LINEST(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(E2:F101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),TRUE,TRUE),4,2)](enter:I7)
    The result should be 25 - 3 = 22.
 7. Write your fitted equation using I2:I4. Unlike the straight-line slope, $b$ alone is not the score change for every extra hour; the change also depends on sleep through the squared term. The label at H8 is already present. With $a$ in I2, $b$ in I3, and $c$ in I4, substitute 7 for $x$ in $ax^2 + bx + c$. In I8, enter:
    [=I2*7^2+I3*7+I4](enter:I8)

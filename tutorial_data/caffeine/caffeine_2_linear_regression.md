@@ -40,7 +40,7 @@ This is tutorial 2 of 3. Familiarity with spreadsheet entry and descriptive stat
 | 9 | 97 |
 | 8.5 | 100 |
 
-- **Region A1:B26:** source
+- **Region A1:B101:** source
 
 ### Sheet: Sample Mean
 
@@ -80,7 +80,7 @@ This is tutorial 2 of 3. Familiarity with spreadsheet entry and descriptive stat
 | Median | | |
 | Sample standard deviation | | |
 
-- **Region A1:B26:** source
+- **Region A1:B101:** source
 - **Region D1:F4:** calculation
 
 ### Sheet: Linear Regression
@@ -154,7 +154,7 @@ This is tutorial 2 of 3. Familiarity with spreadsheet entry and descriptive stat
 | | |
 | Two-tailed p-value | |
 
-- **Region A1:B26:** source
+- **Region A1:B101:** source
 - **Region D1:E14:** calculation
 - **Region G1:H5:** results
 - **Region J1:K10:** results
@@ -230,9 +230,9 @@ This is tutorial 2 of 3. Familiarity with spreadsheet entry and descriptive stat
 | Intercept | |
 | Linear R-squared | |
 
-- **Region A1:B26:** source
-- **Region C1:C26:** calculation
-- **Region E1:F26:** calculation
+- **Region A1:B101:** source
+- **Region C1:C101:** calculation
+- **Region E1:F101:** calculation
 - **Region H1:I11:** results
 - **Region M1:N4:** results
 
@@ -305,7 +305,7 @@ Before calculating a regression equation, it's important to visualize the data. 
 ##### Substep: **Create the chart**
 
 1. Find the 'Hours of Sleep' and 'Exam Score (%)' columns already supplied in the 'Linear Regression' tab\
-2. [Highlight the columns containing hours of sleep (**A**) and final exam scores (**B**), including the column headings](select:A1:B26)\
+2. [Highlight the columns containing hours of sleep (**A**) and final exam scores (**B**), including the column headings](select:A1:B101)\
 3. Select **Insert -> Chart**\
 4. In the Chart editor, choose **Scatter chart** as the chart type.\
 5. Make sure hours of sleep are on the x-axis and exam scores are on the y-axis\
@@ -366,16 +366,16 @@ $x$ = hours of sleep
 The supplied table already names the **Regression measure** and **Calculated result** columns.
 
 1. In the supplied **Slope** row, use cell **E2** to calculate the sample slope with SLOPE:\
-   * Enter: [=SLOPE(B2:B26,A2:A26)](enter:E2)\
+   * Enter: [=SLOPE(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(A2:A101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)))](enter:E2)\
    * This formula calculates the slope of the best-fitting straight line through the data. In other words, it tells us how much the predicted exam score changes for every additional hour of sleep.\
 ##### Substep: Calculate the intercept
 
 1. In the supplied **Intercept** row, use cell **E6** to calculate the intercept of the regression line with INTERCEPT:\
-   * Enter: [=INTERCEPT(B2:B26,A2:A26)](enter:E6)\
+   * Enter: [=INTERCEPT(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(A2:A101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)))](enter:E6)\
 ##### Substep: Calculate R<sup>2</sup>
 
 1. In the supplied **R-squared** row, use cell **E10** to calculate the sample's R<sup>2</sup> with RSQ:\
-   * Enter: [=RSQ(B2:B26,A2:A26)](enter:E10)\
+   * Enter: [=RSQ(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(A2:A101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)))](enter:E10)\
    * This formula calculates the coefficient of determination, R<sup>2</sup>, which describes the proportion of variation in exam scores explained by hours of sleep.\
 ##### Substep: Display the regression equation on the chart
 
@@ -442,11 +442,11 @@ One way to obtain the necessary regression statistics is to use LINEST. The outp
 
 1. The supplied **Regression statistic** table identifies each result row.
 2. In its supplied **Slope** row,\
-   enter [=INDEX(LINEST(B2:B26,A2:A26,TRUE,TRUE),1,1)](enter:H2) in H2.
+   enter [=INDEX(LINEST(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(A2:A101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),TRUE,TRUE),1,1)](enter:H2) in H2.
 3. In its supplied **Standard error of slope** row,\
-   enter [=INDEX(LINEST(B2:B26,A2:A26,TRUE,TRUE),2,1)](enter:H3) in H3.
+   enter [=INDEX(LINEST(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(A2:A101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),TRUE,TRUE),2,1)](enter:H3) in H3.
 4. In its supplied **Residual degrees of freedom** row,\
-   enter [=INDEX(LINEST(B2:B26,A2:A26,TRUE,TRUE),4,2)](enter:H5) in H5. The slope should agree with E2, and the degrees of freedom should be 25 - 2 = 23.
+   enter [=INDEX(LINEST(FILTER(B2:B101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),FILTER(A2:A101,ISNUMBER(A2:A101)*ISNUMBER(B2:B101)),TRUE,TRUE),4,2)](enter:H5) in H5. The slope should agree with E2, and the degrees of freedom should be 25 - 2 = 23.
 
 ##### Substep: **Calculate the t-statistic**
 

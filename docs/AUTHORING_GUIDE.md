@@ -111,3 +111,29 @@ They illustrate the expected quality and the compiler's output; choose your own 
 Other examples are in [TUTORIAL_CATALOG.md](TUTORIAL_CATALOG.md).
 
 For installation, use [INSTALL.md](INSTALL.md). Command details are in [USAGE.md](USAGE.md).
+
+## Allow variable sample sizes
+
+Declare spare input capacity with the existing source region, even when the supplied table is
+shorter. For example, use a source region through row 101 and =COUNT(A2:A101) to count the
+observations actually present. Include that same capacity in statistics and blank-aware helper
+formulas. Use a shared numeric-pair filter for regression inputs.
+
+### Required LLM author review before publishing
+
+Before publishing, the LLM author must perform both checks in a disposable copy of its completed spreadsheet,
+without editing the calculation formulas:
+
+1. Add a new data point at the bottom. Does the spreadsheet still work, and does it produce the
+   correct final R-squared, p-value, or other result?
+2. Delete a data point from the middle. Does the spreadsheet still work, and does it produce the
+   correct final R-squared, p-value, or other result?
+
+Choose the appropriate input area and final result for that tutorial. Check correctness against an
+independent calculation, not merely whether the spreadsheet displays a number. Where deleting an
+observation can leave a blank row, check that case too.
+
+These are documented as LLM author review requirements, expressed as verbal guidance.
+No human review, approval, or checkpoint is required. They are not a universal
+automated test or build gate: tutorials differ in their input structure and scientific purpose.
+Tutorial-specific numerical checks may support the review.

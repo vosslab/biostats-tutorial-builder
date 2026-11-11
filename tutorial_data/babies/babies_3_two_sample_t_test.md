@@ -38,7 +38,7 @@
 | Statistical Names | Fried Food Values | Green Veggie Values |
 | --- | --- | --- |
 
-- **Region A1:C25:** source
+- **Region A1:C101:** source
 - **Region F1:H4:** calculation
 - **Region F5:G7:** results
 - **Region F8:G8:** interpretation

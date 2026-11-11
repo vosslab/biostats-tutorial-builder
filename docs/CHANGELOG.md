@@ -1,5 +1,31 @@
 # Changelog
 
+## 2026-11-11
+
+### Behavior or Interface Changes
+
+- Treat source regions as input capacity independently of populated observations. Preserve
+  missing-calculation checks outside those regions.
+- Extend Caffeine calculations and blank-aware predictors across 100-observation capacity;
+  filter regression inputs using one complete-pair condition. Preserve supplied datasets.
+- Derive numerical expectations from source regions and analysis sheets, preserving paired rows.
+- Require LLM author review before publication: append a bottom observation and delete a middle
+  observation, verifying the final statistic without formula edits. This is verbal guidance,
+  not a universal automated gate; no human review or approval is required.
+
+### Fixes and Maintenance
+
+- Serialize FILTER with its XLSX function prefix and recognize Calc cached empty-string results
+  separately from missing numeric caches.
+
+### Developer Tests and Notes
+
+- Add source-capacity and paired-observation regression checks; run one-time disposable
+  append/middle-clear Calc experiments. Keep PETase calibration and unknown block boundaries intact.
+- Fast suite: 2,223 tests passed before the final oracle test; focused checks cover the additions.
+- Calc passed 13 baseline cases and 24 append/middle-clear cases with unchanged formulas. Rebuild the Caffeine release and inspect quadratic formula
+  rendering. Google Sheets import and calculation remain unverified.
+
 ## 2026-11-05
 
 ### Repository name update

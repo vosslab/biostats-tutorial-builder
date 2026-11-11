@@ -55,3 +55,16 @@ Students continuing from Part 2 may copy those results instead.
 
 Earlier execution evidence is recorded in
 [local_calculation_readiness.md](active_plans/reports/local_calculation_readiness.md).
+
+## Publication review
+
+Every tutorial requires the two LLM author review checks in
+[AUTHORING_GUIDE.md](AUTHORING_GUIDE.md#required-llm-author-review-before-publishing): add a data point at the bottom
+and delete one from the middle, verifying the final result without formula changes.
+No human review or approval is required. Passing the original dataset's calculation checks does not establish adaptability.
+
+One-time checks of the current babies, microbes, and Caffeine sources passed 24 Calc cases:
+append a bottom observation or clear a middle observation, preserving every completed formula.
+Reports are under `tutorial_output/validation/variable_n/`. These experiments left canonical data
+unchanged and excluded PETase's separate, fully occupied calibration and unknown blocks.
+They provide supporting evidence, not a generic test runner or publication gate.

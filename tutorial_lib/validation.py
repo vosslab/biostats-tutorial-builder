@@ -59,6 +59,13 @@ def _check_reference(document: model.Document, reference: model.CellReference,
 	reference = _resolve(document, reference, location)
 	if reference is None:
 		return
+	# Source regions describe input capacity, not a requirement to fill every cell.
+	sheet = _canonical_sheet(document, reference.sheet)
+	if any(region.role == "source"
+		and region.reference.start_row <= reference.start_row <= reference.end_row <= region.reference.end_row
+		and region.reference.start_column <= reference.start_column <= reference.end_column <= region.reference.end_column
+		for region in sheet.role_regions):
+		return
 	available = []
 	for state in states:
 		count = sum(1 for key in state if key[0] == reference.sheet

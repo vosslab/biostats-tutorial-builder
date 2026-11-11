@@ -78,10 +78,10 @@ def inspect_results(path: pathlib.Path, final_writes: dict, expected: dict) -> d
 	for worksheet in workbook:
 		for row in worksheet:
 			for cell in row:
-				if cell.value is None:
+				if cell.value is None and cell.data_type not in ("s", "str"):
 					continue
 				address = worksheet.title + "!" + cell.coordinate
-				value = cell.value
+				value = "" if cell.value is None else cell.value
 				if cell.data_type == "e":
 					effective = {"errorValue": {"type": "CALC_ERROR", "message": value}}
 					errors.append({"address": address, "error": value})

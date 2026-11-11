@@ -415,7 +415,7 @@ Do not ship a statistical formula evaluator or a promise of full Sheets/Excel eq
 | Missing image or unsupported visible document construct | Error; supply asset or supported representation |
 | Unknown static sheet reference in a formula | Error; correct the sheet name |
 | Input cell blank and never supplied before use | Warning; check range or instruction order |
-| Data range extends past populated rows | Warning; confirm intentional spare rows or correct endpoint |
+| Data range extends beyond declared source capacity | Warning; confirm the input region or correct endpoint |
 | Related formulas use different endpoints | Warning; compare inputs, do not auto-repair |
 | Formula has unsupported reference syntax or function compatibility | Warning; state exactly what was not checked |
 | Missing bold list opening or hard-coded step mention | Warning; improve source manually |
@@ -639,3 +639,23 @@ not intermediate steps. On the current snapshot Calc passed 254 expected values 
 scenarios. This is local execution evidence only; the Google runner has been removed.
 See [LOCAL_VALIDATION.md](LOCAL_VALIDATION.md)
 and [local_calculation_readiness.md](active_plans/reports/local_calculation_readiness.md).
+
+
+### Variable sample sizes
+
+A source role region declares input capacity, independently of how many observations its table
+supplies. For example, a source region through row 101 can initially contain 25 observations.
+References inside that capacity may include empty cells without unavailable-input warnings.
+Calculation cells outside source regions retain instruction-order checks.
+
+Use COUNT to calculate N from numeric observations, not a constant or a last-row calculation.
+Cover the source capacity in analysis formulas and fill blank-aware helpers across that capacity.
+For regression, filter response and predictor ranges with the same complete-numeric-pair condition.
+Keep independent samples separate and preserve intentional calibration/unknown boundaries.
+Bounded capacity is a limit on supported input space, not an expected sample size.
+
+Before publishing any tutorial, the LLM author must verify that adding a data point at the bottom and
+deleting a data point from the middle both preserve correct final results without formula edits.
+Apply these checks to that tutorial's input structure and scientific purpose. These are documented as LLM author review requirements. No human review or approval is needed.
+This is verbal publication guidance, not a universal automated test or compiler gate. See
+[AUTHORING_GUIDE.md](AUTHORING_GUIDE.md#required-llm-author-review-before-publishing).

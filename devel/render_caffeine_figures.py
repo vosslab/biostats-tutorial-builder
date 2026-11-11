@@ -13,6 +13,7 @@ import matplotlib.pyplot
 
 # Local modules
 import tutorial_lib.compiler
+import tutorial_oracles
 
 
 #============================================
@@ -25,8 +26,7 @@ def main() -> None:
 	if document.has_errors:
 		raise ValueError(f"Cannot plot invalid tutorial: {document.diagnostics}")
 	sheet = next(sheet for sheet in document.worksheets if sheet.name == "Quadratic Regression")
-	x = numpy.array([sheet.cells[(row, 1)].scalar.value for row in range(2, 27)], dtype=float)
-	y = numpy.array([sheet.cells[(row, 2)].scalar.value for row in range(2, 27)], dtype=float)
+	x, y = tutorial_oracles.paired_observations(sheet)
 	if not (numpy.isfinite(x).all() and numpy.isfinite(y).all()):
 		raise ValueError("Caffeine observations must be finite numbers")
 	curve_x = numpy.linspace(x.min(), x.max(), 300)

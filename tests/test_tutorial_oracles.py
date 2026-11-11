@@ -29,3 +29,18 @@ def test_quadratic_coefficient_order_and_standard_error() -> None:
 	assert result["beta"] == pytest.approx([1., 2., 3.])
 	assert result["df"] == 2
 	assert result["se"][2] == pytest.approx(math.sqrt(.025))
+
+
+def test_observations_follow_capacity_and_preserve_pair_alignment() -> None:
+	"""A gap or incomplete pair must not shift one regression variable against another."""
+	import tutorial_lib.compiler
+	source = "# Example\n\n## Workbook\n\n### Sheet: Data\n\n"
+	source += "| x | y |\n| --- | --- |\n| 1 | 2 |\n| | |\n| 3 | 4 |\n"
+	source += "| 5 | |\n| 7 | 8 |\n| 9 | 10 |\n\n- **Region A1:B100:** source\n"
+	source += "\n### Reflection Questions\n\n1. What changed?\n\n## Tutorial\n"
+	source += "\n### Part: Analysis\n\n#### Step: Calculate\n\n- **Enter D2:** =COUNT(A2:A100)\n"
+	document = tutorial_lib.compiler.compile_source(source)
+	x, y = tutorial_oracles.paired_observations(document.worksheets[0])
+	assert x.tolist() == [1, 3, 7, 9]
+	assert y.tolist() == [2, 4, 8, 10]
+	assert len(tutorial_oracles.observations(document.worksheets[0], 1)) == 5

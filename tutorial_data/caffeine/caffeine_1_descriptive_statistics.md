@@ -40,7 +40,7 @@ Record your written responses in the reflection tab.
 | 9 | 97 |
 | 8.5 | 100 |
 
-- **Region A1:B26:** source
+- **Region A1:B101:** source
 
 ### Sheet: Sample Mean
 
@@ -80,7 +80,7 @@ Record your written responses in the reflection tab.
 | Median | | |
 | Sample standard deviation | | |
 
-- **Region A1:B26:** source
+- **Region A1:B101:** source
 - **Region D1:F4:** calculation
 
 ### Sheet: Linear Regression
@@ -154,7 +154,7 @@ Record your written responses in the reflection tab.
 | | |
 | Two-tailed p-value | |
 
-- **Region A1:B26:** source
+- **Region A1:B101:** source
 - **Region D1:E14:** calculation
 - **Region G1:H5:** results
 - **Region J1:K10:** results
@@ -230,9 +230,9 @@ Record your written responses in the reflection tab.
 | Intercept | |
 | Linear R-squared | |
 
-- **Region A1:B26:** source
-- **Region C1:C26:** calculation
-- **Region E1:F26:** calculation
+- **Region A1:B101:** source
+- **Region C1:C101:** calculation
+- **Region E1:F101:** calculation
 - **Region H1:I11:** results
 - **Region M1:N4:** results
 
@@ -276,10 +276,10 @@ record written responses in the reflection tab.
 
 Let's start by examining the amount of sleep students are getting in our dataset.
 
-1. **Mean** (Average Sleep) tells us the typical amount of sleep students get: Use the formula [=AVERAGE(A2:A26)](enter:E2) in E2 to find the mean hours of sleep. This will give you the average sleep duration, providing an overall measure of central tendency.\
+1. **Mean** (Average Sleep) tells us the typical amount of sleep students get: Use the formula [=AVERAGE(A2:A101)](enter:E2) in E2 to find the mean hours of sleep. This will give you the average sleep duration, providing an overall measure of central tendency.\
   * **Average Hours of Sleep = _____ hours**
 
-2. For exam scores, enter [=AVERAGE(B2:B26)](enter:F2) in F2. Record the corresponding exam-score statistic; its unit is %.
+2. For exam scores, enter [=AVERAGE(B2:B101)](enter:F2) in F2. Record the corresponding exam-score statistic; its unit is %.
 
 **Reflection 1.1:** Based on your result, do students appear to be getting enough sleep? Is the average higher or lower than you expected? Write your answer in the Part 1 Reflection tab.
 
@@ -287,10 +287,10 @@ Let's start by examining the amount of sleep students are getting in our dataset
 
 Unlike the mean, the median is less affected by unusually high or low scores. This makes it useful when a dataset contains potential outliers.
 
-1. **Median** (middle value) helps identify the center of the distribution and is less affected by unusually high or low scores: Use the formula [=MEDIAN(A2:A26)](enter:E3) in E3 to find the median sleep duration.\
+1. **Median** (middle value) helps identify the center of the distribution and is less affected by unusually high or low scores: Use the formula [=MEDIAN(A2:A101)](enter:E3) in E3 to find the median sleep duration.\
   * **Median Sleep = _____ hours**
 
-2. For exam scores, enter [=MEDIAN(B2:B26)](enter:F3) in F3. Record the corresponding exam-score statistic; its unit is %.
+2. For exam scores, enter [=MEDIAN(B2:B101)](enter:F3) in F3. Record the corresponding exam-score statistic; its unit is %.
 
 **Reflection 1.2:** Is the median similar to your mean? Write your answer in the Part 1 Reflection tab.
 
@@ -298,10 +298,10 @@ Unlike the mean, the median is less affected by unusually high or low scores. Th
 
 While measures of center tell us what a typical sleep duration looks like, they do not tell us how much students differ from one another.
 
-1. **Standard Deviation** (spread of data): This measures how spread out the sleep durations are from the mean, indicating the variability of student sleep. Use the formula [=STDEV.S(A2:A26)](enter:E4) in E4 to calculate the standard deviation.\
+1. **Standard Deviation** (spread of data): This measures how spread out the sleep durations are from the mean, indicating the variability of student sleep. Use the formula [=STDEV.S(A2:A101)](enter:E4) in E4 to calculate the standard deviation.\
   * **Standard Deviation of Sleep = _____ hours**
 
-2. For exam scores, enter [=STDEV.S(B2:B26)](enter:F4) in F4. Record the corresponding exam-score statistic; its unit is percentage points.
+2. For exam scores, enter [=STDEV.S(B2:B101)](enter:F4) in F4. Record the corresponding exam-score statistic; its unit is percentage points.
 
 A small standard deviation indicates that the sleep durations are clustered closely around the average. A large standard deviation shows that the sleep durations vary substantially from student to student.
 

@@ -734,3 +734,16 @@ tab together in source order. A work tab used by multiple lessons appears only o
 **Consequence.** Reorder the merged model before export; preserve tab names and cell contents.
 
 **Owner.** [build.py](../tutorial_lib/build.py).
+
+### Input capacity and observed sample size
+
+**Decision.** Existing source role regions describe input capacity; tables supply observations.
+Calculate N from numeric input cells and preserve row alignment for regression pairs.
+
+**Why.** Completed spreadsheets must accommodate added or removed observations without formula edits.
+
+**Consequence.** Spare source cells are legal. Calculations cover declared capacity, while independent
+oracles extract actual observations. Blank helper results remain distinct from missing caches.
+
+**Owner.** [validation.py](../tutorial_lib/validation.py) and
+[tutorial_oracles.py](../devel/tutorial_oracles.py).

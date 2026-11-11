@@ -244,3 +244,13 @@ origin belongs there too. Rules: [REPO_STYLE.md](REPO_STYLE.md).
   tables, with an example of adding a new row or column.
 - Make the README landing page friendlier to non-coding students, with more about where to start
   and what to read.
+
+- Make tutorial formulas respect variable N; preserve the supplied data and narrative.
+- Validate completed spreadsheets by appending a bottom observation and removing a middle
+  observation, checking the final statistic without changing formulas.
+
+- Require both bottom-append and middle-delete checks for every published tutorial, verifying
+  its final result. Keep this as verbal author guidance rather than a universal automated test.
+
+- Document the append and middle-delete publication checks as LLM author review requirements.
+  No human review or approval is needed.

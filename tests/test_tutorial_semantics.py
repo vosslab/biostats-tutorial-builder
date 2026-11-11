@@ -226,3 +226,14 @@ def test_unsupported_footnotes_exempt_literal_code() -> None:
 	assert not literal.has_errors
 	footnote = compile_tutorial('- **Explain:** This needs a footnote[^1].')
 	assert any(item.category == "unsupported-content" for item in footnote.diagnostics)
+
+
+def test_source_capacity_allows_spare_rows_without_hiding_missing_results() -> None:
+	"""Input capacity can be partly empty; unsupplied calculation cells still warn."""
+	workbook = "### Sheet: Data\n\n| A | B |\n| --- | --- |\n| 1 | 2 |\n"
+	workbook += "\n- **Region A1:B100:** source\n"
+	document = compile_tutorial(
+		"- **Enter D2:** =COUNT(A2:A100)\n- **Enter D3:** =E2+1", workbook)
+	assert not document.has_errors
+	warnings = [item for item in document.diagnostics if item.category == "unavailable-input"]
+	assert [item.address for item in warnings] == ["E2"]

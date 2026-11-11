@@ -6,7 +6,7 @@ For BIOL 318/418. Continue the Busse Woods teaching scenario using the original 
 
 ### Sheet: 30 Year ANOVA Test
 
-- **Region A1:G25:** source
+- **Region A1:G101:** source
 - **Region H1:K11:** calculation
 - **Region L1:M1:** calculation
 - **Region L3:M11:** calculation
